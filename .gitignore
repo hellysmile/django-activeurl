@@ -1,0 +1,10 @@
+env
+build
+dist
+django_activeurl.egg-info
+*.log
+*.pyo
+*.pyc
+django-activeurl.sublime-project
+django-activeurl.sublime-workspace
+activeurl.sqlite

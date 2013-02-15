@@ -1,0 +1,5 @@
+Django==1.4.3
+South==0.7.6
+django-classy-tags==0.4
+lxml==3.1.0
+wsgiref==0.1.2

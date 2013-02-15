@@ -1,0 +1,13 @@
+{% extends 'skel/index.html' %}
+{% load url from future %}
+
+
+{% block content %}
+    {% for simplepage in simplepage_list %}
+        <p>
+            <a class="btn" href="{% url 'simplepage_detail' slug=simplepage.slug %}">
+                {{ simplepage.title }}
+            </a>
+        </p>
+    {% endfor %}
+{% endblock %}
