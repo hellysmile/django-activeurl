@@ -21,14 +21,18 @@ class ActiveUrl(Tag):
         for parent tag of all <a> which parent is <li>.
         Quick example
         {% activeurl %}
-            <li>
-                <a href="/page/">/page/</a>
-            </li>
+            <ul>
+                <li>
+                    <a href="/page/">/page/</a>
+                </li>
+            </ul>
         {% endactiveurl %}
         will be rendered into
-            <li class="active">
-                <a href="/page/">page</a>
-            </li>
+            <ul>
+                <li class="active">
+                    <a href="/page/">page</a>
+                </li>
+            </ul>
         if request.get_full_path() starts with /page/
         starts with logic decided to apply "active" status
         for up-level urls from current url.
