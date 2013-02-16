@@ -202,6 +202,8 @@ parsing tools,more info and benchmarks can be found at
 
 Test
 ****
+::
+
     git clone https://github.com/hellysmile/django-activeurl.git
     cd django-activeurl
     virtualenv env
