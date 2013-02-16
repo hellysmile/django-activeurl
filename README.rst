@@ -3,6 +3,9 @@ django-activeurl
 ================
 :Info: Easy to use active url highlighting for django
 
+.. image:: https://api.travis-ci.org/hellysmile/django-activeurl.png
+        :target: https://travis-ci.org/hellysmile/django-activeurl
+
 Features:
 *********
 * Automatic highlighting currently active <a> tags with css
