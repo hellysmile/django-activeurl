@@ -144,7 +144,7 @@ Configuration and performance
 *****************************
 in addition to ``{% activeurl %}`` you can add keyword parameters
 ``css_class`` and ``parent_tag``, which means css class that will
-be added to parent element of <a>, in this case it is <li>
+be added to parent element of ``<a>``, in this case it is ``<li>``
 
 example::
 
