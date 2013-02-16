@@ -52,13 +52,13 @@ will be rendered into::
         </li>
     </ul>
 
-html tags inside ``{% activeurl %}{% endactiveurl %}`` must have valid root tag,
-like <ul> or <div>, etc - otherwise they will be wrapped into <div>
-
 if your yor current ``request.get_full_path()`` starts with ``/some_page/``
 
-`starts with logic decided for appling "active" status for up-level <a>
-in your menus/submenus`
+html tags inside ``{% activeurl %}{% endactiveurl %}`` must have valid root tag,
+like ``<ul>`` or ``<div>``, etc - otherwise they will be wrapped into ``<div>``
+
+starts with logic decided for appling "active" status for up-level ``<a>``
+in your menus/submenus
 
 Installation
 ************
@@ -213,10 +213,10 @@ Test
 
 Additional
 **********
-Python 3.x, Django 1.5 `status <https://github.com/hellysmile/django-activeurl/issues/1>`_
-
 *I will make python 3 port after django 1.5 stable will be released,
 as soon as possible*
+
+Python 3.x, Django 1.5 `status <https://github.com/hellysmile/django-activeurl/issues/1>`_
 
 `initializr <http://www.initializr.com/>`_ is used for html template
 
