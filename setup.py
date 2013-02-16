@@ -49,5 +49,6 @@ setup(
     classifiers=filter(None, classifiers.split('\n')),
     keywords=[
         "django", "url", "link", "active", "css", "templatetag",
-    ]
+    ],
+    setup_requires=['nose>=1.2.1']
 )
