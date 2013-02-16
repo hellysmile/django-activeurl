@@ -37,7 +37,7 @@ then::
         </ul>
     {% endactiveurl %}
 
-will be rendered into::
+will be rendered to::
 
     <ul>
         <li class="active">
@@ -52,10 +52,10 @@ will be rendered into::
         </li>
     </ul>
 
-if your yor current ``request.get_full_path()`` starts with ``/some_page/``
+if your current ``request.get_full_path()`` starts with ``/some_page/``
 
 html tags inside ``{% activeurl %}{% endactiveurl %}`` must have valid root tag,
-like ``<ul>`` or ``<div>``, etc - otherwise they will be wrapped into ``<div>``
+like ``<ul>`` or ``<div>``, etc - otherwise they will be wrapped in ``<div>``
 
 starts with logic decided for appling "active" status for up-level ``<a>``
 in your menus/submenus
@@ -142,9 +142,9 @@ in your favorite web-browser
 
 Configuration and performance
 *****************************
-in additional to ``{% activeurl %}`` you can add keyword parameters
-``css_class`` and ``parent_tag``, which means css class which will
-be added to parent element of <a>, is these case it is <li>
+in addition to ``{% activeurl %}`` you can add keyword parameters
+``css_class`` and ``parent_tag``, which means css class that will
+be added to parent element of <a>, in this case it is <li>
 
 example::
 
@@ -182,7 +182,7 @@ You can disable caching in your ``settngs.py``::
 
     CACHE_ACTIVE_URL = False
 
-addition you can set ``CACHE_ACTIVE_URL_TIMEOUT`` which is
+in addition you can set ``CACHE_ACTIVE_URL_TIMEOUT`` which is
 timeout for cache key to expire
 
 default value is::
