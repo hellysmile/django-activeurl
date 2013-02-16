@@ -6,6 +6,8 @@ django-activeurl
 .. image:: https://api.travis-ci.org/hellysmile/django-activeurl.png
         :target: https://travis-ci.org/hellysmile/django-activeurl
 
+live demo is available on `heroku <http://django-activeurl.herokuapp.com/>`_ 
+
 Features:
 *********
 * Automatic highlighting currently active <a> tags with css
