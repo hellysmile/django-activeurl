@@ -8,13 +8,13 @@ django-activeurl
 
 live demo is available on `heroku <http://django-activeurl.herokuapp.com/>`_
 
-Features:
-*********
-* Automatic highlighting currently active <a> tags with css
-* Automatic highlighting up-level <a> tags for your menus
+Features
+********
+* Automatic highlighting currently active ``<a>`` tags with css
+* Automatic highlighting up-level ``<a>`` tags for your menus
 * Removes boring stuff from your life!
 
-Usage:
+Usage
 ******
 in your templates you need::
 
@@ -68,7 +68,7 @@ install the ``stable version`` using ``pip``::
 
 install the ``in-development version`` using ``pip``::
 
-    pip install -e git+git://github.com/hellysmile/django-activeurl#egg=django-activeurl
+    pip install -e git+git://github.com/hellysmile/django-activeurl#egg=django_activeurl-dev
 
 
 modify your ``settings.py``:
@@ -95,15 +95,15 @@ Quick start
 ***********
 for successful lxml building you need to install some system stuff eg:
 
-Ubuntu:
--------
+Ubuntu
+------
 ::
 
     sudo apt-get install libxml2 libxml2-dev libxslt-dev build-essential python-dev
     sudo ldconfig
 
-Fedora:
--------
+Fedora
+------
 ::
 
     sudo yum groupinstall 'Development Tools'
@@ -111,20 +111,20 @@ Fedora:
     sudo ldconfig
 
 
-Windows:
---------
+Windows
+-------
 pre build lxml binary you can find `here <http://www.lfd.uci.edu/~gohlke/pythonlibs/>`_
 
-Cloud:
--------
+Cloud
+-----
 99.99% thats ``lxml`` will build out from the box
 
 Keep in mind, if your distro/os provides executable ``python`` with ``python3``
 (like `Archlinux <https://www.archlinux.org/>`_) you may check installation
 and addition instructions
 
-ready to use example:
----------------------
+ready to use example
+--------------------
 ::
 
     git clone https://github.com/hellysmile/django-activeurl.git
@@ -193,15 +193,8 @@ and the last one configurable option is ``CACHE_ACTIVE_URL_PREFIX`` which is
 by defaults ``django_activeurl.`` - its cache key prefix, for skipping issues
 with similar keys in your backend
 
-Background
-**********
-for building HTML element tree ``django-activeurl`` uses
-`lxml <http://pypi.python.org/pypi/lxml/>`_, which is one of the best HTML
-parsing tools,more info and benchmarks can be found at
-`habrahabr.ru <http://habrahabr.ru/post/163979/>`_ (in russian)
-
-Test
-****
+Tests
+*****
 ::
 
     git clone https://github.com/hellysmile/django-activeurl.git
@@ -210,6 +203,13 @@ Test
     source env/bin/activate
     pip install -r test_requirements.txt
     python setup.py nosetests
+
+Background
+**********
+for building HTML element tree ``django-activeurl`` uses
+`lxml <http://pypi.python.org/pypi/lxml/>`_, which is one of the best HTML
+parsing tools,more info and benchmarks can be found at
+`habrahabr.ru <http://habrahabr.ru/post/163979/>`_ (in russian)
 
 Additional
 **********
