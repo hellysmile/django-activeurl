@@ -6,7 +6,7 @@ django-activeurl
 .. image:: https://api.travis-ci.org/hellysmile/django-activeurl.png
         :target: https://travis-ci.org/hellysmile/django-activeurl
 
-live demo is available on `heroku <http://django-activeurl.herokuapp.com/>`_ 
+live demo is available on `heroku <http://django-activeurl.herokuapp.com/>`_
 
 Features:
 *********
@@ -200,6 +200,15 @@ for building HTML element tree ``django-activeurl`` uses
 parsing tools,more info and benchmarks can be found at
 `habrahabr.ru <http://habrahabr.ru/post/163979/>`_ (in russian)
 
+Test
+****
+    git clone https://github.com/hellysmile/django-activeurl.git
+    cd django-activeurl
+    virtualenv env
+    source env/bin/activate
+    pip install -r test_requirements.txt
+    python setup.py nosetests
+
 Additional
 **********
 Python 3.x, Django 1.5 `status <https://github.com/hellysmile/django-activeurl/issues/1>`_
@@ -207,5 +216,6 @@ Python 3.x, Django 1.5 `status <https://github.com/hellysmile/django-activeurl/i
 *I will make python 3 port after django 1.5 stable will be released,
 as soon as possible*
 
-thnx `initializr <http://www.initializr.com/>`_ for easy to use html template
-and nice one "fork me" `button <https://github.com/simonwhitaker/github-fork-ribbon-css>`_
+`initializr <http://www.initializr.com/>`_ is used for html template
+
+`fork me button <https://github.com/simonwhitaker/github-fork-ribbon-css>`_
