@@ -4,7 +4,6 @@ python:
   - "3.2"
   - "2.7"
   - "2.6"
-  - "2.5"
 env:
   - DJANGO=django==1.3.5
   - DJANGO=django==1.4.3
@@ -20,8 +19,6 @@ matrix:
     - python: "3.2"
       env: DJANGO=django==1.4.3
     - python: "2.6"
-      env: DJANGO=https://github.com/django/django/tarball/stable/1.5.x
-    - python: "2.5"
       env: DJANGO=https://github.com/django/django/tarball/stable/1.5.x
 install:
   - pip install $DJANGO --use-mirrors
