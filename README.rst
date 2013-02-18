@@ -16,11 +16,13 @@ Features
 
 Usage
 ******
-in your templates you need::
+in your templates you need
+::
 
     {% load activeurl %}
 
-then::
+then
+::
 
     {% activeurl %}
         <ul>
@@ -37,7 +39,8 @@ then::
         </ul>
     {% endactiveurl %}
 
-will be rendered to::
+will be rendered to
+::
 
     <ul>
         <li class="active">
@@ -57,27 +60,30 @@ if your current ``request.get_full_path()`` starts with ``/some_page/``
 html tags inside ``{% activeurl %}{% endactiveurl %}`` must have valid root tag,
 like ``<ul>`` or ``<div>``, etc - otherwise they will be wrapped in ``<div>``
 
-starts with logic decided for appling "active" status for up-level ``<a>``
+starts with logic decided for applying "active" status for up-level ``<a>``
 in your menus/submenus
 
 Installation
 ************
-install the ``stable version`` using ``pip``::
+install the ``stable version`` using ``pip``
+::
 
     pip install django-activeurl
 
-install the ``in-development version`` using ``pip``::
+install the ``in-development version`` using ``pip``
+::
 
     pip install -e git+git://github.com/hellysmile/django-activeurl#egg=django_activeurl-dev
 
 
-modify your ``settings.py``:
+modify your ``settings.py``
 
 add ``'django-activeurl'`` to your ``INSTALLED_APPS``
 
 add ``'django.core.context_processors.request'`` to your ``TEMPLATE_CONTEXT_PROCESSORS``
 
-like this::
+like this
+::
 
     INSTALLED_APPS = (
         ...
@@ -145,7 +151,8 @@ in addition to ``{% activeurl %}`` you can add keyword parameters
 ``css_class`` and ``parent_tag``, which means css class that will
 be added to parent element of ``<a>``, in this case it is ``<li>``
 
-example::
+example
+::
 
     {% activeurl css_class="current" parent_tag="li" %}
         <ul>
@@ -157,7 +164,8 @@ example::
         </ul>
     {% endactiveurl %}
 
-will be rendered into::
+will be rendered to
+::
 
     <ul>
         <li class="current">
@@ -167,7 +175,8 @@ will be rendered into::
         </li>
     </ul>
 
-by default these values are::
+by default these values are
+::
 
     {% activeurl css_class="active" parent_tag="li" %}
 
@@ -177,14 +186,37 @@ by default ``CACHE_ACTIVE_URL`` is ``True``, so before building HTML tree,
 searching "active" urls, ``django-activeurl`` will try to get
 previously rendered HTML from your cache backend
 
-You can disable caching in your ``settngs.py``::
+You can disable caching in your ``settngs.py``
+::
 
     CACHE_ACTIVE_URL = False
+
+If you want to apply "active" status direct to ``<a>``, just
+::
+
+    {% activeurl parent_tag="" %}
+        <div>
+            <a href="/some_page/">
+                some_page
+            </a>
+        </div>
+    {% endactiveurl %}
+
+will be rendered to
+::
+
+    <div>
+        <a href="/some_page/" class="active">
+            some_page
+        </a>
+    </div>
+
 
 in addition you can set ``CACHE_ACTIVE_URL_TIMEOUT`` which is
 timeout for cache key to expire
 
-default value is::
+default value is
+::
 
     CACHE_ACTIVE_URL_TIMEOUT = 60 * 60 * 24 # 1 day
 

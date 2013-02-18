@@ -101,6 +101,33 @@ def test_submenu():
     assert not 'class' in inactive_submenu.attrib.keys()
 
 
+def test_no_parent():
+    template = '''
+        {% activeurl parent_tag='' %}
+            <div>
+                <a href="/other_page/">other_page</a>
+                <hr>
+                <a href="/page/">page</a>
+                </li>
+            </div>
+        {% endactiveurl %}
+    '''
+
+    context = {'request': requests.get('/page/')}
+    html = render(template, context)
+
+    tree = fromstring(html)
+    a_elements = tree.xpath('//a')
+
+    active_a = a_elements[1]
+    assert 'class' in active_a.attrib.keys()
+    css_class = active_a.attrib['class']
+    assert css_class == 'active'
+
+    inactive_a = a_elements[0]
+    assert not 'class' in inactive_a.attrib.keys()
+
+
 def test_kwargs():
     template = '''
         {% activeurl parent_tag='div' css_class='current' %}
