@@ -8,7 +8,7 @@ Environment :: Web Environment
 Intended Audience :: Developers
 Topic :: Internet :: WWW/HTTP
 License :: OSI Approved :: Apache Software License
-Development Status :: 4 - Beta
+Development Status :: 5 - Production/Stable
 Natural Language :: English
 Programming Language :: Python
 Programming Language :: Python :: 2
@@ -17,12 +17,11 @@ Programming Language :: Python :: 2.7
 Programming Language :: Python :: 3
 Programming Language :: Python :: 3.2
 Programming Language :: Python :: 3.3
+Programming Language :: Python :: Implementation :: CPython
 Operating System :: MacOS :: MacOS X
 Operating System :: Microsoft :: Windows
 Operating System :: POSIX
 Operating System :: Unix
-Programming Language :: Python
-Programming Language :: Python :: Implementation :: CPython
 '''
 
 description = 'Easy to use active url highlighting for django'
@@ -37,7 +36,7 @@ def long_description():
 
 setup(
     name='django-activeurl',
-    version='0.0.5',
+    version='0.0.6',
     packages=packages,
     description=description,
     long_description=long_description(),
