@@ -1,3 +1,4 @@
+import sys
 from lxml.html import fromstring
 from django.core.cache import cache
 from django.template import Template, Context, loader
@@ -34,12 +35,6 @@ def test_basic():
     context = {'request': requests.get('/page/')}
     html = render(template, context)
 
-    print '''
-        %s
-        ----
-        %s
-    ''' % (template, html)
-
     tree = fromstring(html)
     li_elements = tree.xpath('//li')
 
@@ -54,15 +49,17 @@ def test_basic():
 
 def test_cache():
     html = '<ul><li><a href="/page/">page</a></li></ul>'
-    template = '{% activeurl %}<ul><li><a href="/page/">page</a></li></ul>{% endactiveurl %}'
+    template = '{% activeurl %}' + html + '{% endactiveurl %}'
 
     context = {'request': requests.get('/page/')}
     set_cache = render(template, context)
 
-    cache_key = 'django_activeurl.' \
-    + md5_constructor(
-        html + 'active' + 'li' + '/page/'
-    ).hexdigest()
+    if sys.version_info >= (3, ):
+        data = html.encode() + b'active' + b'li' + b'/page/'
+    else:
+        data = html + 'active' + 'li' + '/page/'
+
+    cache_key = 'django_activeurl.' + md5_constructor(data).hexdigest()
 
     assert cache.get(cache_key)
 
@@ -86,12 +83,6 @@ def test_submenu():
 
     context = {'request': requests.get('/menu/submenu/')}
     html = render(template, context)
-
-    print '''
-        %s
-        ----
-        %s
-    ''' % (template, html)
 
     tree = fromstring(html)
     li_elements = tree.xpath('//li')
@@ -126,12 +117,6 @@ def test_kwargs():
 
     context = {'request': requests.get('/page/')}
     html = render(template, context)
-
-    print '''
-        %s
-        ----
-        %s
-    ''' % (template, html)
 
     tree = fromstring(html)
     div_elements = tree.xpath('//div')

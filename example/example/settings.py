@@ -143,7 +143,8 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-    'south',
+    # currently south have problems with python 3.*
+    # 'south',
     'django_activeurl',
     'simplepage',
     'skel',

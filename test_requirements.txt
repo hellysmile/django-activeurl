@@ -1,2 +1,0 @@
--r example/dev_requirements.txt
-nose==1.2.1

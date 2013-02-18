@@ -8,3 +8,4 @@ django_activeurl.egg-info
 django-activeurl.sublime-project
 django-activeurl.sublime-workspace
 activeurl.sqlite
+__pycache__

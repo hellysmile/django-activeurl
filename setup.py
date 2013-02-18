@@ -10,8 +10,14 @@ Topic :: Internet :: WWW/HTTP
 License :: OSI Approved :: Apache Software License
 Development Status :: 4 - Beta
 Natural Language :: English
+Programming Language :: Python
+Programming Language :: Python :: 2
+Programming Language :: Python :: 2.5
 Programming Language :: Python :: 2.6
 Programming Language :: Python :: 2.7
+Programming Language :: Python :: 3
+Programming Language :: Python :: 3.2
+Programming Language :: Python :: 3.3
 Operating System :: MacOS :: MacOS X
 Operating System :: Microsoft :: Windows
 Operating System :: POSIX
@@ -32,7 +38,7 @@ def long_description():
 
 setup(
     name='django-activeurl',
-    version='0.0.4',
+    version='0.0.5',
     packages=packages,
     description=description,
     long_description=long_description(),
@@ -41,7 +47,7 @@ setup(
     url='https://github.com/hellysmile/django-activeurl/',
     zip_safe=False,
     install_requires=[
-        'django >= 1.3, <1.5',
+        'django >= 1.3',
         'lxml >= 2.3.5',
         'django-classy-tags >= 0.4',
     ],
@@ -49,6 +55,5 @@ setup(
     classifiers=filter(None, classifiers.split('\n')),
     keywords=[
         "django", "url", "link", "active", "css", "templatetag",
-    ],
-    setup_requires=['nose>=1.2.1']
+    ]
 )

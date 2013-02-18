@@ -134,7 +134,6 @@ ready to use example
     cd example
     pip install -r dev_requirements.txt
     python manage.py syncdb
-    python manage.py migrate
     python manage.py runserver
 
 then open `http://127.0.0.1:8000/simplepage/page1/ <http://127.0.0.1:8000/simplepage/page1/>`_
@@ -201,7 +200,7 @@ Tests
     cd django-activeurl
     virtualenv env
     source env/bin/activate
-    pip install -r test_requirements.txt
+    pip install nose
     python setup.py nosetests
 
 Background
