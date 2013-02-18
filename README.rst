@@ -212,11 +212,8 @@ parsing tools,more info and benchmarks can be found at
 
 Additional
 **********
-*I will make python 3 port after django 1.5 stable will be released,
-as soon as possible*
+``django-activeurl`` supports python 2.5, 2.6, 2.7, 3.2, 3.3
 
-Python 3.x, Django 1.5 `status <https://github.com/hellysmile/django-activeurl/issues/1>`_
+`initializr <http://www.initializr.com/>`_ is used for example html template
 
-`initializr <http://www.initializr.com/>`_ is used for html template
-
-`fork me button <https://github.com/simonwhitaker/github-fork-ribbon-css>`_
+nice one "fork me" `solution <https://github.com/simonwhitaker/github-fork-ribbon-css>`_
