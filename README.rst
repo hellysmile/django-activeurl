@@ -137,7 +137,7 @@ ready to use example
     python manage.py migrate
     python manage.py runserver
 
-then open `http://127.0.0.1:8000/pages/page1/ <http://127.0.0.1:8000/pages/page1/>`_
+then open `http://127.0.0.1:8000/simplepage/page1/ <http://127.0.0.1:8000/simplepage/page1/>`_
 in your favorite web-browser
 
 Configuration and performance
