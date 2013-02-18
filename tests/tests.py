@@ -54,7 +54,7 @@ def test_cache():
     context = {'request': requests.get('/page/')}
     set_cache = render(template, context)
 
-    if sys.version_info >= (3, ):
+    if sys.version_info[0] == 3:
         data = html.encode() + b'active' + b'li' + b'/page/'
     else:
         data = html + 'active' + 'li' + '/page/'

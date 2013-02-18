@@ -71,7 +71,7 @@ class ActiveUrl(Tag):
 
         # try to take rendered html with "active" urls from cache
         if settings.CACHE_ACTIVE_URL:
-            if sys.version_info >= (3, ):
+            if sys.version_info[0] == 3:
                 data = content.encode() + css_class.encode() + \
                     parent_tag.encode() + full_path.encode()
             else:

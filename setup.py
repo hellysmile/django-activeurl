@@ -1,3 +1,4 @@
+import codecs
 from setuptools import setup
 
 
@@ -11,7 +12,6 @@ Development Status :: 4 - Beta
 Natural Language :: English
 Programming Language :: Python
 Programming Language :: Python :: 2
-Programming Language :: Python :: 2.5
 Programming Language :: Python :: 2.6
 Programming Language :: Python :: 2.7
 Programming Language :: Python :: 3
@@ -31,9 +31,8 @@ packages = ['django_activeurl', 'django_activeurl.templatetags', ]
 
 
 def long_description():
-    f = open('README.rst', 'r')
-    rst = f.read()
-    f.close()
+    with codecs.open('README.rst', encoding='utf8') as f:
+        rst = f.read()
     return rst
 
 setup(
