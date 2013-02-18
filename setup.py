@@ -32,7 +32,7 @@ packages = ['django_activeurl', 'django_activeurl.templatetags', ]
 
 
 def long_description():
-    if sys.version_info < (2, 6):
+    if sys.version_info[:2] == (2, 5):
         f = open('README.rst', 'r')
         rst = f.read()
         f.close()
