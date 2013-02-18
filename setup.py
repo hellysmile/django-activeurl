@@ -1,4 +1,4 @@
-import codecs
+import sys
 from setuptools import setup
 
 
@@ -32,8 +32,14 @@ packages = ['django_activeurl', 'django_activeurl.templatetags', ]
 
 
 def long_description():
-    with codecs.open('README.rst', encoding='utf8') as f:
+    if sys.version_info < (2, 6):
+        f = open('README.rst', 'r')
         rst = f.read()
+        f.close()
+    else:
+        import codecs
+        with codecs.open('README.rst', encoding='utf8') as f:
+            rst = f.read()
     return rst
 
 setup(
