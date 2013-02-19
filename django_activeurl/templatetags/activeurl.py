@@ -2,13 +2,10 @@
 with django template tag
 '''
 import sys
+from hashlib import md5
 from lxml.html import fromstring, tostring
 from django import template
 from django.core.cache import cache
-try:
-    from hashlib import md5 as md5_constructor
-except ImportError:
-    from django.utils.hashcompat import md5_constructor
 from classytags.core import Tag, Options
 from classytags.arguments import MultiKeywordArgument
 from django_activeurl import settings
@@ -97,6 +94,7 @@ class ActiveUrl(Tag):
         # render content inside template tag
         context.push()
         content = nodelist.render(context)
+        context.pop()
 
         # try to take rendered html with "active" urls from cache
         if settings.CACHE_ACTIVE_URL:
@@ -106,11 +104,10 @@ class ActiveUrl(Tag):
             else:
                 data = content + css_class + parent_tag + full_path
             cache_key = settings.CACHE_ACTIVE_URL_PREFIX \
-                + md5_constructor(data).hexdigest()
+                + md5(data).hexdigest()
 
             from_cache = cache.get(cache_key)
             if from_cache:
-                context.pop()
                 return from_cache
 
         # build html tree from content inside template tag
@@ -158,7 +155,6 @@ class ActiveUrl(Tag):
             cache.set(cache_key, content,
                       settings.CACHE_ACTIVE_URL_TIMEOUT)
 
-        context.pop()
         return content
 
 # register new template tag

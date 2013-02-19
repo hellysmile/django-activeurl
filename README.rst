@@ -231,8 +231,8 @@ Tests
     cd django-activeurl
     virtualenv env
     source env/bin/activate
-    pip install nose
-    python setup.py nosetests
+    pip install nose coverage
+    python setup.py nosetests --with-coverage --cover-package='django_activeurl'
 
 Background
 **********

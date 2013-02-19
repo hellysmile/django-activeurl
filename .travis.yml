@@ -22,5 +22,5 @@ matrix:
       env: DJANGO=https://github.com/django/django/tarball/stable/1.5.x
 install:
   - pip install -q $DJANGO --use-mirrors
-  - pip install -q lxml==3.1.0 django-classy-tags==0.4 nose==1.2.1 --use-mirrors
-script: python setup.py nosetests
+  - pip install -q lxml==3.1.0 django-classy-tags==0.4 nose==1.2.1 coverage==3.6 --use-mirrors
+script: --with-coverage --cover-package='django_activeurl'
