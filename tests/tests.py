@@ -130,6 +130,9 @@ def test_cache():
 
     assert cache.get(cache_key)
 
+    get_cache = render(template, context)
+    assert get_cache == set_cache
+
 
 def test_submenu():
     template = '''
@@ -243,6 +246,9 @@ def test_no_parent_cache():
     cache_key = 'django_activeurl.' + md5(data).hexdigest()
 
     assert cache.get(cache_key)
+
+    get_cache = render(template, context)
+    assert get_cache == set_cache
 
 
 def test_kwargs():
