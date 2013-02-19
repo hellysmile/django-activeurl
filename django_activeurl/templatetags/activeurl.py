@@ -117,7 +117,7 @@ class ActiveUrl(Tag):
         tree = fromstring(content)
 
         # if parent_tag is False\None\empty, so "active" status will be applied
-        # directly to <a>, there is no "caching"
+        # directly to <a>
         if not parent_tag:
             # xpath query to get all <a>
             urls = tree.xpath('//a')
