@@ -128,10 +128,15 @@ def test_cache():
 
     cache_key = 'django_activeurl.' + md5(data).hexdigest()
 
-    assert cache.get(cache_key)
+    from_cache = cache.get(cache_key)
+    assert from_cache
+
+    if sys.version_info[0] == 3:
+        from_cache = from_cache.decode()
 
     get_cache = render(template, context)
-    assert get_cache == set_cache
+
+    assert from_cache == set_cache == get_cache
 
 
 def test_submenu():
@@ -245,10 +250,15 @@ def test_no_parent_cache():
 
     cache_key = 'django_activeurl.' + md5(data).hexdigest()
 
-    assert cache.get(cache_key)
+    from_cache = cache.get(cache_key)
+    assert from_cache
+
+    if sys.version_info[0] == 3:
+        from_cache = from_cache.decode()
 
     get_cache = render(template, context)
-    assert get_cache == set_cache
+
+    assert from_cache == set_cache == get_cache
 
 
 def test_kwargs():
