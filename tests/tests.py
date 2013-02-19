@@ -128,6 +128,23 @@ def test_no_parent():
     assert not 'class' in inactive_a.attrib.keys()
 
 
+def test_no_parent_cache():
+    html = '<div><a href="/page/">page</a></div>'
+    template = '{% activeurl parent_tag='' %}' + html + '{% endactiveurl %}'
+
+    context = {'request': requests.get('/page/')}
+    set_cache = render(template, context)
+
+    if sys.version_info[0] == 3:
+        data = html.encode() + b'active' + b'' + b'/page/'
+    else:
+        data = html + 'active' + '' + '/page/'
+
+    cache_key = 'django_activeurl.' + md5_constructor(data).hexdigest()
+
+    assert cache.get(cache_key)
+
+
 def test_kwargs():
     template = '''
         {% activeurl parent_tag='div' css_class='current' %}

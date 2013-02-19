@@ -15,7 +15,7 @@ Features
 * Removes boring stuff from your life!
 
 Usage
-******
+*****
 in your templates you need
 ::
 
@@ -121,11 +121,11 @@ Windows
 -------
 pre build lxml binary you can find `here <http://www.lfd.uci.edu/~gohlke/pythonlibs/>`_
 
-Cloud
------
+Clouds
+------
 99.99% thats ``lxml`` will build out from the box
 
-Keep in mind, if your distro/os provides executable ``python`` with ``python3``
+keep in mind, if your distro/os provides executable ``python`` with ``python3``
 (like `Archlinux <https://www.archlinux.org/>`_) you may check installation
 and addition instructions
 
@@ -182,16 +182,7 @@ by default these values are
 
 there is no rebuilding HTML inside template tag when no "active" urls found
 
-by default ``CACHE_ACTIVE_URL`` is ``True``, so before building HTML tree,
-searching "active" urls, ``django-activeurl`` will try to get
-previously rendered HTML from your cache backend
-
-You can disable caching in your ``settngs.py``
-::
-
-    CACHE_ACTIVE_URL = False
-
-If you want to apply "active" status direct to ``<a>``, just
+if you want to apply "active" status direct to ``<a>``, just
 ::
 
     {% activeurl parent_tag="" %}
@@ -211,6 +202,14 @@ will be rendered to
         </a>
     </div>
 
+by default ``CACHE_ACTIVE_URL`` is ``True``, so before building HTML tree,
+searching "active" urls, ``django-activeurl`` will try to get
+previously rendered HTML from your cache backend
+
+you can disable caching in your ``settngs.py``
+::
+
+    CACHE_ACTIVE_URL = False
 
 in addition you can set ``CACHE_ACTIVE_URL_TIMEOUT`` which is
 timeout for cache key to expire

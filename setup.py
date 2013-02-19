@@ -36,7 +36,7 @@ def long_description():
 
 setup(
     name='django-activeurl',
-    version='0.0.6',
+    version='0.0.7',
     packages=packages,
     description=description,
     long_description=long_description(),
@@ -47,11 +47,11 @@ setup(
     install_requires=[
         'django >= 1.3',
         'lxml >= 2.3.5',
-        'django-classy-tags >= 0.4',
+        'django-classy-tags >= 0.4'
     ],
     license='http://www.apache.org/licenses/LICENSE-2.0',
     classifiers=filter(None, classifiers.split('\n')),
     keywords=[
-        "django", "url", "link", "active", "css", "templatetag",
+        "django", "url", "link", "active", "css", "templatetag"
     ]
 )

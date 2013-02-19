@@ -81,6 +81,10 @@ class ActiveUrl(Tag):
         css_class = kwargs['css_class']
         parent_tag = kwargs['parent_tag']
 
+        # accept from template parent_tag values such as False, None, ''
+        if not parent_tag:
+            parent_tag = ''
+
         # flag for prevent html rebuilding, when no "active" urls found
         processed = False
 
@@ -94,12 +98,27 @@ class ActiveUrl(Tag):
         context.push()
         content = nodelist.render(context)
 
+        # try to take rendered html with "active" urls from cache
+        if settings.CACHE_ACTIVE_URL:
+            if sys.version_info[0] == 3:
+                data = content.encode() + css_class.encode() + \
+                    parent_tag.encode() + full_path.encode()
+            else:
+                data = content + css_class + parent_tag + full_path
+            cache_key = settings.CACHE_ACTIVE_URL_PREFIX \
+                + md5_constructor(data).hexdigest()
+
+            from_cache = cache.get(cache_key)
+            if from_cache:
+                context.pop()
+                return from_cache
+
+        # build html tree from content inside template tag
+        tree = fromstring(content)
+
         # if parent_tag is False\None\empty, so "active" status will be applied
         # directly to <a>, there is no "caching"
         if not parent_tag:
-            # build html tree from content inside template tag
-            tree = fromstring(content)
-
             # xpath query to get all <a>
             urls = tree.xpath('//a')
 
@@ -115,25 +134,6 @@ class ActiveUrl(Tag):
                 content = tostring(tree)
         # otherwise css_class must be applied to parent_tag
         else:
-            # try to take rendered html with "active" urls from cache
-            if settings.CACHE_ACTIVE_URL:
-                if sys.version_info[0] == 3:
-                    data = content.encode() + css_class.encode() + \
-                        parent_tag.encode() + full_path.encode()
-                else:
-                    data = content + css_class + parent_tag + full_path
-
-                cache_key = settings.CACHE_ACTIVE_URL_PREFIX \
-                    + md5_constructor(data).hexdigest()
-
-                from_cache = cache.get(cache_key)
-                if from_cache:
-                    context.pop()
-                    return from_cache
-
-            # build tree from content inside template tag
-            tree = fromstring(content)
-
             # xpath query to get all parents tags
             els = tree.xpath('//%s' % parent_tag)
             for el in els:
@@ -153,10 +153,10 @@ class ActiveUrl(Tag):
                 # build html from tree
                 content = tostring(tree)
 
-                # write rendered html to cache, if caching is enabled
-                if settings.CACHE_ACTIVE_URL:
-                    cache.set(cache_key, content,
-                              settings.CACHE_ACTIVE_URL_TIMEOUT)
+        # write rendered html to cache, if caching is enabled
+        if settings.CACHE_ACTIVE_URL:
+            cache.set(cache_key, content,
+                      settings.CACHE_ACTIVE_URL_TIMEOUT)
 
         context.pop()
         return content
