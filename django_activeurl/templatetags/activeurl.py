@@ -50,22 +50,22 @@ class ActiveUrl(Tag):
             # skip "root" url
             if url.attrib['href'] != '/':
                 # compare href parameter with full path
-                    if full_path.startswith(url.attrib['href']):
-                        # check parent tag has "class" attribute
-                        if 'class' in list(el.attrib.keys()):
-                            # prevent multiple "class" adding
-                            if not css_class in el.attrib['class']:
-                                # check for empty "class" attribute
-                                if el.attrib['class']:
-                                    # append "active" class
-                                    el.attrib['class'] += ' ' + css_class
-                                else:
-                                    # set "class" attribute
-                                    el.attrib['class'] = css_class
-                        else:
-                            # create "class" attribute
-                            el.attrib['class'] = css_class
-                        return True
+                if full_path.startswith(url.attrib['href']):
+                    # check parent tag has "class" attribute
+                    if 'class' in list(el.attrib.keys()):
+                        # prevent multiple "class" adding
+                        if not css_class in el.attrib['class']:
+                            # check for empty "class" attribute
+                            if el.attrib['class']:
+                                # append "active" class
+                                el.attrib['class'] += ' ' + css_class
+                            else:
+                                # set "class" attribute
+                                el.attrib['class'] = css_class
+                    else:
+                        # create "class" attribute
+                        el.attrib['class'] = css_class
+                    return True
         return False
 
     def render_tag(self, context, kwargs, nodelist):
@@ -98,7 +98,7 @@ class ActiveUrl(Tag):
         # try to take rendered html with "active" urls from cache
         if settings.CACHE_ACTIVE_URL:
             data = content + css_class + parent_tag + full_path
-            data = data.encode()
+            data = data.encode('utf-8', errors='ignore')
             cache_key = settings.CACHE_ACTIVE_URL_PREFIX \
                 + md5(data).hexdigest()
 

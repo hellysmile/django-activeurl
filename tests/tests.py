@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from hashlib import md5
 from lxml.html import fromstring
 from django.core.cache import cache
@@ -24,6 +25,35 @@ def test_basic():
                 </li>
                 <li>
                     <a href="/other_page/">other_page</a>
+                </li>
+            </ul>
+        {% endactiveurl %}
+    '''
+
+    context = {'request': requests.get('/page/')}
+    html = render(template, context)
+
+    tree = fromstring(html)
+    li_elements = tree.xpath('//li')
+
+    active_li = li_elements[0]
+    assert 'class' in list(active_li.attrib.keys())
+    css_class = active_li.attrib['class']
+    assert css_class == 'active'
+
+    inactive_li = li_elements[1]
+    assert not 'class' in list(inactive_li.attrib.keys())
+
+
+def test_non_ascii():
+    template = '''
+        {% activeurl %}
+            <ul>
+                <li>
+                    <a href="/page/">страниц</a>
+                </li>
+                <li>
+                    <a href="/other_page/">другая старница</a>
                 </li>
             </ul>
         {% endactiveurl %}
