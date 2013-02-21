@@ -98,7 +98,7 @@ class ActiveUrl(Tag):
         # try to take rendered html with "active" urls from cache
         if settings.CACHE_ACTIVE_URL:
             data = content + css_class + parent_tag + full_path
-            data = data.encode('utf-8', errors='ignore')
+            data = data.encode('utf-8', 'ignore')
             cache_key = settings.CACHE_ACTIVE_URL_PREFIX \
                 + md5(data).hexdigest()
 
