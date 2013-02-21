@@ -1,7 +1,6 @@
 '''Automatic active(current/up-level) url highlighting(adding css class)
 with django template tag
 '''
-import sys
 from hashlib import md5
 from lxml.html import fromstring, tostring
 from django import template
@@ -47,13 +46,13 @@ class ActiveUrl(Tag):
     def check_active(self, url, el, full_path, css_class, parent_tag):
         '''check url "active" status, apply css_class to html element'''
         # check non empty href parameter
-        if 'href' in url.attrib.keys():
+        if 'href' in list(url.attrib.keys()):
             # skip "root" url
             if url.attrib['href'] != '/':
                 # compare href parameter with full path
                     if full_path.startswith(url.attrib['href']):
                         # check parent tag has "class" attribute
-                        if 'class' in el.attrib.keys():
+                        if 'class' in list(el.attrib.keys()):
                             # prevent multiple "class" adding
                             if not css_class in el.attrib['class']:
                                 # check for empty "class" attribute
@@ -98,11 +97,8 @@ class ActiveUrl(Tag):
 
         # try to take rendered html with "active" urls from cache
         if settings.CACHE_ACTIVE_URL:
-            if sys.version_info[0] == 3:
-                data = content.encode() + css_class.encode() + \
-                    parent_tag.encode() + full_path.encode()
-            else:
-                data = content + css_class + parent_tag + full_path
+            data = content + css_class + parent_tag + full_path
+            data = data.encode()
             cache_key = settings.CACHE_ACTIVE_URL_PREFIX \
                 + md5(data).hexdigest()
 

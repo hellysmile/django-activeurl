@@ -1,4 +1,3 @@
-import sys
 from hashlib import md5
 from lxml.html import fromstring
 from django.core.cache import cache
@@ -37,12 +36,12 @@ def test_basic():
     li_elements = tree.xpath('//li')
 
     active_li = li_elements[0]
-    assert 'class' in active_li.attrib.keys()
+    assert 'class' in list(active_li.attrib.keys())
     css_class = active_li.attrib['class']
     assert css_class == 'active'
 
     inactive_li = li_elements[1]
-    assert not 'class' in inactive_li.attrib.keys()
+    assert not 'class' in list(inactive_li.attrib.keys())
 
 
 def test_already_active():
@@ -63,7 +62,7 @@ def test_already_active():
     li_elements = tree.xpath('//li')
 
     active_li = li_elements[0]
-    assert 'class' in active_li.attrib.keys()
+    assert 'class' in list(active_li.attrib.keys())
     css_class = active_li.attrib['class']
     assert css_class == 'active'
 
@@ -86,7 +85,7 @@ def test_append_css_class():
     li_elements = tree.xpath('//li')
 
     active_li = li_elements[0]
-    assert 'class' in active_li.attrib.keys()
+    assert 'class' in list(active_li.attrib.keys())
     css_class = active_li.attrib['class']
     assert css_class == 'link active'
 
@@ -109,7 +108,7 @@ def test_empty_css_class():
     li_elements = tree.xpath('//li')
 
     active_li = li_elements[0]
-    assert 'class' in active_li.attrib.keys()
+    assert 'class' in list(active_li.attrib.keys())
     css_class = active_li.attrib['class']
     assert css_class == 'active'
 
@@ -121,18 +120,15 @@ def test_cache():
     context = {'request': requests.get('/page/')}
     set_cache = render(template, context)
 
-    if sys.version_info[0] == 3:
-        data = html.encode() + b'active' + b'li' + b'/page/'
-    else:
-        data = html + 'active' + 'li' + '/page/'
+    data = html + 'active' + 'li' + '/page/'
+    data = data.encode()
 
     cache_key = 'django_activeurl.' + md5(data).hexdigest()
 
     from_cache = cache.get(cache_key)
     assert from_cache
 
-    if sys.version_info[0] == 3:
-        from_cache = from_cache.decode()
+    from_cache = from_cache.decode()
 
     get_cache = render(template, context)
 
@@ -163,17 +159,17 @@ def test_submenu():
     li_elements = tree.xpath('//li')
 
     active_menu = li_elements[0]
-    assert 'class' in active_menu.attrib.keys()
+    assert 'class' in list(active_menu.attrib.keys())
     css_class = active_menu.attrib['class']
     assert css_class == 'active'
 
     active_submenu = li_elements[1]
-    assert 'class' in active_submenu.attrib.keys()
+    assert 'class' in list(active_submenu.attrib.keys())
     css_class = active_submenu.attrib['class']
     assert css_class == 'active'
 
     inactive_submenu = li_elements[2]
-    assert not 'class' in inactive_submenu.attrib.keys()
+    assert not 'class' in list(inactive_submenu.attrib.keys())
 
 
 def test_no_parent():
@@ -195,12 +191,12 @@ def test_no_parent():
     a_elements = tree.xpath('//a')
 
     active_a = a_elements[1]
-    assert 'class' in active_a.attrib.keys()
+    assert 'class' in list(active_a.attrib.keys())
     css_class = active_a.attrib['class']
     assert css_class == 'active'
 
     inactive_a = a_elements[0]
-    assert not 'class' in inactive_a.attrib.keys()
+    assert not 'class' in list(inactive_a.attrib.keys())
 
 
 def test_no_parent_submenu():
@@ -223,17 +219,17 @@ def test_no_parent_submenu():
     a_elements = tree.xpath('//a')
 
     active_menu = a_elements[0]
-    assert 'class' in active_menu.attrib.keys()
+    assert 'class' in list(active_menu.attrib.keys())
     css_class = active_menu.attrib['class']
     assert css_class == 'active'
 
     active_submenu = a_elements[1]
-    assert 'class' in active_submenu.attrib.keys()
+    assert 'class' in list(active_submenu.attrib.keys())
     css_class = active_submenu.attrib['class']
     assert css_class == 'active'
 
     inactive_submenu = a_elements[2]
-    assert not 'class' in inactive_submenu.attrib.keys()
+    assert not 'class' in list(inactive_submenu.attrib.keys())
 
 
 def test_no_parent_cache():
@@ -243,18 +239,15 @@ def test_no_parent_cache():
     context = {'request': requests.get('/page/')}
     set_cache = render(template, context)
 
-    if sys.version_info[0] == 3:
-        data = html.encode() + b'active' + b'' + b'/page/'
-    else:
-        data = html + 'active' + '' + '/page/'
+    data = html + 'active' + '' + '/page/'
+    data = data.encode()
 
     cache_key = 'django_activeurl.' + md5(data).hexdigest()
 
     from_cache = cache.get(cache_key)
     assert from_cache
 
-    if sys.version_info[0] == 3:
-        from_cache = from_cache.decode()
+    from_cache = from_cache.decode()
 
     get_cache = render(template, context)
 
@@ -282,9 +275,9 @@ def test_kwargs():
     div_elements = tree.xpath('//div')
 
     active_div = div_elements[1]
-    assert 'class' in active_div.attrib.keys()
+    assert 'class' in list(active_div.attrib.keys())
     css_class = active_div.attrib['class']
     assert css_class == 'current'
 
     inactive_div = div_elements[2]
-    assert not 'class' in inactive_div.attrib.keys()
+    assert not 'class' in list(inactive_div.attrib.keys())
