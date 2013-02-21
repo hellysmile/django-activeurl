@@ -243,7 +243,7 @@ parsing tools,more info and benchmarks can be found at
 
 Additional
 **********
-``django-activeurl`` supports python 2.6, 2.7, 3.2, 3.3
+``django-activeurl`` supports python 2.5, 2.6, 2.7, 3.2, 3.3
 
 `initializr <http://www.initializr.com/>`_ is used for example html template
 
