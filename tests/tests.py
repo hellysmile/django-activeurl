@@ -50,16 +50,16 @@ def test_non_ascii():
         {% activeurl %}
             <ul>
                 <li>
-                    <a href="/page/">страниц</a>
+                    <a href="/страница/">страница</a>
                 </li>
                 <li>
-                    <a href="/other_page/">другая старница</a>
+                    <a href="/другая_страница/">другая_страница</a>
                 </li>
             </ul>
         {% endactiveurl %}
     '''
 
-    context = {'request': requests.get('/page/')}
+    context = {'request': requests.get('/страница/')}
     html = render(template, context)
 
     tree = fromstring(html)
