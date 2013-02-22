@@ -51,19 +51,14 @@ class ActiveUrl(Tag):
             if url.attrib['href'] != '/':
                 # compare href parameter with full path
                 if full_path.startswith(url.attrib['href']):
-                    # check parent tag has "class" attribute
+                    # check parent tag has "class" attribute or it is empty
                     if el.attrib.get('class'):
                         # prevent multiple "class" adding
                         if not css_class in el.attrib['class']:
-                            # check for empty "class" attribute
-                            if el.attrib['class']:
-                                # append "active" class
-                                el.attrib['class'] += ' ' + css_class
-                            else:
-                                # set "class" attribute
-                                el.attrib['class'] = css_class
+                            # append "active" class
+                            el.attrib['class'] += ' ' + css_class
                     else:
-                        # create "class" attribute
+                        # create or set "class" attribute
                         el.attrib['class'] = css_class
                     return True
         return False
