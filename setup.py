@@ -11,6 +11,7 @@ Development Status :: 5 - Production/Stable
 Natural Language :: English
 Programming Language :: Python
 Programming Language :: Python :: 2
+Programming Language :: Python :: 2.5
 Programming Language :: Python :: 2.6
 Programming Language :: Python :: 2.7
 Programming Language :: Python :: 3
@@ -37,7 +38,7 @@ def long_description():
 
 setup(
     name='django-activeurl',
-    version='0.1.2',
+    version='0.1.3',
     packages=packages,
     description=description,
     long_description=long_description(),

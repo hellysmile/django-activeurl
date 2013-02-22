@@ -37,12 +37,12 @@ def test_basic():
     li_elements = tree.xpath('//li')
 
     active_li = li_elements[0]
-    assert 'class' in list(active_li.attrib.keys())
+    assert active_li.attrib.get('class')
     css_class = active_li.attrib['class']
     assert css_class == 'active'
 
     inactive_li = li_elements[1]
-    assert not 'class' in list(inactive_li.attrib.keys())
+    assert not inactive_li.attrib.get('class')
 
 
 def test_non_ascii():
@@ -66,12 +66,12 @@ def test_non_ascii():
     li_elements = tree.xpath('//li')
 
     active_li = li_elements[0]
-    assert 'class' in list(active_li.attrib.keys())
+    assert active_li.attrib.get('class')
     css_class = active_li.attrib['class']
     assert css_class == 'active'
 
     inactive_li = li_elements[1]
-    assert not 'class' in list(inactive_li.attrib.keys())
+    assert not inactive_li.attrib.get('class')
 
 
 def test_already_active():
@@ -92,7 +92,7 @@ def test_already_active():
     li_elements = tree.xpath('//li')
 
     active_li = li_elements[0]
-    assert 'class' in list(active_li.attrib.keys())
+    assert active_li.attrib.get('class')
     css_class = active_li.attrib['class']
     assert css_class == 'active'
 
@@ -115,7 +115,7 @@ def test_append_css_class():
     li_elements = tree.xpath('//li')
 
     active_li = li_elements[0]
-    assert 'class' in list(active_li.attrib.keys())
+    assert active_li.attrib.get('class')
     css_class = active_li.attrib['class']
     assert css_class == 'link active'
 
@@ -138,7 +138,7 @@ def test_empty_css_class():
     li_elements = tree.xpath('//li')
 
     active_li = li_elements[0]
-    assert 'class' in list(active_li.attrib.keys())
+    assert active_li.attrib.get('class')
     css_class = active_li.attrib['class']
     assert css_class == 'active'
 
@@ -189,17 +189,17 @@ def test_submenu():
     li_elements = tree.xpath('//li')
 
     active_menu = li_elements[0]
-    assert 'class' in list(active_menu.attrib.keys())
+    assert active_menu.attrib.get('class')
     css_class = active_menu.attrib['class']
     assert css_class == 'active'
 
     active_submenu = li_elements[1]
-    assert 'class' in list(active_submenu.attrib.keys())
+    assert active_submenu.attrib.get('class')
     css_class = active_submenu.attrib['class']
     assert css_class == 'active'
 
     inactive_submenu = li_elements[2]
-    assert not 'class' in list(inactive_submenu.attrib.keys())
+    assert not inactive_submenu.attrib.get('class')
 
 
 def test_no_parent():
@@ -221,12 +221,12 @@ def test_no_parent():
     a_elements = tree.xpath('//a')
 
     active_a = a_elements[1]
-    assert 'class' in list(active_a.attrib.keys())
+    assert active_a.attrib.get('class')
     css_class = active_a.attrib['class']
     assert css_class == 'active'
 
     inactive_a = a_elements[0]
-    assert not 'class' in list(inactive_a.attrib.keys())
+    assert not inactive_a.attrib.get('class')
 
 
 def test_no_parent_submenu():
@@ -249,17 +249,17 @@ def test_no_parent_submenu():
     a_elements = tree.xpath('//a')
 
     active_menu = a_elements[0]
-    assert 'class' in list(active_menu.attrib.keys())
+    assert active_menu.attrib.get('class')
     css_class = active_menu.attrib['class']
     assert css_class == 'active'
 
     active_submenu = a_elements[1]
-    assert 'class' in list(active_submenu.attrib.keys())
+    assert active_submenu.attrib.get('class')
     css_class = active_submenu.attrib['class']
     assert css_class == 'active'
 
     inactive_submenu = a_elements[2]
-    assert not 'class' in list(inactive_submenu.attrib.keys())
+    assert not inactive_submenu.attrib.get('class')
 
 
 def test_no_parent_cache():
@@ -305,9 +305,9 @@ def test_kwargs():
     div_elements = tree.xpath('//div')
 
     active_div = div_elements[1]
-    assert 'class' in list(active_div.attrib.keys())
+    assert active_div.attrib.get('class')
     css_class = active_div.attrib['class']
     assert css_class == 'current'
 
     inactive_div = div_elements[2]
-    assert not 'class' in list(inactive_div.attrib.keys())
+    assert not inactive_div.attrib.get('class')
