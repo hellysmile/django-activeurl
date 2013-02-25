@@ -24,6 +24,6 @@ matrix:
     - python: "2.5"
       env: DJANGO=https://github.com/django/django/tarball/stable/1.5.x#egg=django
 install:
-  - pip install -q $DJANGO --use-mirrors
+  - pip install $DJANGO --use-mirrors
   - pip install -q lxml>=2.3.5 django-classy-tags>=0.4 nose coverage --use-mirrors
 script: python setup.py nosetests --with-coverage --cover-package='django_activeurl'
