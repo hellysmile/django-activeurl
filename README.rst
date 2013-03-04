@@ -1,6 +1,6 @@
-================
 django-activeurl
 ================
+
 :Info: Easy to use active url highlighting for django
 
 .. image:: https://api.travis-ci.org/hellysmile/django-activeurl.png
@@ -78,7 +78,7 @@ install the ``in-development version`` using ``pip``
 
 modify your ``settings.py``
 
-add ``'django-activeurl'`` to your ``INSTALLED_APPS``
+add ``'django_activeurl'`` to your ``INSTALLED_APPS``
 
 add ``'django.core.context_processors.request'`` to your ``TEMPLATE_CONTEXT_PROCESSORS``
 
