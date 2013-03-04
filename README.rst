@@ -87,7 +87,7 @@ like this
 
     INSTALLED_APPS = (
         ...
-        'django-activeurl',
+        'django_activeurl',
         ...
     )
 
