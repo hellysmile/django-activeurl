@@ -9,9 +9,6 @@ settings.configure(
         }
     },
     ROOT_URLCONF = 'tests.urls',
-    INSTALLED_APPS=[
-        'activeurl',
-    ],
     CACHES = {
         'default': {
             'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
