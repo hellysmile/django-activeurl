@@ -1,27 +1,31 @@
 django-activeurl
 ================
 
-:Info: Easy to use active url highlighting for django
+:info: Easy to use active url highlighting for django
 
 .. image:: https://api.travis-ci.org/hellysmile/django-activeurl.png
-        :target: https://travis-ci.org/hellysmile/django-activeurl
+    :target: https://travis-ci.org/hellysmile/django-activeurl
 
-live demo is available on `heroku <http://django-activeurl.herokuapp.com/>`_
+live demo is available on `heroku.com <http://django-activeurl.herokuapp.com/>`_
 
-Features
+features
 ********
-* Automatic highlighting currently active ``<a>`` tags with css
-* Automatic highlighting up-level ``<a>`` tags for your menus
-* Removes boring stuff from your life!
 
-Usage
+* automatic highlighting currently active ``<a>`` tags with css
+* automatic highlighting up-level ``<a>`` tags for your menus
+* removes boring stuff from your life!
+
+usage
 *****
+
 in your templates you need
+
 ::
 
     {% load activeurl %}
 
 then
+
 ::
 
     {% activeurl %}
@@ -40,6 +44,7 @@ then
     {% endactiveurl %}
 
 will be rendered to
+
 ::
 
     <ul>
@@ -63,8 +68,9 @@ like ``<ul>`` or ``<div>``, etc - otherwise they will be wrapped in ``<div>``
 starts with logic decided for applying "active" status for up-level ``<a>``
 in your menus/submenus
 
-Installation
+installation
 ************
+
 install the ``stable version`` using ``pip``
 ::
 
@@ -83,6 +89,7 @@ add ``'django_activeurl'`` to your ``INSTALLED_APPS``
 add ``'django.core.context_processors.request'`` to your ``TEMPLATE_CONTEXT_PROCESSORS``
 
 like this
+
 ::
 
     INSTALLED_APPS = (
@@ -97,19 +104,22 @@ like this
         ...
     )
 
-Quick start
+quick start
 ***********
+
 for successful lxml building you need to install some system stuff eg:
 
-Ubuntu
+ubuntu
 ------
+
 ::
 
     sudo apt-get install libxml2 libxml2-dev libxslt-dev build-essential python-dev
     sudo ldconfig
 
-Fedora
+fedora
 ------
+
 ::
 
     sudo yum groupinstall 'Development Tools'
@@ -117,12 +127,14 @@ Fedora
     sudo ldconfig
 
 
-Windows
+windows
 -------
+
 pre build lxml binary you can find `here <http://www.lfd.uci.edu/~gohlke/pythonlibs/>`_
 
-Clouds
+clouds
 ------
+
 99.99% thats ``lxml`` will build out from the box
 
 keep in mind, if your distro/os provides executable ``python`` with ``python3``
@@ -131,6 +143,7 @@ and addition instructions
 
 ready to use example
 --------------------
+
 ::
 
     git clone https://github.com/hellysmile/django-activeurl.git
@@ -145,13 +158,15 @@ ready to use example
 then open `http://127.0.0.1:8000/simplepage/page1/ <http://127.0.0.1:8000/simplepage/page1/>`_
 in your favorite web-browser
 
-Configuration and performance
+configuration and performance
 *****************************
+
 in addition to ``{% activeurl %}`` you can add keyword parameters
 ``css_class`` and ``parent_tag``, which means css class that will
 be added to parent element of ``<a>``, in this case it is ``<li>``
 
 example
+
 ::
 
     {% activeurl css_class="current" parent_tag="li" %}
@@ -165,6 +180,7 @@ example
     {% endactiveurl %}
 
 will be rendered to
+
 ::
 
     <ul>
@@ -176,6 +192,7 @@ will be rendered to
     </ul>
 
 by default these values are
+
 ::
 
     {% activeurl css_class="active" parent_tag="li" %}
@@ -183,6 +200,7 @@ by default these values are
 there is no rebuilding HTML inside template tag when no "active" urls found
 
 if you want to apply "active" status direct to ``<a>``, just
+
 ::
 
     {% activeurl parent_tag="" %}
@@ -194,6 +212,7 @@ if you want to apply "active" status direct to ``<a>``, just
     {% endactiveurl %}
 
 will be rendered to
+
 ::
 
     <div>
@@ -207,6 +226,7 @@ searching "active" urls, ``django-activeurl`` will try to get
 previously rendered HTML from your cache backend
 
 you can disable caching in your ``settngs.py``
+
 ::
 
     CACHE_ACTIVE_URL = False
@@ -215,6 +235,7 @@ in addition you can set ``CACHE_ACTIVE_URL_TIMEOUT`` which is
 timeout for cache key to expire
 
 default value is
+
 ::
 
     CACHE_ACTIVE_URL_TIMEOUT = 60 * 60 * 24 # 1 day
@@ -223,8 +244,9 @@ and the last one configurable option is ``CACHE_ACTIVE_URL_PREFIX`` which is
 by defaults ``django_activeurl.`` - its cache key prefix, for skipping issues
 with similar keys in your backend
 
-Tests
+tests
 *****
+
 ::
 
     git clone https://github.com/hellysmile/django-activeurl.git
@@ -234,15 +256,17 @@ Tests
     pip install nose coverage
     python setup.py nosetests --with-coverage --cover-package='django_activeurl'
 
-Background
+background
 **********
+
 for building HTML element tree ``django-activeurl`` uses
 `lxml <http://pypi.python.org/pypi/lxml/>`_, which is one of the best HTML
 parsing tools,more info and benchmarks can be found at
 `habrahabr.ru <http://habrahabr.ru/post/163979/>`_ (in russian)
 
-Additional
+additional
 **********
+
 ``django-activeurl`` supports python 2.5, 2.6, 2.7, 3.2, 3.3 and pypy 1.9
 
 `initializr <http://www.initializr.com/>`_ is used for example html template
