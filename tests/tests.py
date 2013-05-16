@@ -46,6 +46,28 @@ def test_basic():
     assert not inactive_li.attrib.get('class')
 
 
+def test_no_active():
+    template = '''
+        {% activeurl %}
+            <ul>
+                <li>
+                    <a href="/other_page/">other_page</a>
+                </li>
+            </ul>
+        {% endactiveurl %}
+    '''
+
+    context = {'request': requests.get('/page/')}
+    html = render(template, context)
+
+    tree = fromstring(html)
+    li_elements = tree.xpath('//li')
+
+    inactive_li = li_elements[0]
+
+    assert not inactive_li.attrib.get('class')
+
+
 def test_non_ascii():
     template = '''
         {% activeurl %}
