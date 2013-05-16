@@ -169,27 +169,23 @@ example
 
 ::
 
-    {% activeurl css_class="current" parent_tag="li" %}
-        <ul>
-            <li>
-                <a href="/some_page/">
-                    some_page
-                </a>
-            </li>
-        </ul>
+    {% activeurl css_class="current" parent_tag="div" %}
+        <div>
+            <a href="/some_page/">
+                some_page
+            </a>
+        </div>
     {% endactiveurl %}
 
 will be rendered to
 
 ::
 
-    <ul>
-        <li class="current">
-            <a href="/some_page/">
-                some_page
-            </a>
-        </li>
-    </ul>
+    <div class="current">
+        <a href="/some_page/">
+            some_page
+        </a>
+    </div>
 
 by default these values are
 
