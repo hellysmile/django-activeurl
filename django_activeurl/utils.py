@@ -62,8 +62,8 @@ def check_fragment(tree, full_path, css_class, parent_tag):
 
 def check_html(content, full_path, css_class, parent_tag):
     '''build html tree from content inside template tag'''
+    # valid html root tag
     try:
-        '''valid html root tag'''
         # build html elements tree from html fragment
         tree = fragment_fromstring(content)
         # check html fragment for "active" urls
@@ -72,9 +72,11 @@ def check_html(content, full_path, css_class, parent_tag):
         )
         if not check_content is False:
             content = check_content
+    # not valid html root tag
     except ParserError:
-        '''not valid html root tag'''
         tree = fragments_fromstring(content)
+        # python 3 lxml fix for empty byte strings
+        tree = [el for el in tree if not isinstance(el, str)]
         rebuild_content = ''
         processed = False
         # check all multiple tags
