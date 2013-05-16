@@ -37,11 +37,12 @@ def test_basic():
     li_elements = tree.xpath('//li')
 
     active_li = li_elements[0]
+
     assert active_li.attrib.get('class')
-    css_class = active_li.attrib['class']
-    assert css_class == 'active'
+    assert 'active' == active_li.attrib['class']
 
     inactive_li = li_elements[1]
+
     assert not inactive_li.attrib.get('class')
 
 
@@ -66,11 +67,12 @@ def test_non_ascii():
     li_elements = tree.xpath('//li')
 
     active_li = li_elements[0]
+
     assert active_li.attrib.get('class')
-    css_class = active_li.attrib['class']
-    assert css_class == 'active'
+    assert 'active' == active_li.attrib['class']
 
     inactive_li = li_elements[1]
+
     assert not inactive_li.attrib.get('class')
 
 
@@ -92,9 +94,9 @@ def test_already_active():
     li_elements = tree.xpath('//li')
 
     active_li = li_elements[0]
+
     assert active_li.attrib.get('class')
-    css_class = active_li.attrib['class']
-    assert css_class == 'active'
+    assert 'active' == active_li.attrib['class']
 
 
 def test_append_css_class():
@@ -115,9 +117,9 @@ def test_append_css_class():
     li_elements = tree.xpath('//li')
 
     active_li = li_elements[0]
+
     assert active_li.attrib.get('class')
-    css_class = active_li.attrib['class']
-    assert css_class == 'link active'
+    assert 'link active' == active_li.attrib['class']
 
 
 def test_empty_css_class():
@@ -138,9 +140,9 @@ def test_empty_css_class():
     li_elements = tree.xpath('//li')
 
     active_li = li_elements[0]
+
     assert active_li.attrib.get('class')
-    css_class = active_li.attrib['class']
-    assert css_class == 'active'
+    assert 'active' == active_li.attrib['class']
 
 
 def test_cache():
@@ -156,6 +158,7 @@ def test_cache():
     cache_key = 'django_activeurl.' + md5(data).hexdigest()
 
     from_cache = cache.get(cache_key)
+
     assert from_cache
 
     from_cache = from_cache.decode()
@@ -189,16 +192,17 @@ def test_submenu():
     li_elements = tree.xpath('//li')
 
     active_menu = li_elements[0]
+
     assert active_menu.attrib.get('class')
-    css_class = active_menu.attrib['class']
-    assert css_class == 'active'
+    assert 'active' == active_menu.attrib['class']
 
     active_submenu = li_elements[1]
+
     assert active_submenu.attrib.get('class')
-    css_class = active_submenu.attrib['class']
-    assert css_class == 'active'
+    assert 'active' == active_submenu.attrib['class']
 
     inactive_submenu = li_elements[2]
+
     assert not inactive_submenu.attrib.get('class')
 
 
@@ -221,11 +225,12 @@ def test_no_parent():
     a_elements = tree.xpath('//a')
 
     active_a = a_elements[1]
+
     assert active_a.attrib.get('class')
-    css_class = active_a.attrib['class']
-    assert css_class == 'active'
+    assert 'active' == active_a.attrib['class']
 
     inactive_a = a_elements[0]
+
     assert not inactive_a.attrib.get('class')
 
 
@@ -249,16 +254,17 @@ def test_no_parent_submenu():
     a_elements = tree.xpath('//a')
 
     active_menu = a_elements[0]
+
     assert active_menu.attrib.get('class')
-    css_class = active_menu.attrib['class']
-    assert css_class == 'active'
+    assert 'active' == active_menu.attrib['class']
 
     active_submenu = a_elements[1]
+
     assert active_submenu.attrib.get('class')
-    css_class = active_submenu.attrib['class']
-    assert css_class == 'active'
+    assert 'active' == active_submenu.attrib['class']
 
     inactive_submenu = a_elements[2]
+
     assert not inactive_submenu.attrib.get('class')
 
 
@@ -275,6 +281,7 @@ def test_no_parent_cache():
     cache_key = 'django_activeurl.' + md5(data).hexdigest()
 
     from_cache = cache.get(cache_key)
+
     assert from_cache
 
     from_cache = from_cache.decode()
@@ -284,12 +291,12 @@ def test_no_parent_cache():
     assert from_cache == set_cache == get_cache
 
 
-def test_kwargs():
+def test_kwargs_div():
     template = '''
         {% activeurl parent_tag='div' css_class='current' %}
             <div>
                 <div>
-                    <a href="/page/">page/</a>
+                    <a href="/page/">page</a>
                 </div>
                 <div>
                     <a href="/other_page/">other_page</a>
@@ -305,9 +312,79 @@ def test_kwargs():
     div_elements = tree.xpath('//div')
 
     active_div = div_elements[1]
+
     assert active_div.attrib.get('class')
-    css_class = active_div.attrib['class']
-    assert css_class == 'current'
+    assert 'current' == active_div.attrib['class']
 
     inactive_div = div_elements[2]
+
     assert not inactive_div.attrib.get('class')
+
+
+def test_kwargs_p_multiple_urls():
+    template = '''
+        {% activeurl parent_tag='p' css_class='highlight' %}
+            <div>
+                <p>
+                    <a href="/other_page/">other_page</a>
+                </p>
+                <p>
+                    <a href="/page/">page</a>
+                    <hr>
+                    <a href="/other_page/">other_page</a>
+                </p>
+            </div>
+        {% endactiveurl %}
+    '''
+
+    context = {'request': requests.get('/page/')}
+    html = render(template, context)
+
+    tree = fromstring(html)
+    p_elements = tree.xpath('//p')
+
+    active_p = p_elements[1]
+
+    assert active_p.attrib.get('class')
+    assert 'highlight' == active_p.attrib['class']
+
+    inactive_p = p_elements[0]
+
+    assert not inactive_p.attrib.get('class')
+
+
+def test_kwargs_tr_nested_tags():
+    template = '''
+        {% activeurl parent_tag='tr' css_class='active_row'%}
+            <div>
+                <table>
+                    <tr>
+                        <td>
+                            <a href="/page/">page</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a href="/other_page/">other_page</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        {% endactiveurl %}
+    '''
+
+    context = {'request': requests.get('/page/')}
+    html = render(template, context)
+
+    tree = fromstring(html)
+
+    tr_elements = tree.xpath('//tr')
+
+    active_tr = tr_elements[0]
+
+    assert active_tr.attrib.get('class')
+    assert 'active_row' == active_tr.attrib['class']
+
+    inactive_tr = tr_elements[1]
+
+    assert not inactive_tr.attrib.get('class')
