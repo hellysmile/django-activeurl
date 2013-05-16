@@ -199,7 +199,7 @@ if you want to apply "active" status direct to ``<a>``, just
 
 ::
 
-    {% activeurl parent_tag="" %}
+    {% activeurl parent_tag="self" %}
         <div>
             <a href="/some_page/">
                 some_page
