@@ -359,7 +359,7 @@ def test_kwargs_p_multiple_urls():
                 </p>
                 <p>
                     <a href="/page/">page</a>
-                    <hr>
+                    <br>
                     <a href="/other_page/">other_page</a>
                 </p>
             </div>
