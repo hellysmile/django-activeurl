@@ -308,6 +308,7 @@ def test_kwargs_div():
     html = render(template, context)
 
     div_elements = fragments_fromstring(html)
+    div_elements = [div for div in div_elements if not isinstance(div, str)]
 
     active_div = div_elements[0]
 

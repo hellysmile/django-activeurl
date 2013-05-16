@@ -25,7 +25,7 @@ def check_active(url, el, full_path, css_class, parent_tag):
 
 
 def check_fragment(tree, full_path, css_class, parent_tag):
-    '''check html fragment for "active" urls'''
+    '''check html element fragment for "active" urls'''
     # flag for prevent html rebuilding, when no "active" urls found
     processed = False
     # if parent_tag is False\None\empty\a\self
@@ -41,7 +41,7 @@ def check_fragment(tree, full_path, css_class, parent_tag):
     else:
         # xpath query to get all parents tags
         els = tree.xpath('//%s' % parent_tag)
-        # check all html elements for active <a>
+        # check all html elements for "active" <a>
         for el in els:
             # xpath query to get all <a> inside current tag
             urls = el.xpath('.//a')
@@ -63,15 +63,17 @@ def check_fragment(tree, full_path, css_class, parent_tag):
 def check_html(content, full_path, css_class, parent_tag):
     '''build html tree from content inside template tag'''
     try:
-        # valid html root tag
+        '''valid html root tag'''
+        # build html elements tree from html fragment
         tree = fragment_fromstring(content)
+        # check html fragment for "active" urls
         check_content = check_fragment(
             tree, full_path, css_class, parent_tag
         )
         if not check_content is False:
             content = check_content
     except ParserError:
-        # not valid html root tag
+        '''not valid html root tag'''
         tree = fragments_fromstring(content)
         rebuild_content = ''
         processed = False
@@ -81,11 +83,16 @@ def check_html(content, full_path, css_class, parent_tag):
                 el, full_path, css_class, parent_tag
             )
             if not check_content is False:
-                rebuild_content += check_content
+                rebuild_content = '%s%s' % (
+                    rebuild_content,
+                    check_content
+                )
                 processed = True
             else:
-                rebuild_content += tostring(el)
+                rebuild_content = '%s%s' % (
+                    rebuild_content,
+                    tostring(el)
+                )
         if processed:
             content = rebuild_content
-
     return content
