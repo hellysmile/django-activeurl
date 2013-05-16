@@ -1,3 +1,4 @@
+'''default settings for django-activeurl'''
 from django.conf import settings
 
 

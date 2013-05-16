@@ -3,7 +3,7 @@ from lxml.html import fragment_fromstring, fragments_fromstring, tostring
 from lxml.etree import ParserError
 
 
-def check_active(url, el, full_path, css_class, parent_tag):
+def check_active(url, element, full_path, css_class):
     '''check url "active" status, apply css_class to html element'''
     # check non empty href parameter
     if url.attrib.get('href'):
@@ -12,14 +12,14 @@ def check_active(url, el, full_path, css_class, parent_tag):
             # compare href parameter with full path
             if full_path.startswith(url.attrib['href']):
                 # check parent tag has "class" attribute or it is empty
-                if el.attrib.get('class'):
+                if element.attrib.get('class'):
                     # prevent multiple "class" adding
-                    if not css_class in el.attrib['class']:
+                    if not css_class in element.attrib['class']:
                         # append "active" class
-                        el.attrib['class'] += ' ' + css_class
+                        element.attrib['class'] += ' ' + css_class
                 else:
                     # create or set "class" attribute
-                    el.attrib['class'] = css_class
+                    element.attrib['class'] = css_class
                 return True
     return False
 
@@ -35,19 +35,19 @@ def check_fragment(tree, full_path, css_class, parent_tag):
         urls = tree.xpath('//a')
         # check "active" status for all urls
         for url in urls:
-            if check_active(url, url, full_path, css_class, parent_tag):
+            if check_active(url, url, full_path, css_class):
                 processed = True
     # otherwise css_class must be applied to parent_tag
     else:
         # xpath query to get all parents tags
-        els = tree.xpath('//%s' % parent_tag)
+        tree_tags = tree.xpath('//%s' % parent_tag)
         # check all html elements for "active" <a>
-        for el in els:
+        for element in tree_tags:
             # xpath query to get all <a> inside current tag
-            urls = el.xpath('.//a')
+            urls = element.xpath('.//a')
             # check "active" status for all urls
             for url in urls:
-                if check_active(url, el, full_path, css_class, parent_tag):
+                if check_active(url, element, full_path, css_class):
                     # flag for rebuilding html tree
                     processed = True
                     # stop checking other <a> inside current parent_tag
@@ -70,20 +70,25 @@ def check_html(content, full_path, css_class, parent_tag):
         check_content = check_fragment(
             tree, full_path, css_class, parent_tag
         )
+        # prevent rebuild if no "active" urls
         if not check_content is False:
             content = check_content
     # not valid html root tag
     except ParserError:
         tree = fragments_fromstring(content)
         # python 3 lxml fix for empty byte strings
-        tree = [el for el in tree if not isinstance(el, str)]
+        tree = [element for element in tree if not isinstance(element, str)]
+        # new clean html fragment
         rebuild_content = ''
+        # flag for rebuilding html tree
         processed = False
         # check all multiple tags
-        for el in tree:
+        for element in tree:
+            # check html fragment for "active" urls
             check_content = check_fragment(
-                el, full_path, css_class, parent_tag
+                element, full_path, css_class, parent_tag
             )
+            # concatenation new html fragment with rendered tag
             if not check_content is False:
                 rebuild_content = '%s%s' % (
                     rebuild_content,
@@ -93,7 +98,7 @@ def check_html(content, full_path, css_class, parent_tag):
             else:
                 rebuild_content = '%s%s' % (
                     rebuild_content,
-                    tostring(el)
+                    tostring(element)
                 )
         if processed:
             content = rebuild_content

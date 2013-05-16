@@ -1,4 +1,4 @@
-'''Easy to use active url highlighting for django'''
+'''activeurl django template library witj django-classy-tags'''
 from hashlib import md5
 from django import template
 from django.core.cache import cache

@@ -1,1 +1,1 @@
-# hello django test runner
+'''hello django test runner'''
