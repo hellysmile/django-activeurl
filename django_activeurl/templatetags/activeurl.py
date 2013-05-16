@@ -91,7 +91,7 @@ class ActiveUrl(Tag):
             # check all html elements for active <a>
             for el in els:
                 # xpath query to get all <a> inside current tag
-                urls = el.xpath('a')
+                urls = el.xpath('.//a')
                 # check "active" status for all urls
                 for url in urls:
                     if check_active(url, el, full_path, css_class, parent_tag):
