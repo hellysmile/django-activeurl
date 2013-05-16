@@ -2,14 +2,14 @@ from django.conf import settings
 
 
 settings.configure(
-    DATABASES = {
+    DATABASES={
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': ':memory:',
         }
     },
-    ROOT_URLCONF = 'tests.urls',
-    CACHES = {
+    ROOT_URLCONF='tests.urls',
+    CACHES={
         'default': {
             'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
         }
@@ -17,5 +17,9 @@ settings.configure(
 )
 
 if not 'django.core.context_processors.request' in settings.TEMPLATE_CONTEXT_PROCESSORS:
-    settings.TEMPLATE_CONTEXT_PROCESSORS = list(settings.TEMPLATE_CONTEXT_PROCESSORS)
-    settings.TEMPLATE_CONTEXT_PROCESSORS.append('django.core.context_processors.request')
+    settings.TEMPLATE_CONTEXT_PROCESSORS = list(
+        settings.TEMPLATE_CONTEXT_PROCESSORS
+    )
+    settings.TEMPLATE_CONTEXT_PROCESSORS.append(
+        'django.core.context_processors.request'
+    )
