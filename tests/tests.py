@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from hashlib import md5
-from lxml.html import fromstring
+from lxml.html import fromstring, fragments_fromstring
 from django.core.cache import cache
 from django.template import Template, Context, loader
 from django.test.client import RequestFactory
@@ -208,7 +208,7 @@ def test_submenu():
 
 def test_no_parent():
     template = '''
-        {% activeurl parent_tag='' %}
+        {% activeurl parent_tag='self' %}
             <div>
                 <a href="/other_page/">other_page</a>
                 <hr>
@@ -236,7 +236,7 @@ def test_no_parent():
 
 def test_no_parent_submenu():
     template = '''
-        {% activeurl parent_tag='' %}
+        {% activeurl parent_tag='self' %}
             <div>
                 <a href="/menu/">menu</a>
                 <hr>
@@ -270,12 +270,13 @@ def test_no_parent_submenu():
 
 def test_no_parent_cache():
     html = '<div><a href="/page/">page</a></div>'
-    template = '{% activeurl parent_tag='' %}' + html + '{% endactiveurl %}'
+    template = '{% activeurl parent_tag="self" %}' + html \
+        + '{% endactiveurl %}'
 
     context = {'request': requests.get('/page/')}
     set_cache = render(template, context)
 
-    data = html + 'active' + '' + '/page/'
+    data = html + 'active' + 'self' + '/page/'
     data = data.encode()
 
     cache_key = 'django_activeurl.' + md5(data).hexdigest()
@@ -295,12 +296,10 @@ def test_kwargs_div():
     template = '''
         {% activeurl parent_tag='div' css_class='current' %}
             <div>
-                <div>
-                    <a href="/page/">page</a>
-                </div>
-                <div>
-                    <a href="/other_page/">other_page</a>
-                </div>
+                <a href="/page/">page</a>
+            </div>
+            <div>
+                <a href="/other_page/">other_page</a>
             </div>
         {% endactiveurl %}
     '''
@@ -308,17 +307,46 @@ def test_kwargs_div():
     context = {'request': requests.get('/page/')}
     html = render(template, context)
 
-    tree = fromstring(html)
-    div_elements = tree.xpath('//div')
+    div_elements = fragments_fromstring(html)
 
-    active_div = div_elements[1]
+    active_div = div_elements[0]
 
     assert active_div.attrib.get('class')
     assert 'current' == active_div.attrib['class']
 
-    inactive_div = div_elements[2]
+    inactive_div = div_elements[1]
 
     assert not inactive_div.attrib.get('class')
+
+
+def test_no_root_tag():
+    template = '''
+        <ul>
+            {% activeurl parent_tag='li' css_class='active' %}
+                <li>
+                    <a href="/page/">page</a>
+                </li>
+                <li>
+                    <a href="/other_page/">other_page</a>
+                </li>
+            {% endactiveurl %}
+        </ul>
+    '''
+
+    context = {'request': requests.get('/page/')}
+    html = render(template, context)
+
+    tree = fromstring(html)
+    li_elements = tree.xpath('//li')
+
+    active_li = li_elements[0]
+
+    assert active_li.attrib.get('class')
+    assert 'active' == active_li.attrib['class']
+
+    inactive_li = li_elements[1]
+
+    assert not inactive_li.attrib.get('class')
 
 
 def test_kwargs_p_multiple_urls():
