@@ -76,30 +76,36 @@ def check_html(content, full_path, css_class, parent_tag):
     # not valid html root tag
     except ParserError:
         tree = fragments_fromstring(content)
-        # python 3 lxml fix for empty byte strings
-        tree = [element for element in tree if not isinstance(element, str)]
         # new clean html fragment
-        rebuild_content = ''
-        # flag for rebuilding html tree
+        rerender_content = ''
+         # flag for prevent html rebuilding, when no "active" urls found
         processed = False
         # check all multiple tags
         for element in tree:
-            # check html fragment for "active" urls
-            check_content = check_fragment(
-                element, full_path, css_class, parent_tag
-            )
-            # concatenation new html fragment with rendered tag
-            if not check_content is False:
-                rebuild_content = '%s%s' % (
-                    rebuild_content,
-                    check_content
+            # lxml fix for empty byte strings
+            if not isinstance(element, str):
+                # check html fragment for "active" urls
+                check_content = check_fragment(
+                    element, full_path, css_class, parent_tag
                 )
-                processed = True
+                # concatenation html fragments
+                if not check_content is False:
+                    rerender_content = '%s%s' % (
+                        rerender_content,
+                        check_content
+                    )
+                    # "active" url found
+                    processed = True
+                else:
+                    rerender_content = '%s%s' % (
+                        rerender_content,
+                        tostring(element)
+                    )
             else:
-                rebuild_content = '%s%s' % (
-                    rebuild_content,
-                    tostring(element)
+                rerender_content = '%s%s' % (
+                    rerender_content,
+                    element
                 )
         if processed:
-            content = rebuild_content
+            content = rerender_content
     return content
