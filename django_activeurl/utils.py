@@ -1,4 +1,5 @@
 '''template engine independent utils'''
+from six import b
 from lxml.html import fragment_fromstring, fragments_fromstring, tostring
 from lxml.etree import ParserError
 
@@ -77,7 +78,7 @@ def check_html(content, full_path, css_class, parent_tag):
     except ParserError:
         tree = fragments_fromstring(content)
         # new clean html fragment
-        rerender_content = ''
+        rerender_content = b('')
          # flag for prevent html rebuilding, when no "active" urls found
         processed = False
         # check all multiple tags
@@ -88,17 +89,11 @@ def check_html(content, full_path, css_class, parent_tag):
             )
             # concatenation html fragments
             if not check_content is False:
-                rerender_content = '%s%s' % (
-                    rerender_content,
-                    check_content
-                )
+                rerender_content += check_content
                 # "active" url found
                 processed = True
             else:
-                rerender_content = '%s%s' % (
-                    rerender_content,
-                    tostring(element)
-                )
+                rerender_content += tostring(element)
         if processed:
             content = rerender_content
     return content
