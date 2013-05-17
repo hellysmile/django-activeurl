@@ -314,7 +314,7 @@ def test_no_parent_cache():
     assert from_cache == set_cache == get_cache
 
 
-def test_kwargs_div():
+def test_kwargs():
     template = '''
         {% activeurl parent_tag='div' css_class='current' %}
             <div>
@@ -372,7 +372,7 @@ def test_no_root_tag():
     assert not inactive_li.attrib.get('class')
 
 
-def test_kwargs_p_multiple_urls():
+def test_kwargs_multiple_urls():
     template = '''
         {% activeurl parent_tag='p' css_class='highlight' %}
             <div>
@@ -404,7 +404,7 @@ def test_kwargs_p_multiple_urls():
     assert not inactive_p.attrib.get('class')
 
 
-def test_kwargs_tr_nested_tags():
+def test_kwargs_multiple_urls_nested_tags():
     template = '''
         {% activeurl parent_tag='tr' css_class='active_row'%}
             <div>
@@ -412,6 +412,9 @@ def test_kwargs_tr_nested_tags():
                     <tr>
                         <td>
                             <a href="/page/">page</a>
+                        </td>
+                        <td>
+                            <a href="/other_page/">other_page</a>
                         </td>
                     </tr>
                     <tr>
