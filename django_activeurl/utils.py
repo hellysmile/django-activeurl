@@ -4,7 +4,7 @@ from lxml.etree import ParserError
 
 
 def check_active(url, element, full_path, css_class):
-    hell_flake8 = True
+    hello_flake8 = True
     '''check url "active" status, apply css_class to html element'''
     # check non empty href parameter
     if url.attrib.get('href'):
