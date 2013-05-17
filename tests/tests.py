@@ -380,6 +380,31 @@ def test_no_root_tag():
     assert not inactive_li.attrib.get('class')
 
 
+def test_no_root_tag_no_parent():
+    template = '''
+        {% activeurl parent_tag='self' css_class='active' %}
+            <a href="/page/">page</a>
+            <br>
+            <a href="/other_page/">other_page</a>
+        {% endactiveurl %}
+    '''
+
+    context = {'request': requests.get('/page/')}
+    html = render(template, context)
+
+    tree = fromstring(html)
+    a_elements = tree.xpath('//a')
+
+    active_a = a_elements[0]
+
+    assert active_a.attrib.get('class')
+    assert 'active' == active_a.attrib['class']
+
+    inactive_a = a_elements[1]
+
+    assert not inactive_a.attrib.get('class')
+
+
 def test_kwargs_multiple_urls():
     template = '''
         {% activeurl parent_tag='p' css_class='highlight' %}
