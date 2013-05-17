@@ -230,12 +230,21 @@ def test_submenu():
 
 def test_no_parent():
     template = '''
+        {% activeurl parent_tag='' %}
+            <div>
+                <a href="/page/">page</a>
+            </div>
+        {% endactiveurl %}
+        {% activeurl parent_tag='a' %}
+            <div>
+                <a href="/page/">page</a>
+            </div>
+        {% endactiveurl %}
         {% activeurl parent_tag='self' %}
             <div>
-                <a href="/other_page/">other_page</a>
-                <hr>
                 <a href="/page/">page</a>
-                </li>
+                <hr>
+                <a href="/other_page/">other_page</a>
             </div>
         {% endactiveurl %}
     '''
@@ -246,12 +255,13 @@ def test_no_parent():
     tree = fromstring(html)
     a_elements = tree.xpath('//a')
 
-    active_a = a_elements[1]
+    active_a = a_elements[:-1]
 
-    assert active_a.attrib.get('class')
-    assert 'active' == active_a.attrib['class']
+    for a in active_a:
+        assert a.attrib.get('class')
+        assert 'active' == a.attrib['class']
 
-    inactive_a = a_elements[0]
+    inactive_a = a_elements[-1]
 
     assert not inactive_a.attrib.get('class')
 
