@@ -82,29 +82,22 @@ def check_html(content, full_path, css_class, parent_tag):
         processed = False
         # check all multiple tags
         for element in tree:
-            # lxml fix for empty byte strings
-            if not isinstance(element, str):
-                # check html fragment for "active" urls
-                check_content = check_fragment(
-                    element, full_path, css_class, parent_tag
+            # check html fragment for "active" urls
+            check_content = check_fragment(
+                element, full_path, css_class, parent_tag
+            )
+            # concatenation html fragments
+            if not check_content is False:
+                rerender_content = '%s%s' % (
+                    rerender_content,
+                    check_content
                 )
-                # concatenation html fragments
-                if not check_content is False:
-                    rerender_content = '%s%s' % (
-                        rerender_content,
-                        check_content
-                    )
-                    # "active" url found
-                    processed = True
-                else:
-                    rerender_content = '%s%s' % (
-                        rerender_content,
-                        tostring(element)
-                    )
+                # "active" url found
+                processed = True
             else:
                 rerender_content = '%s%s' % (
                     rerender_content,
-                    element
+                    tostring(element)
                 )
         if processed:
             content = rerender_content
