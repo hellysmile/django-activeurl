@@ -4,6 +4,7 @@ from lxml.etree import ParserError
 
 
 class ImproperlyConfigured(Exception):
+    '''django-like ImproperlyConfigured exception'''
     pass
 
 
