@@ -4,6 +4,7 @@ from lxml.html import fragment_fromstring, fromstring
 from django.core.cache import cache
 from django.template import Template, Context, loader
 from django.test.client import RequestFactory
+from django_activeurl.utils import ImproperlyConfigured
 
 
 loader.add_to_builtins('django_activeurl.templatetags.activeurl')
@@ -443,5 +444,5 @@ def test_no_valid_html_root_tag():
     try:
         render(template, context)
         assert False
-    except NotImplementedError:
+    except ImproperlyConfigured:
         pass

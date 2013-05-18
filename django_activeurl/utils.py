@@ -3,6 +3,10 @@ from lxml.html import fragment_fromstring, tostring
 from lxml.etree import ParserError
 
 
+class ImproperlyConfigured(Exception):
+    pass
+
+
 def check_active(url, element, full_path, css_class):
     '''check url "active" status, apply css_class to html element'''
     # check non empty href parameter
@@ -64,18 +68,18 @@ def check_html(content, full_path, css_class, parent_tag):
     '''build html tree from content inside template tag'''
     # valid html root tag
     try:
-        # build html elements tree from html fragment
+        # build elements tree from html fragment
         tree = fragment_fromstring(content)
         # check html fragment for "active" urls
         check_content = check_fragment(
             tree, full_path, css_class, parent_tag
         )
-        # prevent rebuild if no "active" urls
+        # prevent change content if no "active" urls found
         if not check_content is False:
             content = check_content
     # not valid html root tag
     except ParserError:
-        raise NotImplementedError('''
+        raise ImproperlyConfigured('''
             html inside {% activeurl %} must have valid html root tag
             for example
                 {% activeurl %}
