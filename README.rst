@@ -24,13 +24,13 @@ usage
 
 in your templates you need
 
-::
+.. code-block:: html+django
 
     {% load activeurl %}
 
 then
 
-::
+.. code-block:: html+django
 
     {% activeurl %}
         <ul>
@@ -49,7 +49,7 @@ then
 
 will be rendered to
 
-::
+.. code-block:: html
 
     <ul>
         <li class="active">
@@ -76,12 +76,14 @@ installation
 ************
 
 install the ``stable version`` using ``pip``
-::
+
+.. code-block:: console
 
     pip install django-activeurl
 
 install the ``in-development version`` using ``pip``
-::
+
+.. code-block:: console
 
     pip install -e git+git://github.com/hellysmile/django-activeurl#egg=django_activeurl-dev
 
@@ -94,7 +96,7 @@ add ``'django.core.context_processors.request'`` to your ``TEMPLATE_CONTEXT_PROC
 
 like this
 
-::
+.. code-block:: python
 
     INSTALLED_APPS = (
         ...
@@ -116,7 +118,7 @@ for successful lxml building you need to install some system stuff eg:
 ubuntu
 ------
 
-::
+.. code-block:: console
 
     sudo apt-get install libxml2 libxml2-dev libxslt-dev build-essential python-dev
     sudo ldconfig
@@ -124,7 +126,7 @@ ubuntu
 fedora
 ------
 
-::
+.. code-block:: console
 
     sudo yum groupinstall 'Development Tools'
     sudo yum install libxslt-devel libxml2 libxml2-devel python-devel
@@ -148,7 +150,7 @@ and addition instructions
 ready to use example
 --------------------
 
-::
+.. code-block:: console
 
     git clone https://github.com/hellysmile/django-activeurl.git
     cd django-activeurl
@@ -171,7 +173,7 @@ be added to parent element of ``<a>``, in this case it is ``<li>``
 
 example
 
-::
+.. code-block:: html+django
 
     {% activeurl css_class="current" parent_tag="div" %}
         <span>{# do not forget valid html root tag #}
@@ -185,7 +187,7 @@ example
 
 will be rendered to
 
-::
+.. code-block:: html
 
     <span>
         <div class="current">
@@ -205,7 +207,7 @@ there is no rebuilding HTML inside template tag when no "active" urls found
 
 if you want to apply "active" status direct to ``<a>``, just
 
-::
+.. code-block:: html+django
 
     {% activeurl parent_tag="self" %}
         <div>
@@ -217,7 +219,7 @@ if you want to apply "active" status direct to ``<a>``, just
 
 will be rendered to
 
-::
+.. code-block:: html
 
     <div>
         <a href="/some_page/" class="active">
@@ -231,7 +233,7 @@ previously rendered HTML from your cache backend
 
 you can disable caching in your ``settngs.py``
 
-::
+.. code-block:: python
 
     CACHE_ACTIVE_URL = False
 
@@ -240,7 +242,7 @@ timeout for cache key to expire
 
 default value is
 
-::
+.. code-block:: python
 
     CACHE_ACTIVE_URL_TIMEOUT = 60 * 60 * 24 # 1 day
 
@@ -251,7 +253,7 @@ with similar keys in your backend
 tests
 *****
 
-::
+.. code-block:: console
 
     git clone https://github.com/hellysmile/django-activeurl.git
     cd django-activeurl
