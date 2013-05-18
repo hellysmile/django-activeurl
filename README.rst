@@ -62,6 +62,9 @@ will be rendered to
 
 if your current ``request.get_full_path()`` starts with ``/some_page/``
 
+html tags inside ``{% activeurl %}{% endactiveurl %}`` must have valid root tag,
+like ``<ul>`` or ``<div>``, etc - otherwise you will get an exception
+
 starts with logic decided for applying "active" status for up-level ``<a>``
 in your menus/submenus
 

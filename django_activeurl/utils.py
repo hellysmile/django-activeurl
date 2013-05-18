@@ -1,6 +1,5 @@
 '''template engine independent utils'''
-from six import b, binary_type
-from lxml.html import fragment_fromstring, fragments_fromstring, tostring
+from lxml.html import fragment_fromstring, tostring
 from lxml.etree import ParserError
 
 
@@ -8,7 +7,7 @@ def check_active(url, element, full_path, css_class):
     '''check url "active" status, apply css_class to html element'''
     # check non empty href parameter
     if url.attrib.get('href'):
-        # skip "root" url
+        # skip "root" url, otherwise it is will be "active" always
         if url.attrib['href'] != '/':
             # compare href parameter with full path
             if full_path.startswith(url.attrib['href']):
@@ -33,7 +32,7 @@ def check_fragment(tree, full_path, css_class, parent_tag):
     # "active" status will be applied directly to <a>
     if not parent_tag or parent_tag in ('a', 'self'):
         # xpath query to get all <a>
-        urls = tree.xpath('//a')
+        urls = tree.xpath('.//a')
         # check "active" status for all urls
         for url in urls:
             if check_active(url, url, full_path, css_class):
@@ -41,7 +40,7 @@ def check_fragment(tree, full_path, css_class, parent_tag):
     # otherwise css_class must be applied to parent_tag
     else:
         # xpath query to get all parents tags
-        elements = tree.xpath('//%s' % parent_tag)
+        elements = tree.xpath('.//%s' % parent_tag)
         # check all html elements for "active" <a>
         for element in elements:
             # xpath query to get all <a> inside current tag
@@ -76,30 +75,19 @@ def check_html(content, full_path, css_class, parent_tag):
             content = check_content
     # not valid html root tag
     except ParserError:
-        tree = fragments_fromstring(content)
-        # html fragments list
-        fragments = []
-        # flag for prevent html rebuilding, when no "active" urls found
-        processed = False
-        # check all multiple tags
-        for element in tree:
-            # check html fragment for "active" urls
-            check_content = check_fragment(
-                element, full_path, css_class, parent_tag
-            )
-            if not check_content is False:
-                # "active" url found, ccs_class updated
-                fragments.append(check_content)
-                processed = True
-            else:
-                # "active" url not found, rebuild initial html fragment
-                fragments.append(element)
-        # prevent rebuild html when no "active" urls found
-        if processed:
-            to_bytes = lambda fragment: fragment \
-                if isinstance(fragment, binary_type) else tostring(fragment)
-            # concatenation html fragments, covert lxml element to html
-            content = b('').join(
-                [to_bytes(fragment) for fragment in fragments]
-            )
+        raise NotImplementedError('''
+            html inside {% activeurl %} must have valid html root tag
+            for example
+                {% activeurl %}
+                    <ul>
+                        <li>
+                            <a href="/page/">page</a>
+                        </li>
+                        <li>
+                            <a href="/other_page/">other_page</a>
+                        </li>
+                    </ul>
+                {% endactiveurl %}
+            in this case <ul> is valid html root tag
+        ''')
     return content

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from hashlib import md5
-from lxml.html import fromstring, fragments_fromstring
+from lxml.html import fragment_fromstring, fromstring
 from django.core.cache import cache
 from django.template import Template, Context, loader
 from django.test.client import RequestFactory
@@ -33,7 +33,7 @@ def test_basic():
     context = {'request': requests.get('/page/')}
     html = render(template, context)
 
-    tree = fromstring(html)
+    tree = fragment_fromstring(html)
     li_elements = tree.xpath('//li')
 
     active_li = li_elements[0]
@@ -60,7 +60,7 @@ def test_no_active():
     context = {'request': requests.get('/page/')}
     html = render(template, context)
 
-    tree = fromstring(html)
+    tree = fragment_fromstring(html)
     li_elements = tree.xpath('//li')
 
     inactive_li = li_elements[0]
@@ -85,7 +85,7 @@ def test_non_ascii():
     context = {'request': requests.get('/страница/')}
     html = render(template, context)
 
-    tree = fromstring(html)
+    tree = fragment_fromstring(html)
     li_elements = tree.xpath('//li')
 
     active_li = li_elements[0]
@@ -112,7 +112,7 @@ def test_already_active():
     context = {'request': requests.get('/page/')}
     html = render(template, context)
 
-    tree = fromstring(html)
+    tree = fragment_fromstring(html)
     li_elements = tree.xpath('//li')
 
     active_li = li_elements[0]
@@ -135,7 +135,7 @@ def test_append_css_class():
     context = {'request': requests.get('/page/')}
     html = render(template, context)
 
-    tree = fromstring(html)
+    tree = fragment_fromstring(html)
     li_elements = tree.xpath('//li')
 
     active_li = li_elements[0]
@@ -158,7 +158,7 @@ def test_empty_css_class():
     context = {'request': requests.get('/page/')}
     html = render(template, context)
 
-    tree = fromstring(html)
+    tree = fragment_fromstring(html)
     li_elements = tree.xpath('//li')
 
     active_li = li_elements[0]
@@ -210,7 +210,7 @@ def test_submenu():
     context = {'request': requests.get('/menu/submenu/')}
     html = render(template, context)
 
-    tree = fromstring(html)
+    tree = fragment_fromstring(html)
     li_elements = tree.xpath('//li')
 
     active_menu = li_elements[0]
@@ -282,7 +282,7 @@ def test_no_parent_submenu():
     context = {'request': requests.get('/menu/submenu/')}
     html = render(template, context)
 
-    tree = fromstring(html)
+    tree = fragment_fromstring(html)
     a_elements = tree.xpath('//a')
 
     active_menu = a_elements[0]
@@ -328,81 +328,29 @@ def test_kwargs():
     template = '''
         {% activeurl parent_tag='div' css_class='current' %}
             <div>
-                <a href="/page/">page</a>
-            </div>
-            <div>
-                <a href="/other_page/">other_page</a>
+                <div>
+                    <a href="/other_page/">other_page</a>
+                </div>
+                <div>
+                    <a href="/page/">page</a>
+                </div>
             </div>
         {% endactiveurl %}
     '''
 
     context = {'request': requests.get('/page/')}
     html = render(template, context)
-    div_elements = fragments_fromstring(html)
 
-    active_div = div_elements[0]
+    tree = fragment_fromstring(html)
+    div_elements = tree.xpath('//div')
+
+    active_div = div_elements[-1]
 
     assert active_div.attrib.get('class')
     assert 'current' == active_div.attrib['class']
 
-    inactive_div = div_elements[1]
-
-    assert not inactive_div.attrib.get('class')
-
-
-def test_no_root_tag():
-    template = '''
-        <ul>
-            {% activeurl parent_tag='li' css_class='active' %}
-                <li>
-                    <a href="/page/">page</a>
-                </li>
-                <li>
-                    <a href="/other_page/">other_page</a>
-                </li>
-            {% endactiveurl %}
-        </ul>
-    '''
-
-    context = {'request': requests.get('/page/')}
-    html = render(template, context)
-
-    tree = fromstring(html)
-    li_elements = tree.xpath('//li')
-
-    active_li = li_elements[0]
-
-    assert active_li.attrib.get('class')
-    assert 'active' == active_li.attrib['class']
-
-    inactive_li = li_elements[1]
-
-    assert not inactive_li.attrib.get('class')
-
-
-def test_no_root_tag_no_parent():
-    template = '''
-        {% activeurl parent_tag='self' css_class='active' %}
-            <a href="/page/">page</a>
-            <br>
-            <a href="/other_page/">other_page</a>
-        {% endactiveurl %}
-    '''
-
-    context = {'request': requests.get('/page/')}
-    html = render(template, context)
-
-    tree = fromstring(html)
-    a_elements = tree.xpath('//a')
-
-    active_a = a_elements[0]
-
-    assert active_a.attrib.get('class')
-    assert 'active' == active_a.attrib['class']
-
-    inactive_a = a_elements[1]
-
-    assert not inactive_a.attrib.get('class')
+    for inactive_div in div_elements[:-1]:
+        assert not inactive_div.attrib.get('class')
 
 
 def test_kwargs_multiple_urls():
@@ -424,7 +372,7 @@ def test_kwargs_multiple_urls():
     context = {'request': requests.get('/page/')}
     html = render(template, context)
 
-    tree = fromstring(html)
+    tree = fragment_fromstring(html)
     p_elements = tree.xpath('//p')
 
     active_p = p_elements[1]
@@ -463,7 +411,7 @@ def test_kwargs_multiple_urls_nested_tags():
     context = {'request': requests.get('/page/')}
     html = render(template, context)
 
-    tree = fromstring(html)
+    tree = fragment_fromstring(html)
 
     tr_elements = tree.xpath('//tr')
 
