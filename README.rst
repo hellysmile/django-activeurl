@@ -5,6 +5,8 @@ django-activeurl
 
 .. image:: https://api.travis-ci.org/hellysmile/django-activeurl.png
     :target: https://travis-ci.org/hellysmile/django-activeurl
+.. image:: https://coveralls.io/repos/hellysmile/django-activeurl/badge.png?branch=master
+    :target: https://coveralls.io/r/hellysmile/django-activeurl?branch=master
 
 live demo is available on `heroku.com <http://django-activeurl.herokuapp.com/>`_
 
