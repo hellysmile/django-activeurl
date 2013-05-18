@@ -33,7 +33,7 @@ class ActiveUrl(Tag):
 
         # accept from template parent_tag values such as False, None, ''
         if not parent_tag:
-            parent_tag = ''
+            parent_tag = 'self'
 
         # get request from context
         request = context['request']
