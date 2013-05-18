@@ -186,6 +186,7 @@ example
 will be rendered to
 
 ::
+
     <span>
         <div class="current">
             <a href="/some_page/">
@@ -267,8 +268,8 @@ for building HTML element tree ``django-activeurl`` uses
 parsing tools,more info and benchmarks can be found at
 `habrahabr.ru <http://habrahabr.ru/post/163979/>`_ (in russian)
 
-additional
-**********
+notes
+*****
 
 ``django-activeurl`` supports python 2.5, 2.6, 2.7, 3.2, 3.3 and pypy 1.9
 
