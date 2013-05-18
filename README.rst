@@ -199,7 +199,7 @@ will be rendered to
 
 by default these values are
 
-::
+.. code-block:: html+django
 
     {% activeurl css_class="active" parent_tag="li" %}
 
