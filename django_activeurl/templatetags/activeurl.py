@@ -46,18 +46,22 @@ class ActiveUrl(Tag):
         content = nodelist.render(context)
         context.pop()
 
-        # try to take rendered html with "active" urls from cache
+        # try to take pre build html with "active" urls from cache
+        # if caching is enabled
         if settings.CACHE_ACTIVE_URL:
             data = '%s%s%s%s' % (content, css_class, parent_tag, full_path)
             data = data.encode('utf-8', 'ignore')
 
+            # build cache key
             cache_key = '%s%s' % (
                 settings.CACHE_ACTIVE_URL_PREFIX,
                 md5(data).hexdigest()
             )
 
+            # get cache from django cache backend
             from_cache = cache.get(cache_key)
 
+            # return pre build html if it exist in cache
             if from_cache:
                 return from_cache
 

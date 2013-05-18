@@ -29,8 +29,8 @@ def check_active(url, element, full_path, css_class):
     return False
 
 
-def check_fragment(tree, full_path, css_class, parent_tag):
-    '''check html element fragment for "active" urls'''
+def check_element(tree, full_path, css_class, parent_tag):
+    '''check html element for "active" urls'''
     # flag for prevent html rebuilding, when no "active" urls found
     processed = False
     # if parent_tag is False\None\empty\a\self
@@ -41,6 +41,7 @@ def check_fragment(tree, full_path, css_class, parent_tag):
         # check "active" status for all urls
         for url in urls:
             if check_active(url, url, full_path, css_class):
+                # mark flag for rebuild html
                 processed = True
     # otherwise css_class must be applied to parent_tag
     else:
@@ -71,8 +72,8 @@ def check_html(content, full_path, css_class, parent_tag):
     try:
         # build elements tree from html fragment
         tree = fragment_fromstring(content)
-        # check html fragment for "active" urls
-        check_content = check_fragment(
+        # check html element for "active" urls
+        check_content = check_element(
             tree, full_path, css_class, parent_tag
         )
         # prevent change content if no "active" urls found
@@ -80,6 +81,7 @@ def check_html(content, full_path, css_class, parent_tag):
             content = check_content
     # not valid html root tag
     except ParserError:
+        # raise an exception with configuration example
         raise ImproperlyConfigured('''
             html inside {% activeurl %} must have valid html root tag
             for example
