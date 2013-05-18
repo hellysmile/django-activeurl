@@ -423,3 +423,25 @@ def test_kwargs_multiple_urls_nested_tags():
     inactive_tr = tr_elements[1]
 
     assert not inactive_tr.attrib.get('class')
+
+
+def test_no_valid_html_root_tag():
+    template = '''
+            <ul>
+                {% activeurl %}
+                    <li>
+                        <a href="/page/">page</a>
+                    </li>
+                    <li>
+                        <a href="/other_page/">other_page</a>
+                    </li>
+                {% endactiveurl %}
+            </ul>
+    '''
+
+    context = {'request': requests.get('/page/')}
+    try:
+        render(template, context)
+        assert False
+    except NotImplementedError:
+        pass
