@@ -174,22 +174,25 @@ example
 ::
 
     {% activeurl css_class="current" parent_tag="div" %}
-        <div>
-            <a href="/some_page/">
-                some_page
-            </a>
-        </div>
+        <span>{# do not forget valid html root tag #}
+            <div>
+                <a href="/some_page/">
+                    some_page
+                </a>
+            </div>
+        </span>
     {% endactiveurl %}
 
 will be rendered to
 
 ::
-
-    <div class="current">
-        <a href="/some_page/">
-            some_page
-        </a>
-    </div>
+    <span>
+        <div class="current">
+            <a href="/some_page/">
+                some_page
+            </a>
+        </div>
+    </span>
 
 by default these values are
 
