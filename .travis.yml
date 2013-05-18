@@ -32,4 +32,4 @@ script:
   - nosetests --with-coverage --cover-package=django_activeurl
   - "flake8 --show-source django_activeurl"
 after_success:
-  - sh -c "if [ '2.5' != $(python -c "import sys; print('%s.%s' % sys.version_info[:2])") ]; then pip install coveralls&&covverals; fi"
+  - sh -c "if [ '2.5' != $(python -c "import sys; print('%s.%s' % sys.version_info[:2])") ]; then pip install coveralls&&coveralls; fi"
