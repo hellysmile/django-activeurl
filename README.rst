@@ -66,7 +66,7 @@ will be rendered to
 
 if your current ``request.get_full_path()`` starts with ``/some_page/``
 
-html tags inside ``{% activeurl %}{% endactiveurl %}`` must have valid root tag,
+content of ``{% activeurl %}{% endactiveurl %}`` must have valid root tag,
 like ``<ul>`` or ``<div>``, etc - otherwise you will get an exception
 
 starts with logic decided for applying "active" status for up-level ``<a>``
@@ -203,7 +203,7 @@ by default these values are
 
     {% activeurl css_class="active" parent_tag="li" %}
 
-there is no rebuilding HTML inside template tag when no "active" urls found
+there is no rebuilding content of template tag when no "active" urls found
 
 if you want to apply "active" status direct to ``<a>``, just
 
