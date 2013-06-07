@@ -8,7 +8,9 @@ django-activeurl
 .. image:: https://coveralls.io/repos/hellysmile/django-activeurl/badge.png?branch=master
     :target: https://coveralls.io/r/hellysmile/django-activeurl?branch=master
 .. image:: https://pypip.in/d/django-activeurl/badge.png
+    :target: https://pypi.python.org/pypi/django-activeurl
 .. image:: https://pypip.in/v/django-activeurl/badge.png
+    :target:: https://pypi.python.org/pypi/django-activeurl
 
 live demo is available on `heroku.com <http://django-activeurl.herokuapp.com/>`_
 
