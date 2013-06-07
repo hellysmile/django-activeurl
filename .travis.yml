@@ -26,7 +26,7 @@ matrix:
       env: DJANGO="django>=1.5"
 install:
   - pip install $DJANGO
-  - pip install -q coverage>=3.6 nose>=1.3.0 flake8>=2.0
+  - pip install -q coverage>=3.6 nose>=1.3.0 flake8>=2.0 Jinja2>=2.6
 script:
   - python setup.py nosetests --with-coverage --cover-package=django_activeurl
   - "flake8 --show-source django_activeurl"
