@@ -329,7 +329,7 @@ plain `jinja2 <https://github.com/mitsuhiko/jinja2>`_ configuration
         </ul>
     {% endactiveurl %}
 
-any option, except ``request`` can be skipped
+any one option, except ``request`` can be skipped, at least ``options(request)`` must be passed
 
 .. code-block:: python
 
@@ -337,6 +337,7 @@ any option, except ``request`` can be skipped
 
     from django_activeurl.ext.django_jinja import ActiveUrl
     from django_activeurl.ext.utils import options
+
 
     env = Environment(
         extensions=[ActiveUrl]
