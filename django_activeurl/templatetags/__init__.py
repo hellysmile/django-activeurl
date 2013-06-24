@@ -1,1 +1,1 @@
-'''activeurl django template library'''
+'''django template tags'''

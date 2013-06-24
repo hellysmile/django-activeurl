@@ -27,7 +27,11 @@ Operating System :: Unix
 
 description = 'Easy to use active url highlighting for django'
 
-packages = ['django_activeurl', 'django_activeurl.templatetags', ]
+packages = [
+    'django_activeurl',
+    'django_activeurl.templatetags',
+    'django_activeurl.ext'
+]
 
 
 def long_description():
@@ -55,6 +59,6 @@ setup(
     license='http://www.apache.org/licenses/LICENSE-2.0',
     classifiers=filter(None, classifiers.split('\n')),
     keywords=[
-        "django", "url", "link", "active", "css", "templatetag"
+        "django", "url", "link", "active", "css", "templatetag", "jinja2"
     ]
 )

@@ -1,2 +1,5 @@
 [run]
-include = django_activeurl/*
+include =
+    django_activeurl/*
+omit =
+

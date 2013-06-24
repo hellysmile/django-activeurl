@@ -3,12 +3,15 @@ from django.conf.urls import patterns, url
 from django.http import HttpResponse
 
 
-def response(request):
+def view(request):
     return HttpResponse()
 
 
-urlpatterns = patterns('',
-    url(r'^page/$', response),
-    url(r'^menu/submenu/$', response),
-    url(r'^страница/$', response),
+urlpatterns = patterns(
+    '',
+    url(r'^$', view),
+    url(r'^page/$', view),
+    url(r'^menu/$', view),
+    url(r'^menu/submenu/$', view),
+    url(r'^страница/$', view),
 )
