@@ -14,7 +14,7 @@ class ActiveUrl(Extension):
 
     def parse(self, parser):
         '''parse content of extension'''
-        # line number of token that started the tag.
+        # line number of token that started the tag
         lineno = next(parser.stream).lineno
 
         # get single options argument
@@ -44,10 +44,6 @@ class ActiveUrl(Extension):
         menu = kwargs['menu']
         # full path passed from request via global options function
         full_path = kwargs['full_path']
-
-        # accept from template parent_tag values such as False, None, ''
-        if not parent_tag:
-            parent_tag = 'self'
 
         # check content for "active" urls
         content = render_content(
