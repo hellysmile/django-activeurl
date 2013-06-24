@@ -329,6 +329,8 @@ plain `jinja2 <https://github.com/mitsuhiko/jinja2>`_ configuration
         </ul>
     {% endactiveurl %}
 
+any option, except ``request`` can be skipped
+
 .. code-block:: python
 
     from jinja2 import Environment
