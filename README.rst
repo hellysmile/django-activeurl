@@ -210,7 +210,7 @@ which means support menus layout or not
 parent_tag
 ----------
 
-``parent_tag`` in previous example is ``<div>``, means which what parent element
+``parent_tag`` in previous example is ``<div>``, which means what parent element
 of ``<a>``, needs to be marked as "active"
 
 css_class
@@ -264,7 +264,7 @@ root/index links
 ----------------
 
 ``<a>`` with ``href='/'`` will be processed only with disabled ``menu`` support,
-otherwise it will be always "active", exmaple
+otherwise it will be always "active", example
 
 .. code-block:: html+django
 
