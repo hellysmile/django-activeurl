@@ -1,7 +1,7 @@
 django-activeurl
 ================
 
-:info: Easy to use active url highlighting for django
+:info: Easy to use active URL highlighting for Django
 
 .. image:: https://api.travis-ci.org/hellysmile/django-activeurl.png
     :target: https://travis-ci.org/hellysmile/django-activeurl
@@ -15,31 +15,31 @@ django-activeurl
 .. image:: https://pypip.in/v/django-activeurl/badge.png
     :target: https://pypi.python.org/pypi/django-activeurl
 
-live demo is available on `heroku.com <http://django-activeurl.herokuapp.com/>`_
+A demo is available on `heroku.com <http://django-activeurl.herokuapp.com/>`_
 
-features
+Features
 ********
 
-* automatic highlighting currently active ``<a>`` tags via css class
-* automatic highlighting up-level ``<a>`` tags for menus
-* removes boring\hardcoded stuff from your life!
+* automatic highlighting of currently active ``<a>`` tags via CSS class
+* automatic highlighting of parent ``<a>`` tags for menus
+* removes boring / hardcoded stuff from your life!
 
-usage
+Usage
 *****
 
-load template library
+After loading the template library via
 
 .. code-block:: html+django
 
     {% load activeurl %}
 
-then
+the following code snippet will be rendered like this if `request.full_path()` starts with `/some_page/`:
 
 .. code-block:: html+django
 
     {% activeurl %}
         <ul>
-            <li>
+            <li> <!-- this <li> will render as <li class="active"> -->
                 <a href="/some_page/">
                     some_page
                 </a>
@@ -52,123 +52,89 @@ then
         </ul>
     {% endactiveurl %}
 
-will be rendered to
+**Note:** 
+The content of ``{% activeurl %}…{% endactiveurl %}`` must have valid root tag (i.e.
+``<ul>`` or ``<div>``, etc) -- otherwise an exception will be raised.
 
-.. code-block:: html
-
-    <ul>
-        <li class="active">
-            <a href="/some_page/">
-                some_page
-            </a>
-        </li>
-        <li>
-            <a href="/another_page/">
-                another_page
-            </a>
-        </li>
-    </ul>
-
-
-if ``request.get_full_path()`` starts with  ``/some_page/``
-
-content of ``{% activeurl %}{% endactiveurl %}`` must have valid root tag,
-like ``<ul>`` or ``<div>``, etc - otherwise an exception will be raised
-
-installation
+Installation
 ************
 
-install the ``stable version`` using ``pip``
+Python 2.6, 2.7, 3.2, 3.3 and PyPy 1.9 are supported.
 
-.. code-block:: console
+1. Install the *stable* version using ``pip``::
 
-    pip install django-activeurl
+       pip install django-activeurl
 
-or install the ``in-development version`` using ``pip``
+   or install the *in-development* version using ``pip``::
 
-.. code-block:: console
-
-    pip install -e git+git://github.com/hellysmile/django-activeurl#egg=django_activeurl
+       pip install -e git+git://github.com/hellysmile/django-activeurl#egg=django_activeurl
 
 
-modify ``settings.py``
+2. In your ``settings.py`` add the following:
 
-add ``'django_activeurl'`` to ``INSTALLED_APPS``
+   .. code-block:: python
 
-add ``'django.core.context_processors.request'`` to ``TEMPLATE_CONTEXT_PROCESSORS``
+       INSTALLED_APPS = (
+           ...
+           'django_activeurl',
+           ...
+       )
+       
+       TEMPLATE_CONTEXT_PROCESSORS = (
+           ...
+           'django.core.context_processors.request',
+           ...
+       )
 
-like this
+3. The *lxml* library is required and thus additional libraries need to be installed to build it:
 
-.. code-block:: python
+   * Ubuntu::
 
-    INSTALLED_APPS = (
-        ...
-        'django_activeurl',
-        ...
-    )
+       sudo apt-get install libxml2 libxml2-dev libxslt-dev build-essential python-dev
+       sudo ldconfig
 
-    TEMPLATE_CONTEXT_PROCESSORS = (
-        ...
-        'django.core.context_processors.request',
-        ...
-    )
+   * Fedora::
 
-successful ``lxml`` building requires some system stuff eg:
+       sudo yum groupinstall 'Development Tools'
+       sudo yum install libxslt-devel libxml2 libxml2-devel python-devel
+       sudo ldconfig
 
-ubuntu
-------
+   * MacOS X::
 
-.. code-block:: console
+       brew install libxml2 libxslt
+       sudo update_dyld_shared_cache -force
 
-    sudo apt-get install libxml2 libxml2-dev libxslt-dev build-essential python-dev
-    sudo ldconfig
+   * Windows: 
+     A pre-built *lxml* binary can be found `here <http://www.lfd.uci.edu/~gohlke/pythonlibs/>`_
 
-fedora
-------
+   * Clouds:
+     There's a 99.99% chance that *lxml* will build out of the box.
 
-.. code-block:: console
+Options
+*******
 
-    sudo yum groupinstall 'Development Tools'
-    sudo yum install libxslt-devel libxml2 libxml2-devel python-devel
-    sudo ldconfig
+menu ="yes|no" (default: "yes")
+-------------------------------
 
-mac os x
---------
+Should hierarchical menus be supported? There are two different ways to declare an *active* status:
 
-.. code-block:: console
+* the *starts-with* logic toggles the active state if ``request.get_full_path()`` starts with the
+  content the ``<a href=`` attribute.
 
-    brew install libxml2 libxslt
-    sudo update_dyld_shared_cache -force
+* the *equals* logic toggles the active state if ``request.get_full_path()`` is identical to the 
+  contents of the ``<a href=`` attribute.
 
-
-windows
--------
-
-pre build lxml binary can found here `here <http://www.lfd.uci.edu/~gohlke/pythonlibs/>`_
-
-clouds
-------
-
-99.99% thats ``lxml`` will build out from the box
-
-configuration
-*************
-
-there is two different way to determine "active" status
-
-* starts with logic (``request.get_full_path()`` starts with ``<a>`` ``href``)
-
-useful for menus/submenus, like
+You might want to use **starts-with logic** in hierarchical menus/submenus to not only highlight the current position but also every parent positions. So, with ``request.get_full_path()`` being `/menu/submenu` the following snippet will render accordingly:
 
 .. code-block:: html+django
 
     {% activeurl menu="yes" parent_tag="div" %}
         <div>
-            <div>
+            <div>  <!-- This will render as <div class="active"> -->
                 <a href="/menu/">
                     menu
                 </a>
-                <div>
+                <div>  <!-- This will also render as <div class="active"> -->
                     <a href="/menu/submenu/">
                         submenu
                     </a>
@@ -177,12 +143,7 @@ useful for menus/submenus, like
         </div>
     {% endactiveurl %}
 
-when ``<a>`` with ``href="/menu/"`` needs to be marked as "active"
-if ``request.get_full_path()`` is ``/menu/submenu/`` or ``href="/menu/"``
-
-* equals logic (``request.get_full_path()`` equals ``href``)
-
-example
+The **equals** logic works best for non-hierarchical menus where only those items should be highlighted whose ``href``-attribute perfectly matches ``request.get_full_path()``:
 
 .. code-block:: html+django
 
@@ -201,32 +162,22 @@ example
         </div>
     {% endactiveurl %}
 
-menu
-----
+**Note:** If you don't want ``<a href='/'>`` to be highlighted you'll have to set ``menu="no"``.
 
-so ``menu`` is one of configuration options which can be passed to template tag,
-which means support menus layout or not
 
-parent_tag
-----------
+parent_tag ="div|li|self|…" (default: "li")
+-------------------------------------------
+``parent_tag`` defines that a parent element -- and not the ``<a>`` tag itself -- should be declared *active* when there's a match in URLs. When you need to change the CSS class of the ``<a>`` tag, just enter "self".
 
-``parent_tag`` in previous example is ``<div>``, which means what parent element
-of ``<a>``, needs to be marked as "active"
+css_class ="<string>" (default: "active")
+-----------------------------------------
+Defines what CSS class to add to an active element.
 
-css_class
----------
 
-``css_class`` means what css class needs to be added to parent element
+Configuration
+*************
 
-by default these values are
-
-.. code-block:: html+django
-
-    {% activeurl css_class="active" parent_tag="li" menu="yes" %}
-        ...
-    {% endactiveurl %}
-
-they can be changed in ``settings.py``
+The default options can be set in ``settings.py`` as well:
 
 .. code-block:: python
 
@@ -235,75 +186,18 @@ they can be changed in ``settings.py``
         'parent_tag': 'li',
         'menu': 'yes'
     }
-
-any one of this options can be skipped
-
-if "active" status needs be applied direct to ``<a>``, just
-
-.. code-block:: html+django
-
-    {% activeurl parent_tag="self" css_class="current" %}
-        <div>{# do not forget valid html root tag #}
-            <a href="/some_page/">
-                some_page
-            </a>
-        </div>
-    {% endactiveurl %}
-
-will be rendered to
-
-.. code-block:: html
-
-    <div>
-        <a href="/some_page/" class="current">
-            some_page
-        </a>
-    </div>
-
-root/index links
-----------------
-
-``<a>`` with ``href='/'`` will be processed only with disabled ``menu`` support,
-otherwise it will be always "active", example
-
-.. code-block:: html+django
-
-    {% activeurl menu='no' %}
-        <ul>
-            <li>
-                <a href="/">
-                    home
-                </a>
-            </li>
-        </ul>
-    {% endactiveurl %}
-
-performance
-***********
-
-there is no rebuilding content of template tag when no "active" urls found
-
-by default ``ACTIVE_URL_CACHE`` is ``True``, so before building HTML tree,
-searching "active" urls, ``django-activeurl`` will try to get
-previously rendered HTML from django cache backend
-
-caching can be disabled in ``settngs.py``
-
-.. code-block:: python
-
-    ACTIVE_URL_CACHE = False
-
-in addition can be set ``ACTIVE_URL_CACHE_TIMEOUT`` which is
-timeout for cache key to expire, default value is
-
-.. code-block:: python
-
+    ACTIVE_URL_CACHE = True
     ACTIVE_URL_CACHE_TIMEOUT = 60 * 60 * 24  # 1 day
+    ACTIVE_URL_CACHE_PREFIX = 'django_activeurl'
 
-and the last one configurable option is ``ACTIVE_URL_CACHE_PREFIX`` which is
-by defaults ``django_activeurl`` - it is django cache backend prefix
+By default *django-activeurl* will try to retrieve a previously rendered HTML node from Django's caching backend before active URLs are looked for and a new HTML tree is built. You can disable the cache with ``ACTIVE_URL_CACHE = False``.
 
-tests
+In addition, ``ACTIVE_URL_CACHE_TIMEOUT`` can be used to define a timeout for keys to expire. The default value is one day.
+
+The last configuration option is ``ACTIVE_URL_CACHE_PREFIX`` (which is ``django_activeurl`` by default) and defines which name to use in Django's caching backend.
+
+
+Tests
 *****
 
 .. code-block:: console
@@ -311,10 +205,10 @@ tests
     pip install tox
     tox
 
-jinja2
+Jinja2
 ******
 
-plain `jinja2 <https://github.com/mitsuhiko/jinja2>`_ configuration
+Vanilla `Jinja2 <https://github.com/mitsuhiko/jinja2>`_ configuration:
 
 .. code-block:: jinja
 
@@ -329,7 +223,10 @@ plain `jinja2 <https://github.com/mitsuhiko/jinja2>`_ configuration
         </ul>
     {% endactiveurl %}
 
-any one option, except ``request`` can be skipped, at least ``options(request)`` must be passed
+Except for ``request``, options can be omitted. 
+
+If you're using `django-jinja <https://github.com/niwibe/django-jinja>`_,
+`jingo <https://github.com/jbalogh/jingo>`_ or `coffin <https://github.com/coffin/coffin/>`_ you need to load the ``ActiveUrl`` extension and populate ``Environment()`` with ``options`` in ``settings.py``.
 
 .. code-block:: python
 
@@ -344,24 +241,19 @@ any one option, except ``request`` can be skipped, at least ``options(request)``
     )
     env.globals['options'] = options
 
-for `django-jinja <https://github.com/niwibe/django-jinja>`_,
-`jingo <https://github.com/jbalogh/jingo>`_,
-`coffin <https://github.com/coffin/coffin/>`_ extension and global function
-needs to be loaded in ``settings.py```
 
-background
+Background
 **********
 
-for building HTML element tree ``django-activeurl`` uses
-`lxml <http://pypi.python.org/pypi/lxml/>`_, which is one of the best HTML
-parsing tools,more info and benchmarks can be found at
-`habrahabr.ru <http://habrahabr.ru/post/163979/>`_ (in russian)
+For building the HTML element tree *django-activeurl* uses `lxml
+<http://pypi.python.org/pypi/lxml/>`_, which is one of the best HTML parsing
+tools around. More info and benchmarks can be found at `habrahabr.ru
+<http://habrahabr.ru/post/163979/>`_ (in russian). Note that there's no
+content rebuilding inside the template tag when no active URLs are found, so
+there's no impact on performance.
 
-notes
-*****
+Credits
+*******
 
-``django-activeurl`` supports python 2.6, 2.7, 3.2, 3.3 and pypy 1.9
-
-`initializr <http://www.initializr.com/>`_ is used for example html template
-
-nice one "fork me" `solution <https://github.com/simonwhitaker/github-fork-ribbon-css>`_
+* `initializr <http://www.initializr.com/>`_ is used for the example HTML template.
+* Simon Whitaker's `»Fork me« ribbon <https://github.com/simonwhitaker/github-lork-ribbon-css>`_ is used in the example. 
