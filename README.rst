@@ -52,7 +52,7 @@ the following code snippet will be rendered like this if `request.full_path()` s
         </ul>
     {% endactiveurl %}
 
-**Note:** 
+**Note:**
 The content of ``{% activeurl %}…{% endactiveurl %}`` must have valid root tag (i.e.
 ``<ul>`` or ``<div>``, etc) -- otherwise an exception will be raised.
 
@@ -79,7 +79,7 @@ Python 2.6, 2.7, 3.2, 3.3 and PyPy 1.9 are supported.
            'django_activeurl',
            ...
        )
-       
+
        TEMPLATE_CONTEXT_PROCESSORS = (
            ...
            'django.core.context_processors.request',
@@ -104,7 +104,7 @@ Python 2.6, 2.7, 3.2, 3.3 and PyPy 1.9 are supported.
        brew install libxml2 libxslt
        sudo update_dyld_shared_cache -force
 
-   * Windows: 
+   * Windows:
      A pre-built *lxml* binary can be found `here <http://www.lfd.uci.edu/~gohlke/pythonlibs/>`_
 
    * Clouds:
@@ -121,7 +121,7 @@ Should hierarchical menus be supported? There are two different ways to declare 
 * the *starts-with* logic toggles the active state if ``request.get_full_path()`` starts with the
   content the ``<a href=`` attribute.
 
-* the *equals* logic toggles the active state if ``request.get_full_path()`` is identical to the 
+* the *equals* logic toggles the active state if ``request.get_full_path()`` is identical to the
   contents of the ``<a href=`` attribute.
 
 You might want to use **starts-with logic** in hierarchical menus/submenus to not only highlight the current position but also every parent positions. So, with ``request.get_full_path()`` being `/menu/submenu` the following snippet will render accordingly:
@@ -223,7 +223,7 @@ Vanilla `Jinja2 <https://github.com/mitsuhiko/jinja2>`_ configuration:
         </ul>
     {% endactiveurl %}
 
-Except for ``request``, options can be omitted. 
+Except for ``request``, options can be omitted.
 
 If you're using `django-jinja <https://github.com/niwibe/django-jinja>`_,
 `jingo <https://github.com/jbalogh/jingo>`_ or `coffin <https://github.com/coffin/coffin/>`_ you need to load the ``ActiveUrl`` extension and populate ``Environment()`` with ``options`` in ``settings.py``.
@@ -256,4 +256,4 @@ Credits
 *******
 
 * `initializr <http://www.initializr.com/>`_ is used for the example HTML template.
-* Simon Whitaker's `»Fork me« ribbon <https://github.com/simonwhitaker/github-lork-ribbon-css>`_ is used in the example. 
+* Simon Whitaker's `»Fork me« ribbon <https://github.com/simonwhitaker/github-fork-ribbon-css>`_ is used in the example.
