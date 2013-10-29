@@ -210,6 +210,19 @@ Jinja2
 
 Vanilla `Jinja2 <https://github.com/mitsuhiko/jinja2>`_ configuration:
 
+.. code-block:: python
+
+    from jinja2 import Environment
+
+    from django_activeurl.ext.django_jinja import ActiveUrl
+    from django_activeurl.ext.utils import options
+
+
+    env = Environment(
+        extensions=[ActiveUrl]
+    )
+    env.globals['options'] = options
+
 .. code-block:: jinja
 
     {% activeurl options(request, css_class="active", menu="yes", parent_tag="li") %}
@@ -227,20 +240,6 @@ Except for ``request``, options can be omitted.
 
 If you're using `django-jinja <https://github.com/niwibe/django-jinja>`_,
 `jingo <https://github.com/jbalogh/jingo>`_ or `coffin <https://github.com/coffin/coffin/>`_ you need to load the ``ActiveUrl`` extension and populate ``Environment()`` with ``options`` in ``settings.py``.
-
-.. code-block:: python
-
-    from jinja2 import Environment
-
-    from django_activeurl.ext.django_jinja import ActiveUrl
-    from django_activeurl.ext.utils import options
-
-
-    env = Environment(
-        extensions=[ActiveUrl]
-    )
-    env.globals['options'] = options
-
 
 Background
 **********
