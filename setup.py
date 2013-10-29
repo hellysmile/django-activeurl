@@ -25,7 +25,9 @@ Operating System :: POSIX
 Operating System :: Unix
 '''
 
-description = 'Easy to use active url highlighting for django'
+
+description = 'Easy to use active URL highlighting for django'
+
 
 packages = [
     'django_activeurl',
@@ -43,7 +45,7 @@ def long_description():
 
 setup(
     name='django-activeurl',
-    version='0.1.5',
+    version='0.1.6',
     packages=packages,
     description=description,
     long_description=long_description(),
@@ -59,6 +61,6 @@ setup(
     license='http://www.apache.org/licenses/LICENSE-2.0',
     classifiers=filter(None, classifiers.split('\n')),
     keywords=[
-        "django", "url", "link", "active", "css", "templatetag", "jinja2"
+        'django', 'url', 'link', 'active', 'css', 'templatetag', 'jinja2'
     ]
 )
