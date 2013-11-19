@@ -54,6 +54,8 @@ def check_active(url, element, full_path, css_class, menu):
             if href != '/' or full_path == '/':
                 # start with logic
                 logic = full_path.startswith(href)
+            elif href == "/" and full_path == "/":
+                logic = True
             else:
                 logic = False
         else:
