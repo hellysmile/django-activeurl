@@ -51,7 +51,7 @@ def check_active(url, element, full_path, css_class, menu):
         # compare full_path with href according to menu configuration
         if menu:
             # skip "root" (/) url, otherwise it will be always "active"
-            if href != '/':
+            if href != '/' or full_path == '/':
                 # start with logic
                 logic = full_path.startswith(href)
             else:
