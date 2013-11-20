@@ -30,7 +30,7 @@ install:
   - if [[ $TRAVIS_PYTHON_VERSION == '3.2' ]]; then pip install 'Jinja2<2.7'; else pip install 'Jinja2>=2.7'; fi
   - pip install coveralls>=0.3
 script:
-  - python setup.py nosetests --with-coverage
   - flake8 --show-source django_activeurl
+  - python setup.py nosetests --with-coverage --cover-package=django_activeurl
 after_success:
   - coveralls
