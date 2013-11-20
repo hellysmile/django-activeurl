@@ -263,12 +263,15 @@ def test_cache():
     assert from_cache == set_cache == get_cache
 
 
-def test_skip_root():
+def test_active_root():
     template = '''
         {% activeurl %}
             <ul>
                 <li>
                     <a href="/">root</a>
+                </li>
+                <li>
+                    <a href="/page/">page</a>
                 </li>
             </ul>
         {% endactiveurl %}
@@ -280,9 +283,80 @@ def test_skip_root():
     tree = fragment_fromstring(html)
     li_elements = tree.xpath('//li')
 
+    active_li = li_elements[0]
+
+    assert 'active' == active_li.attrib['class']
+
+    inactive_li = li_elements[1]
+
+    assert not inactive_li.attrib.get('class')
+
+
+def test_submenu_configuration():
+    template = '''
+        {% activeurl menu='false' %}
+            <ul>
+                <li>
+                    <a href="/menu/">menu</a>
+                </li>
+            </ul>
+        {% endactiveurl %}
+    '''
+    if int(''.join([str(x) for x in django.VERSION[:2]])) >= 15:
+        template = '''
+            {% activeurl menu=False %}
+                <ul>
+                    <li>
+                        <a href="/menu/">menu</a>
+                    </li>
+                </ul>
+            {% endactiveurl %}
+            {% activeurl menu=None %}
+                <ul>
+                    <li>
+                        <a href="/menu/">menu</a>
+                    </li>
+                </ul>
+            {% endactiveurl %}
+        ''' + template
+
+    context = {'request': requests.get('/menu/submenu/')}
+    html = render(template, context)
+
+    tree = fromstring(html)
+    li_elements = tree.xpath('//li')
+
+    for inctive_li in li_elements:
+        assert not inctive_li.attrib.get('class')
+
+
+def test_non_active_root():
+    template = '''
+        {% activeurl %}
+            <ul>
+                <li>
+                    <a href="/">root</a>
+                </li>
+                <li>
+                    <a href="/page/">page</a>
+                </li>
+            </ul>
+        {% endactiveurl %}
+    '''
+
+    context = {'request': requests.get('/page/')}
+    html = render(template, context)
+
+    tree = fragment_fromstring(html)
+    li_elements = tree.xpath('//li')
+
     inactive_li = li_elements[0]
 
     assert not inactive_li.attrib.get('class')
+
+    active_li = li_elements[1]
+
+    assert 'active' == active_li.attrib['class']
 
 
 def test_submenu():
@@ -499,6 +573,24 @@ def test_no_parent():
     inactive_a = a_elements[-1]
 
     assert not inactive_a.attrib.get('class')
+
+
+def test_malformed_parent_tag():
+    if int(''.join([str(x) for x in django.VERSION[:2]])) >= 15:
+        template = '''
+            {% activeurl parent_tag=True %}
+                <div>
+                    <a href="/page/">page</a>
+                </div>
+            {% endactiveurl %}
+        '''
+        context = {'request': requests.get('/page/')}
+
+        try:
+            render(template, context)
+            assert False
+        except ImproperlyConfigured:
+            pass
 
 
 def test_no_parent_submenu():
@@ -842,4 +934,5 @@ try:
             assert not inactive_div.attrib.get('class')
 
 except ImportError:
+    # no jinja installed
     pass

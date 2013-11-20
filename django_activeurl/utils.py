@@ -16,6 +16,23 @@ class ImproperlyConfigured(Exception):
     pass
 
 
+class Configuration(object):
+    '''abstract configuration'''
+
+    def load_configuration(self, kwargs):
+        '''load configuration, merge with default settings'''
+        # update passed arguments with default values
+        for key, value in settings.ACTIVE_URL_KWARGS.items():
+            kwargs.setdefault(key, value)
+
+        # "active" html tag css class
+        self.css_class = kwargs['css_class']
+        # "active" html tag
+        self.parent_tag = kwargs['parent_tag']
+        # flipper for menu support
+        self.menu = kwargs['menu']
+
+
 def get_cache_key(content, css_class, parent_tag, full_path, menu):
     '''generate cache key'''
     cache_key = '%s%s%s%s%s' % (
@@ -37,11 +54,23 @@ def get_cache_key(content, css_class, parent_tag, full_path, menu):
 
 def check_active(url, element, full_path, css_class, menu):
     '''check "active" url, apply css_class'''
+    # django > 1.5 template boolean\None variables feature
+    if isinstance(menu, bool):
+        if menu:
+            menu = 'yes'
+        else:
+            menu = 'no'
+    if menu is None:
+        menu = 'no'
     # check menu configuration, set boolean value
-    if menu == 'yes':
+    if menu.lower() in ('yes', 'true'):
         menu = True
-    else:
+    elif menu.lower() in ('no', 'false'):
         menu = False
+    else:
+        raise ImproperlyConfigured('''
+            malformed menu value
+        ''')
     # check non empty href parameter
     if url.attrib.get('href'):
         # get href attribute
@@ -50,8 +79,11 @@ def check_active(url, element, full_path, css_class, menu):
         href = re.sub(r'\#.+', '', href)
         # compare full_path with href according to menu configuration
         if menu:
+            # try mark "root" (/) url as "active", in equals way
+            if href == '/' == full_path:
+                logic = True
             # skip "root" (/) url, otherwise it will be always "active"
-            if href != '/' or full_path == '/':
+            elif href != '/':
                 # start with logic
                 logic = full_path.startswith(href)
             else:
@@ -83,9 +115,19 @@ def check_content(content, full_path, css_class, parent_tag, menu):
         tree = fragment_fromstring(content)
         # flag for prevent content rerendering, when no "active" urls found
         processed = False
+        # django > 1.5 template boolean\None variables feature
+        if isinstance(parent_tag, bool):
+            if not parent_tag:
+                parent_tag = 'self'
+            else:
+                raise ImproperlyConfigured('''
+                    parent_tag=True is not allowed
+                ''')
+        if parent_tag is None:
+            parent_tag = 'self'
         # if parent_tag is False\None\''\a\self
         # "active" status will be applied directly to "<a>"
-        if not parent_tag or parent_tag in ('a', 'self'):
+        if parent_tag.lower() in ('a', 'self', ''):
             # xpath query to get all "<a>"
             urls = tree.xpath('.//a')
             # check "active" status for all urls
@@ -135,8 +177,6 @@ def check_content(content, full_path, css_class, parent_tag, menu):
 
 def render_content(content, full_path, parent_tag, css_class, menu):
     '''check content for "active" urls, store results to django cache'''
-    if not menu in ('yes', 'no'):
-        raise ImproperlyConfigured('malformed "menu" value, use "yes" or "no"')
     # try to take pre rendered content from django cache, if caching is enabled
     if settings.ACTIVE_URL_CACHE:
         cache_key = get_cache_key(

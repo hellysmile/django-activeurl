@@ -4,15 +4,14 @@ from django import template
 from classytags.core import Tag, Options
 from classytags.arguments import MultiKeywordArgument
 
-from django_activeurl import settings
-from django_activeurl.utils import render_content
+from ..utils import render_content, Configuration
 
 
 # django template library
 register = template.Library()
 
 
-class ActiveUrl(Tag):
+class ActiveUrl(Tag, Configuration):
     '''django template tag via django-classy-tags'''
     # tag name
     name = 'activeurl'
@@ -26,22 +25,15 @@ class ActiveUrl(Tag):
 
     def render_tag(self, context, kwargs, nodelist):
         '''render content with "active" urls logic'''
-        # update passed arguments with default values
-        for key, value in settings.ACTIVE_URL_KWARGS.items():
-            kwargs.setdefault(key, value)
 
-        # "active" html tag css class
-        css_class = kwargs['css_class']
-        # "active" html tag
-        parent_tag = kwargs['parent_tag']
-        # flipper for menu support
-        menu = kwargs['menu']
+        # load configuration from passed options
+        self.load_configuration(kwargs)
 
         # get request from context
         request = context['request']
 
         # get full path from request
-        full_path = request.get_full_path()
+        self.full_path = request.get_full_path()
 
         # render content of template tag
         context.push()
@@ -50,7 +42,7 @@ class ActiveUrl(Tag):
 
         # check content for "active" urls
         content = render_content(
-            content, full_path, parent_tag, css_class, menu
+            content, self.full_path, self.parent_tag, self.css_class, self.menu
         )
 
         return content

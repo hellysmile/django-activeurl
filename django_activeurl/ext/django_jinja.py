@@ -2,11 +2,10 @@
 from jinja2 import nodes
 from jinja2.ext import Extension
 
-from django_activeurl import settings
-from django_activeurl.utils import render_content
+from ..utils import render_content, Configuration
 
 
-class ActiveUrl(Extension):
+class ActiveUrl(Extension, Configuration):
     '''activeurl jinja extension for django_jinja/coffin/jingo'''
 
     # a set of names that trigger the extension.
@@ -32,21 +31,14 @@ class ActiveUrl(Extension):
         # render content of extension
         content = caller()
 
-        # update passed arguments with default values
-        for key, value in settings.ACTIVE_URL_KWARGS.items():
-            kwargs.setdefault(key, value)
+        # load configuration from passed options
+        self.load_configuration(kwargs)
 
-        # "active" html tag css class
-        css_class = kwargs['css_class']
-        # "active" html tag
-        parent_tag = kwargs['parent_tag']
-        # flipper for menu support
-        menu = kwargs['menu']
         # full path passed from request via global options function
-        full_path = kwargs['full_path']
+        self.full_path = kwargs['full_path']
 
         # check content for "active" urls
         content = render_content(
-            content, full_path, parent_tag, css_class, menu
+            content, self.full_path, self.parent_tag, self.css_class, self.menu
         )
         return content
