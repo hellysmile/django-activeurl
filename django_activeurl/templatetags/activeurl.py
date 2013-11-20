@@ -1,6 +1,5 @@
 '''activeurl django template library'''
 from django import template
-
 from classytags.core import Tag, Options
 from classytags.arguments import MultiKeywordArgument
 

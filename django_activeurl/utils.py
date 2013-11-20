@@ -2,11 +2,10 @@
 import re
 from hashlib import md5
 
-from lxml.html import fragment_fromstring, tostring
-from lxml.etree import ParserError
-
 from django.core.cache import cache
 from django.utils.translation import get_language
+from lxml.html import fragment_fromstring, tostring
+from lxml.etree import ParserError
 
 from . import settings
 
@@ -26,7 +25,7 @@ class Configuration(object):
             kwargs.setdefault(key, value)
 
         # "active" html tag css class
-        self.css_class = kwargs['css_class']
+        self.css_class = str(kwargs['css_class'])
         # "active" html tag
         self.parent_tag = kwargs['parent_tag']
         # flipper for menu support
