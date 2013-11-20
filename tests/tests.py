@@ -333,7 +333,7 @@ def test_submenu_configuration():
         {% endactiveurl %}
     '''
     if int(''.join([str(x) for x in django.VERSION[:2]])) >= 15:
-        template = '''
+        template += '''
             {% activeurl menu=False %}
                 <ul>
                     <li>
@@ -348,7 +348,14 @@ def test_submenu_configuration():
                     </li>
                 </ul>
             {% endactiveurl %}
-        ''' + template
+            {% activeurl menu=True %}
+                <ul>
+                    <li>
+                        <a href="/menu/">menu</a>
+                    </li>
+                </ul>
+            {% endactiveurl %}
+        '''
 
     context = {'request': requests.get('/menu/submenu/')}
     html = render(template, context)
@@ -356,7 +363,15 @@ def test_submenu_configuration():
     tree = fromstring(html)
     li_elements = tree.xpath('//li')
 
-    for inctive_li in li_elements:
+    if int(''.join([str(x) for x in django.VERSION[:2]])) >= 15:
+        for inctive_li in li_elements[:-1]:
+            assert not inctive_li.attrib.get('class', False)
+
+        active_li = li_elements[-1]
+
+        assert 'active' == active_li.attrib['class']
+    else:
+        inctive_li = li_elements[0]
         assert not inctive_li.attrib.get('class', False)
 
 
