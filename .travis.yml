@@ -32,6 +32,5 @@ install:
 script:
   - flake8 --show-source django_activeurl
   - python setup.py nosetests --with-coverage
-  - coverage report -m
 after_success:
-  - coveralls --verbose
+  - coveralls
