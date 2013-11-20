@@ -11,7 +11,8 @@ dist
 *$py.class
 *.sublime-project
 *.sublime-workspace
-*.sqlite
+*.sqlite*
+docs/build
 *.db
 __pycache__
 *.bak
