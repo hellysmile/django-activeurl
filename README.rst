@@ -17,12 +17,14 @@ django-activeurl
 
 A demo is available on `heroku.com <http://django-activeurl.herokuapp.com/>`_
 
+
 Features
 ********
 
 * automatic highlighting of currently active ``<a>`` tags via CSS class
 * automatic highlighting of parent ``<a>`` tags for menus
 * removes boring / hardcoded stuff from your life!
+
 
 Usage
 *****
@@ -55,6 +57,7 @@ the following code snippet will be rendered like this if `request.full_path()` s
 **Note:**
 The content of ``{% activeurl %}…{% endactiveurl %}`` must have valid root tag (i.e.
 ``<ul>`` or ``<div>``, etc) -- otherwise an exception will be raised.
+
 
 Installation
 ************
@@ -110,6 +113,7 @@ Python 2.6, 2.7, 3.2, 3.3 and PyPy 1.9 are supported.
    * Clouds:
      There's a 99.99% chance that *lxml* will build out of the box.
 
+
 Options
 *******
 
@@ -162,15 +166,14 @@ The **equals** logic works best for non-hierarchical menus where only those item
         </div>
     {% endactiveurl %}
 
-**Note:** If you don't want ``<a href='/'>`` to be highlighted you'll have to set ``menu="no"``.
-
-
 parent_tag ="div|li|self|…" (default: "li")
 -------------------------------------------
+
 ``parent_tag`` defines that a parent element -- and not the ``<a>`` tag itself -- should be declared *active* when there's a match in URLs. When you need to change the CSS class of the ``<a>`` tag, just enter "self".
 
 css_class ="<string>" (default: "active")
 -----------------------------------------
+
 Defines what CSS class to add to an active element.
 
 
@@ -200,10 +203,11 @@ The last configuration option is ``ACTIVE_URL_CACHE_PREFIX`` (which is ``django_
 Tests
 *****
 
-.. code-block:: console
+.. code-block::
 
     pip install tox
     tox
+
 
 Jinja2
 ******
@@ -223,6 +227,8 @@ Vanilla `Jinja2 <https://github.com/mitsuhiko/jinja2>`_ configuration:
     )
     env.globals['options'] = options
 
+Except for ``request``, options can be omitted:
+
 .. code-block:: jinja
 
     {% activeurl options(request, css_class="active", menu="yes", parent_tag="li") %}
@@ -236,10 +242,9 @@ Vanilla `Jinja2 <https://github.com/mitsuhiko/jinja2>`_ configuration:
         </ul>
     {% endactiveurl %}
 
-Except for ``request``, options can be omitted.
-
 If you're using `django-jinja <https://github.com/niwibe/django-jinja>`_,
 `jingo <https://github.com/jbalogh/jingo>`_ or `coffin <https://github.com/coffin/coffin/>`_ you need to load the ``ActiveUrl`` extension and populate ``Environment()`` with ``options`` in ``settings.py``.
+
 
 Background
 **********
@@ -250,6 +255,7 @@ tools around. More info and benchmarks can be found at `habrahabr.ru
 <http://habrahabr.ru/post/163979/>`_ (in russian). Note that there's no
 content rebuilding inside the template tag when no active URLs are found, so
 there's no impact on performance.
+
 
 Credits
 *******
