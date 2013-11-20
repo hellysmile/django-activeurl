@@ -46,12 +46,12 @@ def test_basic():
 
     active_li = li_elements[0]
 
-    assert active_li.attrib.get('class')
+    assert active_li.attrib.get('class', False)
     assert 'active' == active_li.attrib['class']
 
     inactive_li = li_elements[1]
 
-    assert not inactive_li.attrib.get('class')
+    assert not inactive_li.attrib.get('class', False)
 
 
 def test_hashtag():
@@ -76,12 +76,12 @@ def test_hashtag():
 
     active_li = li_elements[0]
 
-    assert active_li.attrib.get('class')
+    assert active_li.attrib.get('class', False)
     assert 'active' == active_li.attrib['class']
 
     inactive_li = li_elements[1]
 
-    assert not inactive_li.attrib.get('class')
+    assert not inactive_li.attrib.get('class', False)
 
 
 def test_disabled_menu_root_path():
@@ -106,12 +106,12 @@ def test_disabled_menu_root_path():
 
     active_li = li_elements[0]
 
-    assert active_li.attrib.get('class')
+    assert active_li.attrib.get('class', False)
     assert 'active' == active_li.attrib['class']
 
     inactive_li = li_elements[1]
 
-    assert not inactive_li.attrib.get('class')
+    assert not inactive_li.attrib.get('class', False)
 
 
 def test_no_active():
@@ -133,7 +133,7 @@ def test_no_active():
 
     inactive_li = li_elements[0]
 
-    assert not inactive_li.attrib.get('class')
+    assert not inactive_li.attrib.get('class', False)
 
 
 def test_non_ascii():
@@ -158,12 +158,12 @@ def test_non_ascii():
 
     active_li = li_elements[0]
 
-    assert active_li.attrib.get('class')
+    assert active_li.attrib.get('class', False)
     assert 'active' == active_li.attrib['class']
 
     inactive_li = li_elements[1]
 
-    assert not inactive_li.attrib.get('class')
+    assert not inactive_li.attrib.get('class', False)
 
 
 def test_already_active():
@@ -185,7 +185,7 @@ def test_already_active():
 
     active_li = li_elements[0]
 
-    assert active_li.attrib.get('class')
+    assert active_li.attrib.get('class', False)
     assert 'active' == active_li.attrib['class']
 
 
@@ -208,7 +208,7 @@ def test_append_css_class():
 
     active_li = li_elements[0]
 
-    assert active_li.attrib.get('class')
+    assert active_li.attrib.get('class', False)
     assert 'link active' == active_li.attrib['class']
 
 
@@ -219,7 +219,7 @@ def test_empty_href():
                 <li class="">
                     <a href="">root</a>
                 </li>
-                <li class="">
+                <li>
                     <a>root</a>
                 </li>
             </ul>
@@ -234,12 +234,12 @@ def test_empty_href():
 
     active_li = li_elements[0]
 
-    assert active_li.attrib.get('class')
+    assert active_li.attrib.get('class', False)
     assert 'active' == active_li.attrib['class']
 
     inactive_li = li_elements[1]
 
-    assert not inactive_li.attrib.get('class')
+    assert not inactive_li.attrib.get('class', False)
 
 
 def test_empty_css_class():
@@ -261,7 +261,7 @@ def test_empty_css_class():
 
     active_li = li_elements[0]
 
-    assert active_li.attrib.get('class')
+    assert active_li.attrib.get('class', False)
     assert 'active' == active_li.attrib['class']
 
 
@@ -319,7 +319,7 @@ def test_active_root():
 
     inactive_li = li_elements[1]
 
-    assert not inactive_li.attrib.get('class')
+    assert not inactive_li.attrib.get('class', False)
 
 
 def test_submenu_configuration():
@@ -357,7 +357,7 @@ def test_submenu_configuration():
     li_elements = tree.xpath('//li')
 
     for inctive_li in li_elements:
-        assert not inctive_li.attrib.get('class')
+        assert not inctive_li.attrib.get('class', False)
 
 
 def test_non_active_root():
@@ -382,7 +382,7 @@ def test_non_active_root():
 
     inactive_li = li_elements[0]
 
-    assert not inactive_li.attrib.get('class')
+    assert not inactive_li.attrib.get('class', False)
 
     active_li = li_elements[1]
 
@@ -414,17 +414,17 @@ def test_submenu():
 
     active_menu = li_elements[0]
 
-    assert active_menu.attrib.get('class')
+    assert active_menu.attrib.get('class', False)
     assert 'active' == active_menu.attrib['class']
 
     active_submenu = li_elements[1]
 
-    assert active_submenu.attrib.get('class')
+    assert active_submenu.attrib.get('class', False)
     assert 'active' == active_submenu.attrib['class']
 
     inactive_submenu = li_elements[2]
 
-    assert not inactive_submenu.attrib.get('class')
+    assert not inactive_submenu.attrib.get('class', False)
 
 
 def test_submenu_top_level():
@@ -452,11 +452,11 @@ def test_submenu_top_level():
 
     active_menu = li_elements[0]
 
-    assert active_menu.attrib.get('class')
+    assert active_menu.attrib.get('class', False)
     assert 'active' == active_menu.attrib['class']
 
     for inactive_submenu in li_elements[1:]:
-        assert not inactive_submenu.attrib.get('class')
+        assert not inactive_submenu.attrib.get('class', False)
 
 
 def test_nested_submenu():
@@ -484,21 +484,21 @@ def test_nested_submenu():
 
     active_menu = div_elements[1]
 
-    assert active_menu.attrib.get('class')
+    assert active_menu.attrib.get('class', False)
     assert 'active' == active_menu.attrib['class']
 
     active_submenu = div_elements[2]
 
-    assert active_submenu.attrib.get('class')
+    assert active_submenu.attrib.get('class', False)
     assert 'active' == active_submenu.attrib['class']
 
     inactive_submenu = div_elements[3]
 
-    assert not inactive_submenu.attrib.get('class')
+    assert not inactive_submenu.attrib.get('class', False)
 
     inactive_root = div_elements[0]
 
-    assert not inactive_root.attrib.get('class')
+    assert not inactive_root.attrib.get('class', False)
 
 
 def test_submenu_no_menu():
@@ -526,11 +526,11 @@ def test_submenu_no_menu():
 
     active_menu = li_elements[0]
 
-    assert active_menu.attrib.get('class')
+    assert active_menu.attrib.get('class', False)
     assert 'active' == active_menu.attrib['class']
 
     for inactive_submenu in li_elements[1:]:
-        assert not inactive_submenu.attrib.get('class')
+        assert not inactive_submenu.attrib.get('class', False)
 
 
 def test_malformed_menu():
@@ -597,12 +597,12 @@ def test_no_parent():
     a_elements = tree.xpath('//a')
 
     for active_a in a_elements[:-1]:
-        assert active_a.attrib.get('class')
+        assert active_a.attrib.get('class', False)
         assert 'active' == active_a.attrib['class']
 
     inactive_a = a_elements[-1]
 
-    assert not inactive_a.attrib.get('class')
+    assert not inactive_a.attrib.get('class', False)
 
 
 def test_malformed_parent_tag():
@@ -644,17 +644,17 @@ def test_no_parent_submenu():
 
     active_menu = a_elements[0]
 
-    assert active_menu.attrib.get('class')
+    assert active_menu.attrib.get('class', False)
     assert 'active' == active_menu.attrib['class']
 
     active_submenu = a_elements[1]
 
-    assert active_submenu.attrib.get('class')
+    assert active_submenu.attrib.get('class', False)
     assert 'active' == active_submenu.attrib['class']
 
     inactive_submenu = a_elements[2]
 
-    assert not inactive_submenu.attrib.get('class')
+    assert not inactive_submenu.attrib.get('class', False)
 
 
 def test_no_parent_cache():
@@ -708,11 +708,11 @@ def test_kwargs():
 
     active_div = div_elements[-1]
 
-    assert active_div.attrib.get('class')
+    assert active_div.attrib.get('class', False)
     assert 'current' == active_div.attrib['class']
 
     for inactive_div in div_elements[:-1]:
-        assert not inactive_div.attrib.get('class')
+        assert not inactive_div.attrib.get('class', False)
 
 
 def test_kwargs_multiple_urls():
@@ -739,12 +739,12 @@ def test_kwargs_multiple_urls():
 
     active_p = p_elements[1]
 
-    assert active_p.attrib.get('class')
+    assert active_p.attrib.get('class', False)
     assert 'highlight' == active_p.attrib['class']
 
     inactive_p = p_elements[0]
 
-    assert not inactive_p.attrib.get('class')
+    assert not inactive_p.attrib.get('class', False)
 
 
 def test_kwargs_multiple_urls_nested_tags():
@@ -779,12 +779,12 @@ def test_kwargs_multiple_urls_nested_tags():
 
     active_tr = tr_elements[0]
 
-    assert active_tr.attrib.get('class')
+    assert active_tr.attrib.get('class', False)
     assert 'active_row' == active_tr.attrib['class']
 
     inactive_tr = tr_elements[1]
 
-    assert not inactive_tr.attrib.get('class')
+    assert not inactive_tr.attrib.get('class', False)
 
 
 def test_basic_again_test_default_settings():
@@ -809,12 +809,12 @@ def test_basic_again_test_default_settings():
 
     active_li = li_elements[0]
 
-    assert active_li.attrib.get('class')
+    assert active_li.attrib.get('class', False)
     assert 'active' == active_li.attrib['class']
 
     inactive_li = li_elements[1]
 
-    assert not inactive_li.attrib.get('class')
+    assert not inactive_li.attrib.get('class', False)
 
 
 def test_no_valid_html_root_tag():
@@ -922,12 +922,12 @@ try:
 
         active_li = li_elements[0]
 
-        assert active_li.attrib.get('class')
+        assert active_li.attrib.get('class', False)
         assert 'active' == active_li.attrib['class']
 
         inactive_li = li_elements[1]
 
-        assert not inactive_li.attrib.get('class')
+        assert not inactive_li.attrib.get('class', False)
 
     def test_no_parent_jinja_django():
         template = env.get_template('test_no_parent_jinja')
@@ -939,12 +939,12 @@ try:
         a_elements = tree.xpath('//a')
 
         for active_a in a_elements[:-1]:
-            assert active_a.attrib.get('class')
+            assert active_a.attrib.get('class', False)
             assert 'active' == active_a.attrib['class']
 
         inactive_a = a_elements[-1]
 
-        assert not inactive_a.attrib.get('class')
+        assert not inactive_a.attrib.get('class', False)
 
     def test_kwargs_jinja_django():
         template = env.get_template('test_kwargs_jinja')
@@ -957,11 +957,11 @@ try:
 
         active_div = div_elements[-1]
 
-        assert active_div.attrib.get('class')
+        assert active_div.attrib.get('class', False)
         assert 'current' == active_div.attrib['class']
 
         for inactive_div in div_elements[:-1]:
-            assert not inactive_div.attrib.get('class')
+            assert not inactive_div.attrib.get('class', False)
 
 except ImportError:
     # no jinja installed
