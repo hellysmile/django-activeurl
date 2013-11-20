@@ -71,12 +71,16 @@ def check_active(url, element, full_path, css_class, menu):
         raise ImproperlyConfigured('''
             malformed menu value
         ''')
-    # check non empty href parameter
-    if url.attrib.get('href'):
+    # check missing href parameter
+    if not url.attrib.get('href', None) is None:
         # get href attribute
-        href = url.attrib['href']
+        href = url.attrib['href'].strip()
         # cut off hashtag (anchor)
         href = re.sub(r'\#.+', '', href)
+        # check empty href
+        if href == '':
+            # replace href with current location
+            href = full_path
         # compare full_path with href according to menu configuration
         if menu:
             # try mark "root" (/) url as "active", in equals way

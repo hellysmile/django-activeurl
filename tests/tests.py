@@ -212,6 +212,36 @@ def test_append_css_class():
     assert 'link active' == active_li.attrib['class']
 
 
+def test_empty_href():
+    template = '''
+        {% activeurl %}
+            <ul>
+                <li class="">
+                    <a href="">root</a>
+                </li>
+                <li class="">
+                    <a>root</a>
+                </li>
+            </ul>
+        {% endactiveurl %}
+    '''
+
+    context = {'request': requests.get('/')}
+    html = render(template, context)
+
+    tree = fragment_fromstring(html)
+    li_elements = tree.xpath('//li')
+
+    active_li = li_elements[0]
+
+    assert active_li.attrib.get('class')
+    assert 'active' == active_li.attrib['class']
+
+    inactive_li = li_elements[1]
+
+    assert not inactive_li.attrib.get('class')
+
+
 def test_empty_css_class():
     template = '''
         {% activeurl %}
