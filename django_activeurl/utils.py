@@ -60,7 +60,7 @@ def check_active(url, element, full_path, css_class, menu):
             menu = 'yes'
         else:
             menu = 'no'
-    if menu is None:
+    elif menu is None:
         menu = 'no'
     # check menu configuration, set boolean value
     if menu.lower() in ('yes', 'true'):
@@ -127,7 +127,7 @@ def check_content(content, full_path, css_class, parent_tag, menu):
                 raise ImproperlyConfigured('''
                     parent_tag=True is not allowed
                 ''')
-        if parent_tag is None:
+        elif parent_tag is None:
             parent_tag = 'self'
         # if parent_tag is False\None\''\a\self
         # "active" status will be applied directly to "<a>"
