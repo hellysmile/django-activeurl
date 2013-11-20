@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # django-activeurl documentation build configuration file, created by
-# sphinx-quickstart on Wed Nov 20 05:54:50 2013.
+# sphinx-quickstart on Wed Nov 20 06:09:38 2013.
 #
 # This file is execfile()d with the current directory set to its containing dir.
 #
@@ -64,7 +64,7 @@ release = 'master'
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = []
+exclude_patterns = ['_build']
 
 # The reST default role (used for this markup: `text`) to use for all documents.
 #default_role = None

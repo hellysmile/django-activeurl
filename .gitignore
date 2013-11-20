@@ -13,6 +13,7 @@ dist
 *.sublime-workspace
 *.sqlite*
 docs/build
+docs/_build
 *.db
 __pycache__
 *.bak
