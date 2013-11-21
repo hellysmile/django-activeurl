@@ -254,3 +254,9 @@ Credits
 
 * `initializr <http://www.initializr.com/>`_ is used for the example HTML template.
 * Simon Whitaker's `»Fork me« ribbon <https://github.com/simonwhitaker/github-fork-ribbon-css>`_ is used in the example.
+
+
+.. image:: https://d2weczhvl823v0.cloudfront.net/hellysmile/django-activeurl/trend.png
+   :alt: Bitdeli badge
+   :target: https://bitdeli.com/free
+
