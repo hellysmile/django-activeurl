@@ -1,5 +1,6 @@
 '''template engine independent utils'''
 import re
+from urllib import quote
 from hashlib import md5
 
 from django.core.cache import cache
@@ -81,6 +82,10 @@ def check_active(url, element, full_path, css_class, menu):
             # replace href with current location
             href = full_path
         # compare full_path with href according to menu configuration
+
+        # maybe an urlquoted href was supplied
+        quoted_full_path = quote(full_path.encode("utf-8"))
+
         if menu:
             # try mark "root" (/) url as "active", in equals way
             if href == '/' == full_path:
@@ -88,12 +93,13 @@ def check_active(url, element, full_path, css_class, menu):
             # skip "root" (/) url, otherwise it will be always "active"
             elif href != '/':
                 # start with logic
-                logic = full_path.startswith(href)
+                logic = full_path.startswith(href) or \
+                    quoted_full_path.startswith(href)
             else:
                 logic = False
         else:
             # equals logic
-            logic = full_path == href
+            logic = (full_path == href or quoted_full_path == href)
         # "active" url found
         if logic:
             # check parent tag has "class" attribute or it is empty

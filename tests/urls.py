@@ -13,5 +13,7 @@ urlpatterns = patterns(
     url(r'^page/$', view),
     url(r'^menu/$', view),
     url(r'^menu/submenu/$', view),
-    url(r'^страница/$', view),
+
+    # Django's urlresolver will fail if a bytestring contains non-ascii chars
+    url(ur'^страница/$', view, name="non-ascii-url"),
 )
