@@ -1,7 +1,13 @@
 '''template engine independent utils'''
 import re
-from urllib import quote
 from hashlib import md5
+
+try:
+    # python 3
+    from urllib.parse import quote
+except ImportError:
+    # python 2
+    from urllib import quote
 
 from django.core.cache import cache
 from django.utils.translation import get_language
