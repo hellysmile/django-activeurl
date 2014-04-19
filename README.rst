@@ -15,9 +15,6 @@ django-activeurl
 .. image:: https://pypip.in/v/django-activeurl/badge.png
     :target: https://pypi.python.org/pypi/django-activeurl
 
-.. image:: https://d2weczhvl823v0.cloudfront.net/hellysmile/django-activeurl/trend.png
-    :target: https://bitdeli.com/free
-
 A demo is available on `heroku.com <http://django-activeurl.herokuapp.com/>`_
 
 Features
