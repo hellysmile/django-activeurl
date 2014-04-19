@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
-from django.conf.urls import patterns, url
+from __future__ import unicode_literals
+
+try:
+    from django.conf.urls.defaults import patterns, url
+except ImportError:
+    from django.conf.urls import patterns, url
 from django.http import HttpResponse
 
 
@@ -13,7 +18,6 @@ urlpatterns = patterns(
     url(r'^page/$', view),
     url(r'^menu/$', view),
     url(r'^menu/submenu/$', view),
-
-    # Django's urlresolver will fail if a bytestring contains non-ascii chars
-    url(ur'^страница/$', view, name="non-ascii-url"),
+    url(r'^страница/$', view),
+    url(r'^другая_страница/$', view, name='non-ascii-reverse')
 )

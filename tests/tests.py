@@ -5,15 +5,23 @@ from lxml.html import fragment_fromstring, fromstring
 
 import django
 from django.core.cache import cache
-from django.template import Template, Context, loader
+from django.template import Template, Context
 from django.test.client import RequestFactory
 from django.utils.translation import get_language
 
 from django_activeurl import settings
 from django_activeurl.utils import ImproperlyConfigured
 
+try:
+    # django < 1.7
+    from django.template import loader
+    add_to_builtins = loader.add_to_builtins
+except AttributeError:
+    # django >= 1.7
+    from django.template.base import add_to_builtins
 
-loader.add_to_builtins('django_activeurl.templatetags.activeurl')
+
+add_to_builtins('django_activeurl.templatetags.activeurl')
 
 
 requests = RequestFactory()
@@ -137,13 +145,11 @@ def test_no_active():
 
 
 def test_non_ascii():
-    # Throw in a resolved URL as well, because Django's urlresolver returns a
-    # urlquoted string that we also need to test against.
     template = '''
         {% activeurl %}
             <ul>
                 <li>
-                    <a href="{% url 'non-ascii-url' %}">страница</a>
+                    <a href="/страница/">страница</a>
                 </li>
                 <li>
                     <a href="/другая_страница/">другая_страница</a>
@@ -164,6 +170,38 @@ def test_non_ascii():
     assert 'active' == active_li.attrib['class']
 
     inactive_li = li_elements[1]
+
+    assert not inactive_li.attrib.get('class', False)
+
+
+def test_non_ascii_reverse():
+    template = '''
+        {% load url from future %}
+
+        {% activeurl %}
+            <ul>
+                <li>
+                    <a href="/страница/">страница</a>
+                </li>
+                <li>
+                    <a href="{% url 'non-ascii-reverse' %}">другая_страница</a>
+                </li>
+            </ul>
+        {% endactiveurl %}
+    '''
+
+    context = {'request': requests.get('/другая_страница/')}
+    html = render(template, context)
+
+    tree = fragment_fromstring(html)
+    li_elements = tree.xpath('//li')
+
+    active_li = li_elements[1]
+
+    assert active_li.attrib.get('class', False)
+    assert 'active' == active_li.attrib['class']
+
+    inactive_li = li_elements[0]
 
     assert not inactive_li.attrib.get('class', False)
 

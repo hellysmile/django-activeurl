@@ -10,6 +10,7 @@ env:
   - DJANGO="django>=1.4,<1.5"
   - DJANGO="django>=1.5,<1.6"
   - DJANGO="django>=1.6,<1.7"
+  - DJANGO="https://github.com/django/django/tarball/stable/1.7.x#egg=django"
 matrix:
   exclude:
     - python: "3.3"
@@ -24,6 +25,8 @@ matrix:
       env: DJANGO="django>=1.5,<1.6"
     - python: "2.6"
       env: DJANGO="django>=1.6,<1.7"
+    - python: "2.6"
+      env: DJANGO="https://github.com/django/django/tarball/stable/1.7.x#egg=django"
 install:
   - pip install $DJANGO
   - pip install coverage>=3.6 nose>=1.3.0 flake8>=2.0 coveralls>=0.3

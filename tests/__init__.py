@@ -16,10 +16,10 @@ settings.configure(
     }
 )
 
-if not 'django.core.context_processors.request' in settings.TEMPLATE_CONTEXT_PROCESSORS:
-    settings.TEMPLATE_CONTEXT_PROCESSORS = list(
-        settings.TEMPLATE_CONTEXT_PROCESSORS
-    )
-    settings.TEMPLATE_CONTEXT_PROCESSORS.append(
-        'django.core.context_processors.request'
-    )
+
+try:
+    # django 1.7 standalone app setup
+    import django
+    django.setup()
+except AttributeError:
+    pass
