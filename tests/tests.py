@@ -137,11 +137,13 @@ def test_no_active():
 
 
 def test_non_ascii():
+    # Throw in a resolved URL as well, because Django's urlresolver returns a
+    # urlquoted string that we also need to test against.
     template = '''
         {% activeurl %}
             <ul>
                 <li>
-                    <a href="/страница/">страница</a>
+                    <a href="{% url 'non-ascii-url' %}">страница</a>
                 </li>
                 <li>
                     <a href="/другая_страница/">другая_страница</a>
