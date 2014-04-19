@@ -111,7 +111,7 @@ def check_active(url, element, full_path, css_class, menu):
             # check parent tag has "class" attribute or it is empty
             if element.attrib.get('class'):
                 # prevent multiple "class" attribute adding
-                if not css_class in element.attrib['class']:
+                if css_class not in element.attrib['class']:
                     # append "active" class
                     element.attrib['class'] += ' ' + css_class
             else:
@@ -202,7 +202,7 @@ def render_content(content, full_path, parent_tag, css_class, menu):
         from_cache = cache.get(cache_key)
 
         # return pre rendered content if it exist in cache
-        if not from_cache is None:
+        if from_cache is not None:
             return from_cache
 
     # render content with "active" logic
