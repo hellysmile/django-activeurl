@@ -2,13 +2,7 @@
 import re
 from hashlib import md5
 
-try:
-    # python 3
-    from urllib.parse import quote
-except ImportError:
-    # python 2
-    from urllib import quote
-
+from django.utils.http import urlquote
 from django.core.cache import cache
 from django.utils.translation import get_language
 from lxml.html import fragment_fromstring, tostring
@@ -90,7 +84,7 @@ def check_active(url, element, full_path, css_class, menu):
         # compare full_path with href according to menu configuration
 
         # maybe an urlquoted href was supplied
-        quoted_full_path = quote(full_path.encode("utf-8"))
+        quoted_full_path = urlquote(full_path)
 
         if menu:
             # try mark "root" (/) url as "active", in equals way
