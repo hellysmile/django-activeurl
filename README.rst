@@ -3,17 +3,20 @@ django-activeurl
 
 :info: Easy to use active URL highlighting for Django
 
-.. image:: https://api.travis-ci.org/hellysmile/django-activeurl.png
+.. image:: https://travis-ci.org/hellysmile/django-activeurl.svg?branch=master
     :target: https://travis-ci.org/hellysmile/django-activeurl
 
 .. image:: https://coveralls.io/repos/hellysmile/django-activeurl/badge.png?branch=master
     :target: https://coveralls.io/r/hellysmile/django-activeurl?branch=master
 
-.. image:: https://pypip.in/d/django-activeurl/badge.png
+.. image:: https://pypip.in/download/django-activeurl/badge.svg?period=month
     :target: https://pypi.python.org/pypi/django-activeurl
 
-.. image:: https://pypip.in/v/django-activeurl/badge.png
+.. image:: https://pypip.in/version/django-activeurl/badge.svg
     :target: https://pypi.python.org/pypi/django-activeurl
+
+.. image:: https://landscape.io/github/hellysmile/django-activeurl/master/landscape.png
+   :target: https://landscape.io/github/hellysmile/django-activeurl/master
 
 A demo is available on `heroku.com <http://django-activeurl.herokuapp.com/>`_
 
