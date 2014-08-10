@@ -57,7 +57,8 @@ setup(
     install_requires=[
         'django >= 1.3',
         'lxml >= 2.3.5',
-        'django-classy-tags >= 0.4'
+        'django-classy-tags >= 0.4',
+        'django_appconf >= 0.6'
     ],
     license='http://www.apache.org/licenses/LICENSE-2.0',
     classifiers=filter(None, classifiers.split('\n')),

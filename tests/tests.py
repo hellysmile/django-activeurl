@@ -9,7 +9,7 @@ from django.template import Template, Context
 from django.test.client import RequestFactory
 from django.utils.translation import get_language
 
-from django_activeurl import settings
+from django_activeurl.conf import settings
 from django_activeurl.utils import ImproperlyConfigured
 
 try:

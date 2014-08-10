@@ -8,7 +8,7 @@ from django.utils.translation import get_language
 from lxml.html import fragment_fromstring, tostring
 from lxml.etree import ParserError
 
-from . import settings
+from .conf import settings
 
 
 class ImproperlyConfigured(Exception):
