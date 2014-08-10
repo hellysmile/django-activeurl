@@ -46,7 +46,7 @@ def long_description():
 
 setup(
     name='django-activeurl',
-    version='0.1.8',
+    version='0.1.9',
     packages=packages,
     description=description,
     long_description=long_description(),
