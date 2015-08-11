@@ -1,5 +1,5 @@
 from setuptools import setup
-
+from io import open
 
 classifiers = '''\
 Framework :: Django
