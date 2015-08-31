@@ -4,6 +4,7 @@ from hashlib import md5
 
 from django.utils.http import urlquote
 from django.core.cache import cache
+from django.core.urlresolvers import reverse
 from django.utils.translation import get_language
 from lxml.html import fragment_fromstring, tostring
 from lxml.etree import ParserError
@@ -88,10 +89,10 @@ def check_active(url, element, full_path, css_class, menu):
 
         if menu:
             # try mark "root" (/) url as "active", in equals way
-            if href == '/' == full_path:
+            if href == get_root_url() == full_path:
                 logic = True
             # skip "root" (/) url, otherwise it will be always "active"
-            elif href != '/':
+            elif href != get_root_url():
                 # start with logic
                 logic = full_path.startswith(href) or \
                     quoted_full_path.startswith(href)
@@ -207,3 +208,12 @@ def render_content(content, full_path, parent_tag, css_class, menu):
         cache.set(cache_key, content, settings.ACTIVE_URL_CACHE_TIMEOUT)
 
     return content
+
+
+def get_root_url():
+    """
+    Get the configured root url
+    """
+    if hasattr(settings, "ACTIVE_URL_ROOT"):
+        return reverse(*settings.ACTIVE_URL_ROOT)
+    return "/"
