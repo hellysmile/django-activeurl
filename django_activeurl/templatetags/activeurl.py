@@ -1,4 +1,6 @@
 '''activeurl django template library'''
+import django
+from django.utils.http import urlunquote
 from django import template
 from classytags.core import Tag, Options
 from classytags.arguments import MultiKeywordArgument
@@ -40,8 +42,9 @@ class ActiveUrl(Tag, Configuration):
         context.pop()
 
         # check content for "active" urls
+        full_path = self.full_path if django.VERSION < (1, 8) else urlunquote(self.full_path)
         content = render_content(
-            content, self.full_path, self.parent_tag, self.css_class, self.menu
+            content, full_path, self.parent_tag, self.css_class, self.menu
         )
 
         return content

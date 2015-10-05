@@ -12,16 +12,20 @@ from django.utils.translation import get_language
 from django_activeurl.conf import settings
 from django_activeurl.utils import ImproperlyConfigured
 
-try:
-    # django < 1.7
-    from django.template import loader
-    add_to_builtins = loader.add_to_builtins
-except AttributeError:
-    # django >= 1.7
-    from django.template.base import add_to_builtins
-
-
-add_to_builtins('django_activeurl.templatetags.activeurl')
+if django.VERSION < (1, 9):
+    if django.VERSION < (1, 9):
+        from django.template.base import add_to_builtins
+    else:
+        from django.template import loader
+        add_to_builtins = loader.add_to_builtins
+    add_to_builtins('django_activeurl.templatetags.activeurl')
+    LOAD_URL_TEMPLATE_CODE = '{% load url from future %}'
+else:
+    from django.template.engine import Engine
+    template_engine = Engine.get_default()
+    template_engine.builtins.append('django_activeurl.templatetags.activeurl')
+    template_engine.template_builtins = template_engine.get_template_builtins(template_engine.builtins)
+    LOAD_URL_TEMPLATE_CODE = ''
 
 
 requests = RequestFactory()
@@ -175,9 +179,7 @@ def test_non_ascii():
 
 
 def test_non_ascii_reverse():
-    template = '''
-        {% load url from future %}
-
+    template = LOAD_URL_TEMPLATE_CODE + '''
         {% activeurl %}
             <ul>
                 <li>
