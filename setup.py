@@ -1,5 +1,6 @@
-from setuptools import setup
 from io import open
+
+from setuptools import setup
 
 classifiers = '''\
 Framework :: Django
@@ -17,6 +18,7 @@ Programming Language :: Python :: 3
 Programming Language :: Python :: 3.2
 Programming Language :: Python :: 3.3
 Programming Language :: Python :: 3.4
+Programming Language :: Python :: 3.5
 Programming Language :: Python :: Implementation :: CPython
 Programming Language :: Python :: Implementation :: PyPy
 Operating System :: MacOS :: MacOS X
@@ -60,7 +62,7 @@ setup(
         'django_appconf >= 0.6'
     ],
     license='http://www.apache.org/licenses/LICENSE-2.0',
-    classifiers=filter(None, classifiers.split('\n')),
+    classifiers=list(filter(None, classifiers.split('\n'))),
     keywords=[
         'django', 'url', 'link', 'active', 'css', 'templatetag', 'jinja2'
     ]
