@@ -44,7 +44,9 @@ matrix:
     - python: "2.6"
       env: DJANGO="https://github.com/django/django/tarball/stable/1.9.x#egg=django"
 install:
+  - pip install -U pip
   - travis_retry pip install $DJANGO
+  - travis_retry pip install lxml django-classy-tags django_appconf
   - travis_retry pip install nose flake8 frosted isort coveralls
   - if [[ $TRAVIS_PYTHON_VERSION == '3.2' ]]; then travis_retry pip install 'jinja2<2.7'; else travis_retry pip install 'jinja2'; fi
   - if [[ $TRAVIS_PYTHON_VERSION == '3.2' ]]; then travis_retry pip install 'coverage<4'; else travis_retry pip install 'coverage'; fi
