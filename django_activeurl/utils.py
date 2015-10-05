@@ -2,11 +2,11 @@
 import re
 from hashlib import md5
 
-from django.utils.http import urlquote
 from django.core.cache import cache
+from django.utils.http import urlquote
 from django.utils.translation import get_language
-from lxml.html import fragment_fromstring, tostring
 from lxml.etree import ParserError
+from lxml.html import fragment_fromstring, tostring
 
 from .conf import settings
 
@@ -83,9 +83,6 @@ def check_active(url, element, full_path, css_class, menu):
             href = full_path
         # compare full_path with href according to menu configuration
 
-        # maybe an urlquoted href was supplied
-        quoted_full_path = urlquote(full_path)
-
         if menu:
             # try mark "root" (/) url as "active", in equals way
             if href == '/' == full_path:
@@ -93,13 +90,26 @@ def check_active(url, element, full_path, css_class, menu):
             # skip "root" (/) url, otherwise it will be always "active"
             elif href != '/':
                 # start with logic
-                logic = full_path.startswith(href) or \
-                    quoted_full_path.startswith(href)
+                logic = (
+                    full_path.startswith(href)
+                    or
+                    # maybe an urlquoted href was supplied
+                    urlquote(full_path).startswith(href)
+                    or
+                    full_path.startswith(urlquote(href))
+                )
             else:
                 logic = False
         else:
             # equals logic
-            logic = (full_path == href or quoted_full_path == href)
+            logic = (
+                full_path == href
+                or
+                # maybe an urlquoted href was supplied
+                urlquote(full_path) == href
+                or
+                full_path == urlquote(href)
+            )
         # "active" url found
         if logic:
             # check parent tag has "class" attribute or it is empty

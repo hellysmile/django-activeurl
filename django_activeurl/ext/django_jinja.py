@@ -2,7 +2,7 @@
 from jinja2 import nodes
 from jinja2.ext import Extension
 
-from ..utils import render_content, Configuration
+from ..utils import Configuration, render_content
 
 
 class ActiveUrl(Extension, Configuration):

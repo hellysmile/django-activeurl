@@ -1,5 +1,5 @@
-from django.conf import settings  # noqa
 from appconf import AppConf
+from django.conf import settings  # noqa
 
 
 class ActiveUrlConf(AppConf):
