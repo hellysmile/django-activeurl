@@ -1,7 +1,7 @@
 sudo: false
 language: python
 python:
-  # - "3.5"
+  - "3.5"
   - "3.4"
   - "3.3"
   - "2.7"
@@ -17,10 +17,6 @@ env:
   - DJANGO="https://github.com/django/django/tarball/stable/1.9.x#egg=django"
 matrix:
   exclude:
-    # - python: "3.5"
-    #   env: DJANGO="django>=1.3,<1.4"
-    # - python: "3.5"
-    #   env: DJANGO="django>=1.4,<1.5"
     - python: "3.4"
       env: DJANGO="django>=1.3,<1.4"
     - python: "3.4"
@@ -29,6 +25,8 @@ matrix:
       env: DJANGO="django>=1.3,<1.4"
     - python: "3.3"
       env: DJANGO="django>=1.4,<1.5"
+    - python: "3.3"
+      env: DJANGO="https://github.com/django/django/tarball/stable/1.9.x#egg=django"
     - python: "2.6"
       env: DJANGO="django>=1.5,<1.6"
     - python: "2.6"
@@ -38,6 +36,9 @@ matrix:
     - python: "2.6"
       env: DJANGO="django>=1.8,<1.9"
     - python: "2.6"
+      env: DJANGO="https://github.com/django/django/tarball/stable/1.9.x#egg=django"
+  include:
+    - python: "3.5"
       env: DJANGO="https://github.com/django/django/tarball/stable/1.9.x#egg=django"
 install:
   - travis_retry pip install --upgrade pip -q
