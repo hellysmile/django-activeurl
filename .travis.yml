@@ -40,14 +40,14 @@ matrix:
     - python: "2.6"
       env: DJANGO="https://github.com/django/django/tarball/stable/1.9.x#egg=django"
 install:
-  - pip install -U pip
+  - travis_retry pip install --upgrade pip -q
   - travis_retry pip install $DJANGO
-  - travis_retry pip install lxml django-classy-tags django_appconf jinja2
-  - travis_retry pip install nose coverage flake8 frosted isort coveralls
+  - travis_retry pip install lxml django-classy-tags django_appconf jinja2 -q
+  - travis_retry pip install nose coverage flake8 frosted isort coveralls -q
 script:
   - python setup.py nosetests --with-coverage
 after_success:
   - flake8 --show-source django_activeurl
   - frosted -r django_activeurl
   - isort --check-only -rc django_activeurl --dif
-  - coveralls
+  - travis_retry coveralls
