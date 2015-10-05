@@ -1,6 +1,6 @@
 language: python
 python:
-  - "3.5"
+  # - "3.5"
   - "3.4"
   - "3.3"
   - "3.2"
@@ -17,8 +17,8 @@ env:
   - DJANGO="https://github.com/django/django/tarball/stable/1.9.x#egg=django"
 matrix:
   exclude:
-    - python: "3.5"
-      env: DJANGO="django>=1.3,<1.4"
+    # - python: "3.5"
+    #   env: DJANGO="django>=1.3,<1.4"
     - python: "3.5"
       env: DJANGO="django>=1.4,<1.5"
     - python: "3.4"
@@ -45,11 +45,13 @@ matrix:
       env: DJANGO="https://github.com/django/django/tarball/stable/1.9.x#egg=django"
 install:
   - travis_retry pip install $DJANGO
-  - travis_retry pip install nose flake8 coveralls
-  - if [[ $TRAVIS_PYTHON_VERSION == '3.2' ]]; then travis_retry pip install 'jinja2<2.7'; else travis_retry pip install 'jinja2>=2.7'; fi
-  - if [[ $TRAVIS_PYTHON_VERSION == '3.2' ]]; then travis_retry pip install 'coverage<4'; else travis_retry pip install 'coverage>=4'; fi
+  - travis_retry pip install nose flake8 frosted isort coveralls
+  - if [[ $TRAVIS_PYTHON_VERSION == '3.2' ]]; then travis_retry pip install 'jinja2<2.7'; else travis_retry pip install 'jinja2'; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == '3.2' ]]; then travis_retry pip install 'coverage<4'; else travis_retry pip install 'coverage'; fi
 script:
-  - flake8 --show-source django_activeurl
   - python setup.py nosetests --with-coverage
 after_success:
+  - flake8 --show-source django_activeurl
+  - frosted -r django_activeurl
+  - isort --check-only -rc django_activeurl --dif
   - coveralls
