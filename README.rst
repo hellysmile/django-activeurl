@@ -9,10 +9,10 @@ django-activeurl
 .. image:: https://coveralls.io/repos/hellysmile/django-activeurl/badge.png?branch=master
     :target: https://coveralls.io/r/hellysmile/django-activeurl?branch=master
 
-.. image:: https://pypip.in/download/django-activeurl/badge.svg?period=month
+.. image:: https://img.shields.io/pypi/dm/django_activeurl.svg
     :target: https://pypi.python.org/pypi/django-activeurl
 
-.. image:: https://pypip.in/version/django-activeurl/badge.svg
+.. image:: https://img.shields.io/pypi/v/django_activeurl.svg
     :target: https://pypi.python.org/pypi/django-activeurl
 
 .. image:: https://landscape.io/github/hellysmile/django-activeurl/master/landscape.png
