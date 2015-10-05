@@ -1,5 +1,5 @@
 from setuptools import setup
-
+from io import open
 
 classifiers = '''\
 Framework :: Django
@@ -37,7 +37,7 @@ packages = [
 
 
 def long_description():
-    f = open('README.rst')
+    f = open('README.rst', encoding='utf-8')
     rst = f.read()
     f.close()
     return rst
