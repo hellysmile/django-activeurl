@@ -46,8 +46,8 @@ matrix:
 install:
   - travis_retry pip install $DJANGO
   - travis_retry pip install nose flake8 coveralls
-  - travis_retry if [[ $TRAVIS_PYTHON_VERSION == '3.2' ]]; then pip install 'jinja2<2.7'; else pip install 'jinja2>=2.7'; fi
-  - travis_retry if [[ $TRAVIS_PYTHON_VERSION == '3.2' ]]; then pip install 'coverage<4'; else pip install 'coverage>=4'; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == '3.2' ]]; then travis_retry pip install 'jinja2<2.7'; else travis_retry pip install 'jinja2>=2.7'; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == '3.2' ]]; then travis_retry pip install 'coverage<4'; else travis_retry pip install 'coverage>=4'; fi
 script:
   - flake8 --show-source django_activeurl
   - python setup.py nosetests --with-coverage
