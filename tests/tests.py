@@ -1,31 +1,34 @@
 # -*- coding: utf-8 -*-
 from hashlib import md5
 
-from lxml.html import fragment_fromstring, fromstring
-
 import django
 from django.core.cache import cache
 from django.template import Template, Context
 from django.test.client import RequestFactory
 from django.utils.translation import get_language
+from lxml.html import fragment_fromstring, fromstring
 
 from django_activeurl.conf import settings
 from django_activeurl.utils import ImproperlyConfigured
 
-if django.VERSION < (1, 9):
-    if django.VERSION < (1, 9):
+try:
+    # django < 1.7
+    from django.template import loader
+    add_to_builtins = loader.add_to_builtins
+except AttributeError:
+    try:
+        # django >= 1.7
         from django.template.base import add_to_builtins
-    else:
-        from django.template import loader
-        add_to_builtins = loader.add_to_builtins
-    add_to_builtins('django_activeurl.templatetags.activeurl')
-    LOAD_URL_TEMPLATE_CODE = '{% load url from future %}'
-else:
-    from django.template.engine import Engine
-    template_engine = Engine.get_default()
-    template_engine.builtins.append('django_activeurl.templatetags.activeurl')
-    template_engine.template_builtins = template_engine.get_template_builtins(template_engine.builtins)
-    LOAD_URL_TEMPLATE_CODE = ''
+    except ImportError:
+        # django >= 1.9
+        def add_to_builtins(module):
+            from django.template.engine import Engine
+            template_engine = Engine.get_default()
+            template_engine.builtins.append(module)
+            template_engine.template_builtins = \
+                template_engine.get_template_builtins(template_engine.builtins)
+
+add_to_builtins('django_activeurl.templatetags.activeurl')
 
 
 requests = RequestFactory()
@@ -179,7 +182,7 @@ def test_non_ascii():
 
 
 def test_non_ascii_reverse():
-    template = LOAD_URL_TEMPLATE_CODE + '''
+    template = '''
         {% activeurl %}
             <ul>
                 <li>
@@ -191,6 +194,9 @@ def test_non_ascii_reverse():
             </ul>
         {% endactiveurl %}
     '''
+
+    if django.VERSION < (1, 9):
+        template = '{% load url from future %}' + template
 
     context = {'request': requests.get('/другая_страница/')}
     html = render(template, context)
@@ -374,7 +380,7 @@ def test_submenu_configuration():
             </ul>
         {% endactiveurl %}
     '''
-    if int(''.join([str(x) for x in django.VERSION[:2]])) >= 15:
+    if django.VERSION >= (1, 5):
         template += '''
             {% activeurl menu=False %}
                 <ul>
@@ -405,7 +411,7 @@ def test_submenu_configuration():
     tree = fromstring(html)
     li_elements = tree.xpath('//li')
 
-    if int(''.join([str(x) for x in django.VERSION[:2]])) >= 15:
+    if django.VERSION >= (1, 5):
         for inctive_li in li_elements[:-1]:
             assert not inctive_li.attrib.get('class', False)
 
@@ -633,7 +639,7 @@ def test_no_parent():
         {% endactiveurl %}
     '''
 
-    if int(''.join([str(x) for x in django.VERSION[:2]])) >= 15:
+    if django.VERSION >= (1, 5):
         template = '''
             {% activeurl parent_tag=None %}
                 <div>
@@ -663,7 +669,7 @@ def test_no_parent():
 
 
 def test_malformed_parent_tag():
-    if int(''.join([str(x) for x in django.VERSION[:2]])) >= 15:
+    if django.VERSION >= (1, 5):
         template = '''
             {% activeurl parent_tag=True %}
                 <div>
