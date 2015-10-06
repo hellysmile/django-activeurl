@@ -4,7 +4,7 @@ from hashlib import md5
 import django
 from django.core.cache import cache
 from django.template import Template, Context
-from django.test.client import RequestFactory
+from django.test.client import RequestFactory, Client
 from django.utils.translation import get_language
 from lxml.html import fragment_fromstring, fromstring
 
@@ -32,6 +32,7 @@ add_to_builtins('django_activeurl.templatetags.activeurl')
 
 
 requests = RequestFactory()
+client = Client()
 
 
 def render(template, context=None):
@@ -880,6 +881,24 @@ def test_basic_again_test_default_settings():
     assert not inactive_li.attrib.get('class', False)
 
 
+def test_dajngo_template():
+    response = client.get('/template/django/')
+
+    html = response.content
+
+    tree = fragment_fromstring(html)
+    li_elements = tree.xpath('//li')
+
+    active_li = li_elements[0]
+
+    assert active_li.attrib.get('class', False)
+    assert 'active' == active_li.attrib['class']
+
+    inactive_li = li_elements[1]
+
+    assert not inactive_li.attrib.get('class', False)
+
+
 def test_no_valid_html_root_tag():
     template = '''
         <ul>
@@ -1025,6 +1044,25 @@ try:
 
         for inactive_div in div_elements[:-1]:
             assert not inactive_div.attrib.get('class', False)
+
+    if django.VERSION >= (1, 8):
+        def test_native_jinja():
+            response = client.get('/template/jinja/')
+
+            html = response.content
+
+            tree = fragment_fromstring(html)
+            li_elements = tree.xpath('//li')
+
+            active_li = li_elements[1]
+
+            assert active_li.attrib.get('class', False)
+            assert 'active' == active_li.attrib['class']
+
+            inactive_li = li_elements[0]
+
+            assert not inactive_li.attrib.get('class', False)
+
 
 except ImportError:
     # no jinja installed

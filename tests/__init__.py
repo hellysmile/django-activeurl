@@ -1,7 +1,13 @@
+import os
+
 from django.conf import settings
 
 
-settings.configure(
+PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
+
+
+config = dict(
+    DEBUG=True,
     DATABASES={
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -16,6 +22,42 @@ settings.configure(
     }
 )
 
+try:
+    # django >= 1.8
+    from django.template import engines  # noqa
+    import jinja2  # noqa
+
+    config.update(
+        TEMPLATES=[
+            {
+                'BACKEND': 'django.template.backends.django.DjangoTemplates',
+                'APP_DIRS': True,
+                'DIRS': [os.path.join(PROJECT_ROOT, 'templates/django')],
+                'OPTIONS': {
+                    'context_processors': [
+                        'django.template.context_processors.request',
+                    ],
+                }
+            },
+            {
+                'BACKEND': 'django.template.backends.jinja2.Jinja2',
+                'APP_DIRS': True,
+                'DIRS': [os.path.join(PROJECT_ROOT, 'templates/jinja')],
+                'OPTIONS': {
+                    'environment': 'tests.jinja_config.environment'
+                }
+            },
+        ]
+    )
+except ImportError:
+    config.update(
+        TEMPLATE_CONTEXT_PROCESSORS=[
+            'django.core.context_processors.request',
+        ],
+        TEMPLATE_DIRS=[os.path.join(PROJECT_ROOT, 'templates/django')]
+    )
+
+settings.configure(**config)
 
 try:
     # django 1.7 standalone app setup
