@@ -53,7 +53,7 @@ install:
   - travis_retry pip install --upgrade pip -q
   - travis_retry pip install $DJANGO
   - travis_retry pip install lxml django-classy-tags django_appconf jinja2 -q
-  - travis_retry pip install nose coverage flake8 frosted isort coveralls -q
+  - travis_retry pip install nose coverage flake8 flake8-blind-except flake8-debugger flake8-print flake8-quotes pep8-naming frosted isort coveralls -q
 script:
   - python setup.py nosetests --with-coverage
 after_success:
