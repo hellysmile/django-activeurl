@@ -25,29 +25,37 @@ config = dict(
 try:
     # django >= 1.8
     from django.template import engines  # noqa
-    import jinja2  # noqa
+
+    template_engines = [
+        {
+            'BACKEND': 'django.template.backends.django.DjangoTemplates',
+            'APP_DIRS': True,
+            'DIRS': [os.path.join(PROJECT_ROOT, 'templates/django')],
+            'OPTIONS': {
+                'context_processors': [
+                    'django.template.context_processors.request',
+                ],
+            }
+        }
+    ]
+
+    try:
+        # is jinja installed ?
+        import jinja2  # noqa
+
+        template_engines.append({
+            'BACKEND': 'django.template.backends.jinja2.Jinja2',
+            'APP_DIRS': True,
+            'DIRS': [os.path.join(PROJECT_ROOT, 'templates/jinja')],
+            'OPTIONS': {
+                'environment': 'tests.jinja_config.environment'
+            }
+        })
+    except ImportError:
+        pass
 
     config.update(
-        TEMPLATES=[
-            {
-                'BACKEND': 'django.template.backends.django.DjangoTemplates',
-                'APP_DIRS': True,
-                'DIRS': [os.path.join(PROJECT_ROOT, 'templates/django')],
-                'OPTIONS': {
-                    'context_processors': [
-                        'django.template.context_processors.request',
-                    ],
-                }
-            },
-            {
-                'BACKEND': 'django.template.backends.jinja2.Jinja2',
-                'APP_DIRS': True,
-                'DIRS': [os.path.join(PROJECT_ROOT, 'templates/jinja')],
-                'OPTIONS': {
-                    'environment': 'tests.jinja_config.environment'
-                }
-            },
-        ]
+        TEMPLATES=template_engines
     )
 except ImportError:
     config.update(
