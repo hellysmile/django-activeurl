@@ -240,7 +240,7 @@ If you're using `django-jinja <https://github.com/niwibe/django-jinja>`_,
 `jingo <https://github.com/jbalogh/jingo>`_ or `coffin <https://github.com/coffin/coffin/>`_
 you need to load the ``ActiveUrl`` extension and populate ``Environment()`` with ``options`` in ``settings.py``.
 
-Django 1.8+ Jinja2 environment loader example can be found in `test <https://github.com/hellysmile/django-activeurl/blob/master/tests/jinja_config.py>`_.
+Django 1.8+ Jinja2 environment loader example can be found in `tests <https://github.com/hellysmile/django-activeurl/blob/master/tests/jinja_config.py>`_.
 
 Background
 **********
