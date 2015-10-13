@@ -1,3 +1,5 @@
+from __future__ import absolute_import, unicode_literals
+
 from appconf import AppConf
 from django.conf import settings  # noqa
 
@@ -18,7 +20,7 @@ class ActiveUrlConf(AppConf):
     KWARGS = {
         'css_class': 'active',
         'parent_tag': 'li',
-        'menu': 'yes'
+        'menu': 'yes',
     }
 
     class Meta:

@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import, unicode_literals
+
 from hashlib import md5
 
 import django
 from django.core.cache import cache
-from django.template import Template, Context
-from django.test.client import RequestFactory, Client
+from django.template import Context, Template
+from django.test.client import Client, RequestFactory
 from django.utils.translation import get_language
 from lxml.html import fragment_fromstring, fromstring
 
+from django_activeurl import __version__
 from django_activeurl.conf import settings
 from django_activeurl.utils import ImproperlyConfigured
 
@@ -38,6 +41,23 @@ client = Client()
 def render(template, context=None):
     context = Context(context)
     return Template(template).render(context)
+
+
+def get_cache_params(url, **kwargs):
+    for key in settings.ACTIVE_URL_KWARGS:
+        kwargs.setdefault(key, settings.ACTIVE_URL_KWARGS[key])
+
+    kwargs['full_path'] = url
+
+    cache_key = ''
+    for key in sorted(kwargs.keys()):
+        cache_key = '{cache_key}.{key}:{value}'.format(
+            cache_key=cache_key,
+            key=key,
+            value=kwargs[key]
+        )
+
+    return cache_key
 
 
 def test_basic():
@@ -321,12 +341,13 @@ def test_cache():
     context = {'request': requests.get('/page/')}
     set_cache = render(template, context)
 
-    cache_key = html + 'active' + 'li' + '/page/' + 'yes'
+    cache_key = html + get_cache_params('/page/')
     cache_key = cache_key.encode()
     cache_key = md5(cache_key).hexdigest()
 
-    cache_key = '%s.%s.%s' % (
+    cache_key = '%s.%s.%s.%s' % (
         settings.ACTIVE_URL_CACHE_PREFIX,
+        __version__,
         get_language(),
         cache_key
     )
@@ -334,8 +355,6 @@ def test_cache():
     from_cache = cache.get(cache_key)
 
     assert from_cache
-
-    from_cache = from_cache
 
     get_cache = render(template, context)
 
@@ -729,12 +748,13 @@ def test_no_parent_cache():
     context = {'request': requests.get('/page/')}
     set_cache = render(template, context)
 
-    cache_key = html + 'active' + 'self' + '/page/' + 'yes'
+    cache_key = html + get_cache_params('/page/', parent_tag='self')
     cache_key = cache_key.encode()
     cache_key = md5(cache_key).hexdigest()
 
-    cache_key = '%s.%s.%s' % (
+    cache_key = '%s.%s.%s.%s' % (
         settings.ACTIVE_URL_CACHE_PREFIX,
+        __version__,
         get_language(),
         cache_key
     )
@@ -925,10 +945,9 @@ try:
     from jinja2 import Environment, DictLoader
 
     from django_activeurl.ext.django_jinja import ActiveUrl
-    from django_activeurl.ext.utils import options
 
     test_basic_jinja = '''
-        {% activeurl options(request) %}
+        {% activeurl %}
             <ul>
                 <li>
                     <a href="/page/">page</a>
@@ -941,27 +960,27 @@ try:
     '''
 
     test_no_parent_jinja = '''
-        {% activeurl options(request, parent_tag=None) %}
+        {% activeurl parent_tag=None %}
             <div>
                 <a href="/page/">page</a>
             </div>
         {% endactiveurl %}
-        {% activeurl options(request, parent_tag=False) %}
+        {% activeurl parent_tag=False %}
             <div>
                 <a href="/page/">page</a>
             </div>
         {% endactiveurl %}
-        {% activeurl options(request, parent_tag='') %}
+        {% activeurl parent_tag='' %}
             <div>
                 <a href="/page/">page</a>
             </div>
         {% endactiveurl %}
-        {% activeurl options(request, parent_tag='a') %}
+        {% activeurl parent_tag='a' %}
             <div>
                 <a href="/page/">page</a>
             </div>
         {% endactiveurl %}
-        {% activeurl options(request, parent_tag='self') %}
+        {% activeurl parent_tag='self' %}
             <div>
                 <a href="/page/">page</a>
                 <hr>
@@ -971,7 +990,20 @@ try:
     '''
 
     test_kwargs_jinja = '''
-        {% activeurl options(request, parent_tag='div', css_class='current') %}
+        {% activeurl parent_tag='div' css_class='current' %}
+            <div>
+                <div>
+                    <a href="/other_page/">other_page</a>
+                </div>
+                <div>
+                    <a href="/page/">page</a>
+                </div>
+            </div>
+        {% endactiveurl %}
+    '''
+
+    test_coma_jinja = '''
+        {% activeurl parent_tag='div', css_class='current', %}
             <div>
                 <div>
                     <a href="/other_page/">other_page</a>
@@ -987,11 +1019,11 @@ try:
         loader=DictLoader({
             'test_basic_jinja': test_basic_jinja,
             'test_no_parent_jinja': test_no_parent_jinja,
-            'test_kwargs_jinja': test_kwargs_jinja
+            'test_kwargs_jinja': test_kwargs_jinja,
+            'test_coma_jinja': test_coma_jinja
         }),
         extensions=[ActiveUrl]
     )
-    env.globals['options'] = options
 
     def test_basic_jinja_django():
         template = env.get_template('test_basic_jinja')
@@ -1030,6 +1062,23 @@ try:
 
     def test_kwargs_jinja_django():
         template = env.get_template('test_kwargs_jinja')
+
+        context = {'request': requests.get('/page/')}
+        html = template.render(context)
+
+        tree = fragment_fromstring(html)
+        div_elements = tree.xpath('//div')
+
+        active_div = div_elements[-1]
+
+        assert active_div.attrib.get('class', False)
+        assert 'current' == active_div.attrib['class']
+
+        for inactive_div in div_elements[:-1]:
+            assert not inactive_div.attrib.get('class', False)
+
+    def test_coma_jinja_django():
+        template = env.get_template('test_coma_jinja')
 
         context = {'request': requests.get('/page/')}
         html = template.render(context)

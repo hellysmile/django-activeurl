@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+from __future__ import absolute_import, unicode_literals
+
+from django.http import HttpResponse
+from django.shortcuts import render
 
 try:
     from django.conf.urls.defaults import patterns, url
 except ImportError:
     from django.conf.urls import patterns, url
-from django.http import HttpResponse
-from django.shortcuts import render
 
 
 def view(request):

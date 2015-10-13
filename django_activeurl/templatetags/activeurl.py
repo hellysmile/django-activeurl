@@ -1,4 +1,6 @@
 '''activeurl django template library'''
+from __future__ import absolute_import, unicode_literals
+
 from classytags.arguments import MultiKeywordArgument
 from classytags.core import Options, Tag
 from django import template
@@ -23,9 +25,8 @@ class ActiveUrl(Tag, Configuration):
 
     def render_tag(self, context, kwargs, nodelist):
         '''render content with "active" urls logic'''
-
         # load configuration from passed options
-        self.load_configuration(kwargs)
+        self.load_configuration(**kwargs)
 
         # get request from context
         request = context['request']
@@ -40,7 +41,11 @@ class ActiveUrl(Tag, Configuration):
 
         # check content for "active" urls
         content = render_content(
-            content, self.full_path, self.parent_tag, self.css_class, self.menu
+            content,
+            full_path=self.full_path,
+            parent_tag=self.parent_tag,
+            css_class=self.css_class,
+            menu=self.menu,
         )
 
         return content

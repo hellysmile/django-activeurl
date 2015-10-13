@@ -1,6 +1,29 @@
-from io import open
-
+import ast
+import os
+import codecs
 from setuptools import setup
+
+
+class VersionFinder(ast.NodeVisitor):
+    def __init__(self):
+        self.version = None
+
+    def visit_Assign(self, node):  # noqa
+        if node.targets[0].id == '__version__':
+            self.version = node.value.s
+
+
+def read(*parts):
+    filename = os.path.join(os.path.dirname(__file__), *parts)
+    with codecs.open(filename, encoding='utf-8') as fp:
+        return fp.read()
+
+
+def find_version(*parts):
+    finder = VersionFinder()
+    finder.visit(ast.parse(read(*parts)))
+    return finder.version
+
 
 classifiers = '''\
 Framework :: Django
@@ -38,19 +61,12 @@ packages = [
 ]
 
 
-def long_description():
-    f = open('README.rst', encoding='utf-8')
-    rst = f.read()
-    f.close()
-    return rst
-
-
 setup(
     name='django-activeurl',
-    version='0.1.10',
+    version=find_version('django_activeurl', '__init__.py'),
     packages=packages,
     description=description,
-    long_description=long_description(),
+    long_description=read('README.rst'),
     author='hellysmile',
     author_email='hellysmile@gmail.com',
     url='https://github.com/hellysmile/django-activeurl/',
