@@ -213,19 +213,17 @@ Vanilla `Jinja2 <https://github.com/mitsuhiko/jinja2>`_ configuration:
     from jinja2 import Environment
 
     from django_activeurl.ext.django_jinja import ActiveUrl
-    from django_activeurl.ext.utils import options
 
 
     env = Environment(
         extensions=[ActiveUrl]
     )
-    env.globals['options'] = options
 
-Except for ``request``, options can be omitted:
+Options can be omitted:
 
 .. code-block:: jinja
 
-    {% activeurl options(request, css_class="active", menu="yes", parent_tag="li") %}
+    {% activeurl css_class="active", menu="yes", parent_tag="li" %}
         <ul>
             <li>
                 <a href="/page/">page</a>
