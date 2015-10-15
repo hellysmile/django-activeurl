@@ -216,7 +216,7 @@ def test_non_ascii_reverse():
         {% endactiveurl %}
     '''
 
-    if django.VERSION < (1, 9):
+    if django.VERSION < (1, 5):
         template = '{% load url from future %}' + template
 
     context = {'request': requests.get('/другая_страница/')}
