@@ -28,7 +28,7 @@ class ActiveUrl(Extension, Configuration):
             key = parser.stream.expect(lexer.TOKEN_NAME)
             next(parser.stream)
             kwargs.append(
-                nodes.Keyword(key.value, parser.parse_expression(False))
+                nodes.Keyword(key.value, parser.parse_expression())
             )
             parser.stream.skip_if('comma')
         # parse content of the activeurl block up to endactiveurl
