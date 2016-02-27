@@ -28,10 +28,13 @@ class ActiveUrl(Tag, Configuration):
         self.load_configuration(kwargs)
 
         # get request from context
-        request = context['request']
+        request = context.get('request', None)
 
         # get full path from request
-        self.full_path = request.get_full_path()
+        if request:
+            self.full_path = request.get_full_path()
+        else:
+            self.full_path = ''
 
         # render content of template tag
         context.push()
