@@ -61,6 +61,25 @@ class BaseRenderer(object):
         else:
             raise ImproperlyConfigured("Malformed Menu Value")
 
+        # flipper for bootstrap collapse support
+        collapse = kwargs['collapse']
+        # django > 1.5 template boolean\None variables feature
+        if isinstance(collapse, bool):
+            if collapse:
+                collapse = 'yes'
+            else:
+                collapse = 'no'
+        elif collapse is None:
+            collapse = 'no'
+
+        # check collapse configuration, set boolean value
+        if collapse.lower() in ('yes', 'true'):
+            self.collapse = True
+        elif collapse.lower() in ('no', 'false'):
+            self.collapse = False
+        else:
+            raise ImproperlyConfigured("Malformed Collapse Value")
+
 
     def get_cache_key(self, content, full_path):
         '''generate cache key'''
@@ -114,6 +133,7 @@ class BaseRenderer(object):
                 )
 
             if is_active:
+                import ipdb;ipdb.set_trace()
                 # check parent tag has "class" attribute or it is empty
                 if element.attrib.get('class'):
                     # prevent multiple "class" attribute adding
@@ -123,6 +143,18 @@ class BaseRenderer(object):
                 else:
                     # create or set (if empty) "class" attribute
                     element.attrib['class'] = self.css_class
+
+                if self.collapse:
+                    parent_node = element.getparent()
+                    parent_classes = parent_node.attrib.get('class')
+                    if not parent_classes:
+                        parent_node.attrib['class'] = 'in'
+                    elif parent_classes and 'in' not in parent_classes.split(' '):
+                        parent_node.attrib['class'] += ' in'
+                    else:
+                        # class attribute in there and the class is already set
+                        pass
+
                 return True
         # no "active" urls found
         return False

@@ -750,6 +750,48 @@ def test_no_parent_cache():
     assert from_cache == set_cache == get_cache
 
 
+def test_submenu_collapse():
+    template = '''
+        {% activeurl collapse='yes' %}
+            <ul class="collapse">
+                <li>
+                    <a href="/menu/">menu</a>
+                </li>
+                <li>
+                    <a href="/menu/submenu/">submenu</a>
+                </li>
+                <li>
+                    <a href="/menu/other_submenu/">other_submenu</a>
+                </li>
+            </ul>
+        {% endactiveurl %}
+    '''
+
+    context = {'request': requests.get('/menu/submenu/')}
+    html = render(template, context)
+    tree = fragment_fromstring(html)
+
+    ul_elements = tree.xpath('//ul')
+    collapse_menu = ul_elements[0]
+
+    assert collapse_menu.attrib.get('class', False)
+    assert 'collapse in' == collapse_menu.attrib['class']
+
+    li_elements = tree.xpath('//li')
+    active_menu = li_elements[0]
+
+    assert active_menu.attrib.get('class', False)
+    assert 'active' == active_menu.attrib['class']
+
+    active_submenu = li_elements[1]
+
+    assert active_submenu.attrib.get('class', False)
+    assert 'active' == active_submenu.attrib['class']
+
+    inactive_submenu = li_elements[2]
+
+    assert not inactive_submenu.attrib.get('class', False)
+
 def test_kwargs():
     template = '''
         {% activeurl parent_tag='div' css_class='current' %}
@@ -881,7 +923,7 @@ def test_basic_again_test_default_settings():
     assert not inactive_li.attrib.get('class', False)
 
 
-def test_dajngo_template():
+def test_django_template():
     response = client.get('/template/django/')
 
     html = response.content
