@@ -3,13 +3,13 @@ from classytags.arguments import MultiKeywordArgument
 from classytags.core import Options, Tag
 from django import template
 
-from ..utils import Configuration, render_content
+from ..utils import BaseRenderer
 
 # django template library
 register = template.Library()
 
 
-class ActiveUrl(Tag, Configuration):
+class ActiveUrl(Tag, BaseRenderer):
     '''django template tag via django-classy-tags'''
     # tag name
     name = 'activeurl'
@@ -32,9 +32,9 @@ class ActiveUrl(Tag, Configuration):
 
         # get full path from request
         if request:
-            self.full_path = request.get_full_path()
+            full_path = request.get_full_path()
         else:
-            self.full_path = ''
+            full_path = ''
 
         # render content of template tag
         context.push()
@@ -42,9 +42,7 @@ class ActiveUrl(Tag, Configuration):
         context.pop()
 
         # check content for "active" urls
-        content = render_content(
-            content, self.full_path, self.parent_tag, self.css_class, self.menu
-        )
+        content = self.render_content(content, full_path)
 
         return content
 

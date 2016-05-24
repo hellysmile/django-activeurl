@@ -321,7 +321,7 @@ def test_cache():
     context = {'request': requests.get('/page/')}
     set_cache = render(template, context)
 
-    cache_key = html + 'active' + 'li' + '/page/' + 'yes'
+    cache_key = html + 'active' + 'li' + '/page/' + 'True'
     cache_key = cache_key.encode()
     cache_key = md5(cache_key).hexdigest()
 
@@ -729,7 +729,7 @@ def test_no_parent_cache():
     context = {'request': requests.get('/page/')}
     set_cache = render(template, context)
 
-    cache_key = html + 'active' + 'self' + '/page/' + 'yes'
+    cache_key = html + 'active' + 'self' + '/page/' + 'True'
     cache_key = cache_key.encode()
     cache_key = md5(cache_key).hexdigest()
 
