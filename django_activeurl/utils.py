@@ -52,7 +52,7 @@ def get_cache_key(content, css_class, parent_tag, full_path, menu):
     return cache_key
 
 
-def check_active(url, element, full_path, css_class, menu):
+def check_active(url, element, full_path, css_class, menu=None):
     '''check "active" url, apply css_class'''
     # django > 1.5 template boolean\None variables feature
     if isinstance(menu, bool):
@@ -64,54 +64,42 @@ def check_active(url, element, full_path, css_class, menu):
         menu = 'no'
     # check menu configuration, set boolean value
     if menu.lower() in ('yes', 'true'):
-        menu = True
+        menu_option = True
     elif menu.lower() in ('no', 'false'):
-        menu = False
+        menu_option = False
     else:
-        raise ImproperlyConfigured('''
-            malformed menu value
-        ''')
+        raise ImproperlyConfigured("Malformed Menu Value")
     # check missing href parameter
     if not url.attrib.get('href', None) is None:
-        # get href attribute
         href = url.attrib['href'].strip()
         # cut off hashtag (anchor)
         href = re.sub(r'\#.+', '', href)
-        # check empty href
         if href == '':
             # replace href with current location
             href = full_path
-        # compare full_path with href according to menu configuration
 
-        if menu:
+        if menu_option:
             # try mark "root" (/) url as "active", in equals way
             if href == '/' == full_path:
-                logic = True
+                is_active = True
             # skip "root" (/) url, otherwise it will be always "active"
             elif href != '/':
-                # start with logic
-                logic = (
+                is_active = (
                     full_path.startswith(href)
-                    or
-                    # maybe an urlquoted href was supplied
-                    urlquote(full_path).startswith(href)
-                    or
-                    full_path.startswith(urlquote(href))
+                    or urlquote(full_path).startswith(href)
+                    or full_path.startswith(urlquote(href))
                 )
             else:
-                logic = False
+                is_active = False
         else:
-            # equals logic
-            logic = (
+            is_active = (
                 full_path == href
-                or
                 # maybe an urlquoted href was supplied
-                urlquote(full_path) == href
-                or
-                full_path == urlquote(href)
+                or urlquote(full_path) == href
+                or full_path == urlquote(href)
             )
-        # "active" url found
-        if logic:
+
+        if is_active:
             # check parent tag has "class" attribute or it is empty
             if element.attrib.get('class'):
                 # prevent multiple "class" attribute adding
@@ -209,7 +197,7 @@ def render_content(content, full_path, parent_tag, css_class, menu):
         if from_cache is not None:
             return from_cache
 
-    # render content with "active" logic
+    # render content with "active" is_active
     content = check_content(content, full_path, css_class, parent_tag, menu)
 
     # write rendered content to django cache backend, if caching is enabled
