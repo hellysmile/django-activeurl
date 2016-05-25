@@ -133,7 +133,6 @@ class BaseRenderer(object):
                 )
 
             if is_active:
-                import ipdb;ipdb.set_trace()
                 # check parent tag has "class" attribute or it is empty
                 if element.attrib.get('class'):
                     # prevent multiple "class" attribute adding
