@@ -2,10 +2,10 @@
 from jinja2 import nodes
 from jinja2.ext import Extension
 
-from ..utils import Configuration, render_content
+from ..utils import BaseRenderer
 
 
-class ActiveUrl(Extension, Configuration):
+class ActiveUrl(Extension, BaseRenderer):
     '''activeurl jinja extension for django_jinja/coffin/jingo'''
 
     # a set of names that trigger the extension.
@@ -35,10 +35,8 @@ class ActiveUrl(Extension, Configuration):
         self.load_configuration(kwargs)
 
         # full path passed from request via global options function
-        self.full_path = kwargs['full_path']
+        full_path = kwargs['full_path']
 
         # check content for "active" urls
-        content = render_content(
-            content, self.full_path, self.parent_tag, self.css_class, self.menu
-        )
+        content = self.render_content(content, full_path)
         return content

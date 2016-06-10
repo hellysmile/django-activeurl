@@ -172,6 +172,11 @@ css_class ="<string>" (default: "active")
 
 Defines what CSS class to add to an active element.
 
+collapse ="yes|no" (default: "no")
+----------------------------------
+
+Add compatibility with Bootstrap 3 collapse menu. Imply menu="yes".
+
 Configuration
 *************
 
@@ -182,7 +187,8 @@ The default options can be set in ``settings.py`` as well:
     ACTIVE_URL_KWARGS = {
         'css_class': 'active',
         'parent_tag': 'li',
-        'menu': 'yes'
+        'menu': 'yes',
+        'collapse': 'no',
     }
     ACTIVE_URL_CACHE = True
     ACTIVE_URL_CACHE_TIMEOUT = 60 * 60 * 24  # 1 day
