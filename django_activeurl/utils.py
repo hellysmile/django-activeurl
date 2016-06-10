@@ -154,6 +154,15 @@ class BaseRenderer(object):
                         # class attribute in there and the class is already set
                         pass
 
+                    # XXX Too specific code
+                    child_nodes = element.findall('a/i')
+                    for child_node in child_nodes:
+                        child_classes = child_node.attrib.get('class').split(' ')
+                        if 'fa-angle-right' in child_classes:
+                            child_classes.remove('fa-angle-right')
+                            child_classes.append('fa-angle-down')
+                            child_node.attrib['class'] = ' '.join(child_classes)
+
                 return True
         # no "active" urls found
         return False
