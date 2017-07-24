@@ -1,6 +1,7 @@
 sudo: false
 language: python
 python:
+  - "3.6"
   - "3.5"
   - "3.4"
   - "3.3"
@@ -14,7 +15,9 @@ env:
   - DJANGO="django>=1.6,<1.7"
   - DJANGO="django>=1.7,<1.8"
   - DJANGO="django>=1.8,<1.9"
-  - DJANGO="https://github.com/django/django/tarball/stable/1.9.x#egg=django"
+  - DJANGO="django>=1.9,<1.10"
+  - DJANGO="django>=1.10,<1.11"
+  - DJANGO="django>=1.11,<1.12"
 matrix:
   exclude:
     - python: "3.5"
