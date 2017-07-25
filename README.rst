@@ -162,6 +162,12 @@ The **equals** logic works best for non-hierarchical menus where only those item
         </div>
     {% endactiveurl %}
 
+ignore_params ="yes|no" (default: "no")
+---------------------------------------
+
+``ignore_params`` will ignore GET parameters of URL's, e.g.
+*/accounts/login/* will match */accounts/login/?next=/accounts/signup/*.
+
 parent_tag ="div|li|self|…" (default: "li")
 -------------------------------------------
 
@@ -182,7 +188,8 @@ The default options can be set in ``settings.py`` as well:
     ACTIVE_URL_KWARGS = {
         'css_class': 'active',
         'parent_tag': 'li',
-        'menu': 'yes'
+        'menu': 'yes',
+        'ignore_params': 'no'
     }
     ACTIVE_URL_CACHE = True
     ACTIVE_URL_CACHE_TIMEOUT = 60 * 60 * 24  # 1 day
@@ -225,7 +232,7 @@ Except for ``request``, options can be omitted:
 
 .. code-block:: jinja
 
-    {% activeurl options(request, css_class="active", menu="yes", parent_tag="li") %}
+    {% activeurl options(request, css_class="active", menu="yes", parent_tag="li", ignore_params="no") %}
         <ul>
             <li>
                 <a href="/page/">page</a>
