@@ -1,10 +1,10 @@
 '''template engine independent utils'''
-import re
 from hashlib import md5
 
 from django.core.cache import cache
 from django.utils.http import urlquote
 from django.utils.translation import get_language
+from django.utils.six.moves.urllib import parse as urlparse
 from lxml.etree import ParserError
 from lxml.html import fragment_fromstring, tostring
 
@@ -94,11 +94,20 @@ def check_active(url, element, full_path, css_class, menu, ignore_params):
     if not url.attrib.get('href', None) is None:
         # get href attribute
         href = url.attrib['href'].strip()
+
+        # split into urlparse object
+        href = urlparse.urlsplit(href)
+
         # cut off hashtag (anchor)
-        href = re.sub(r'\#.+', '', href)
+        href = href._replace(fragment='')
+
+        # cut off get params (?key=var&etc=var2)
         if ignore_params:
-            # cut off get params (?key=var&etc=var2)
-            href = re.sub(r'\?.+', '', href)
+            href = href._replace(query='')
+
+        # build urlparse object back into string
+        href = urlparse.urlunsplit(href)
+
         # check empty href
         if href == '':
             # replace href with current location
