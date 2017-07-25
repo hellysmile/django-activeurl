@@ -18,7 +18,8 @@ class ActiveUrlConf(AppConf):
     KWARGS = {
         'css_class': 'active',
         'parent_tag': 'li',
-        'menu': 'yes'
+        'menu': 'yes',
+        'ignore_params': 'false',
     }
 
     class Meta:
