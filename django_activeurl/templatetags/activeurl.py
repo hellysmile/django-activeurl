@@ -40,7 +40,8 @@ class ActiveUrl(Tag, Configuration):
 
         # check content for "active" urls
         content = render_content(
-            content, self.full_path, self.parent_tag, self.css_class, self.menu
+            content, self.full_path, self.parent_tag, self.css_class,
+            self.menu, self.ignore_params
         )
 
         return content

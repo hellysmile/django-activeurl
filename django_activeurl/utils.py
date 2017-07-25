@@ -1,10 +1,10 @@
 '''template engine independent utils'''
-import re
 from hashlib import md5
 
 from django.core.cache import cache
 from django.utils.http import urlquote
 from django.utils.translation import get_language
+from django.utils.six.moves.urllib import parse as urlparse
 from lxml.etree import ParserError
 from lxml.html import fragment_fromstring, tostring
 
@@ -31,6 +31,8 @@ class Configuration(object):
         self.parent_tag = kwargs['parent_tag']
         # flipper for menu support
         self.menu = kwargs['menu']
+        # whether to ignore / chomp get_params
+        self.ignore_params = kwargs['ignore_params']
 
 
 def get_cache_key(content, css_class, parent_tag, full_path, menu):
@@ -52,31 +54,60 @@ def get_cache_key(content, css_class, parent_tag, full_path, menu):
     return cache_key
 
 
-def check_active(url, element, full_path, css_class, menu):
-    '''check "active" url, apply css_class'''
-    # django > 1.5 template boolean\None variables feature
-    if isinstance(menu, bool):
-        if menu:
-            menu = 'yes'
+def yesno_to_bool(value, varname):
+    """Return True/False from "yes"/"no".
+
+    :param value: template keyword argument value
+    :type value: string
+    :param varname: name of the variable, for use on exception raising
+    :type varname: string
+    :raises: :exc:`ImproperlyConfigured`
+
+    Django > 1.5 template boolean/None variables feature.
+    """
+    if isinstance(value, bool):
+        if value:
+            value = 'yes'
         else:
-            menu = 'no'
-    elif menu is None:
-        menu = 'no'
-    # check menu configuration, set boolean value
-    if menu.lower() in ('yes', 'true'):
-        menu = True
-    elif menu.lower() in ('no', 'false'):
-        menu = False
+            value = 'no'
+    elif value is None:
+        value = 'no'
+
+    # check value configuration, set boolean value
+    if value.lower() in ('yes', 'true'):
+        value = True
+    elif value.lower() in ('no', 'false'):
+        value = False
     else:
-        raise ImproperlyConfigured('''
-            malformed menu value
-        ''')
+        raise ImproperlyConfigured(
+            'activeurl: malformed param value for %s' % varname
+        )
+    return value
+
+
+def check_active(url, element, full_path, css_class, menu, ignore_params):
+    '''check "active" url, apply css_class'''
+    menu = yesno_to_bool(menu, 'menu')
+    ignore_params = yesno_to_bool(ignore_params, 'ignore_params')
+
     # check missing href parameter
     if not url.attrib.get('href', None) is None:
         # get href attribute
         href = url.attrib['href'].strip()
+
+        # split into urlparse object
+        href = urlparse.urlsplit(href)
+
         # cut off hashtag (anchor)
-        href = re.sub(r'\#.+', '', href)
+        href = href._replace(fragment='')
+
+        # cut off get params (?key=var&etc=var2)
+        if ignore_params:
+            href = href._replace(query='')
+
+        # build urlparse object back into string
+        href = urlparse.urlunsplit(href)
+
         # check empty href
         if href == '':
             # replace href with current location
@@ -126,7 +157,9 @@ def check_active(url, element, full_path, css_class, menu):
     return False
 
 
-def check_content(content, full_path, css_class, parent_tag, menu):
+def check_content(
+    content, full_path, css_class, parent_tag, menu, ignore_params
+):
     '''check content for "active" urls'''
     # valid html root tag
     try:
@@ -151,7 +184,9 @@ def check_content(content, full_path, css_class, parent_tag, menu):
             urls = tree.xpath('.//a')
             # check "active" status for all urls
             for url in urls:
-                if check_active(url, url, full_path, css_class, menu):
+                if check_active(
+                    url, url, full_path, css_class, menu, ignore_params
+                ):
                     # mark flag for rerendering content
                     processed = True
         # otherwise css_class must be applied to parent_tag
@@ -164,7 +199,9 @@ def check_content(content, full_path, css_class, parent_tag, menu):
                 urls = element.xpath('.//a')
                 # check "active" status for all urls
                 for url in urls:
-                    if check_active(url, element, full_path, css_class, menu):
+                    if check_active(
+                        url, element, full_path, css_class, menu, ignore_params
+                    ):
                         # flag for rerendering content tree
                         processed = True
                         # stop checking other "<a>"
@@ -194,7 +231,9 @@ def check_content(content, full_path, css_class, parent_tag, menu):
     return content
 
 
-def render_content(content, full_path, parent_tag, css_class, menu):
+def render_content(
+    content, full_path, parent_tag, css_class, menu, ignore_params
+):
     '''check content for "active" urls, store results to django cache'''
     # try to take pre rendered content from django cache, if caching is enabled
     if settings.ACTIVE_URL_CACHE:
@@ -210,7 +249,9 @@ def render_content(content, full_path, parent_tag, css_class, menu):
             return from_cache
 
     # render content with "active" logic
-    content = check_content(content, full_path, css_class, parent_tag, menu)
+    content = check_content(
+        content, full_path, css_class, parent_tag, menu, ignore_params
+    )
 
     # write rendered content to django cache backend, if caching is enabled
     if settings.ACTIVE_URL_CACHE:
