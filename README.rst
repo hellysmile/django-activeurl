@@ -1,7 +1,8 @@
+================
 django-activeurl
 ================
 
-:info: Easy to use active URL highlighting for Django
+Easy-to-use active URL highlighting for Django
 
 .. image:: https://img.shields.io/travis/hellysmile/django-activeurl.svg
     :target: https://travis-ci.org/hellysmile/django-activeurl
@@ -15,17 +16,15 @@ django-activeurl
 .. image:: https://img.shields.io/pypi/v/django_activeurl.svg
     :target: https://pypi.python.org/pypi/django-activeurl
 
-A demo is available on `heroku.com <http://django-activeurl.herokuapp.com/>`_
-
 Features
-********
+========
 
 * automatic highlighting of currently active ``<a>`` tags via CSS class
 * automatic highlighting of parent ``<a>`` tags for menus
 * removes boring / hardcoded stuff from your life!
 
 Usage
-*****
+=====
 
 After loading the template library via
 
@@ -179,7 +178,7 @@ css_class ="<string>" (default: "active")
 Defines what CSS class to add to an active element.
 
 Configuration
-*************
+=============
 
 The default options can be set in ``settings.py`` as well:
 
@@ -202,7 +201,7 @@ In addition, ``ACTIVE_URL_CACHE_TIMEOUT`` can be used to define a timeout for ke
 The last configuration option is ``ACTIVE_URL_CACHE_PREFIX`` (which is ``django_activeurl`` by default) and defines which name to use in Django's caching backend.
 
 Tests
-*****
+-----
 
 ::
 
@@ -211,7 +210,7 @@ Tests
 
 
 Jinja2
-******
+======
 
 Vanilla `Jinja2 <https://github.com/mitsuhiko/jinja2>`_ configuration:
 
@@ -248,7 +247,7 @@ you need to load the ``ActiveUrl`` extension and populate ``Environment()`` with
 Django 1.8+ Jinja2 environment loader example can be found in `tests <https://github.com/hellysmile/django-activeurl/blob/master/tests/jinja_config.py>`_.
 
 Background
-**********
+==========
 
 For building the HTML element tree *django-activeurl* uses `lxml
 <http://pypi.python.org/pypi/lxml/>`_, which is one of the best HTML parsing
@@ -258,7 +257,7 @@ content rebuilding inside the template tag when no active URLs are found, so
 there's no impact on performance.
 
 Credits
-*******
+=======
 
 * `initializr <http://www.initializr.com/>`_ is used for the example HTML template.
 * Simon Whitaker's `»Fork me« ribbon <https://github.com/simonwhitaker/github-fork-ribbon-css>`_ is used in the example.

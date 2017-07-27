@@ -1,1 +1,11 @@
-../README.rst
+.. _index:
+
+.. include:: ../README.rst
+                 
+Table of Contents
+=================
+
+.. toctree::
+   :maxdepth: 2
+
+   history
