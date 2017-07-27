@@ -3,7 +3,7 @@ from io import open
 from setuptools import setup
 
 about = {}
-with open("django_activeurl/__about__.py") as fp:
+with open("django_activeurl/__about__.py", encoding='utf-8') as fp:
     exec(fp.read(), about)
 
 
