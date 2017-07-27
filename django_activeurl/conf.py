@@ -21,6 +21,7 @@ class ActiveUrlConf(AppConf):
         'css_class': 'active',
         'parent_tag': 'li',
         'menu': 'yes',
+        'ignore_params': 'false',
     }
 
     class Meta:

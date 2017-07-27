@@ -65,6 +65,7 @@ class ActiveUrl(Extension, Configuration):
             parent_tag=self.parent_tag,
             css_class=self.css_class,
             menu=self.menu,
+            ignore_params=self.ignore_params,
         )
 
         return content

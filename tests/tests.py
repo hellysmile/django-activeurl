@@ -120,6 +120,36 @@ def test_hashtag():
     assert not inactive_li.attrib.get('class', False)
 
 
+def test_ignore_params():
+    template = '''
+        {% activeurl ignore_params='yes' %}
+            <ul>
+                <li>
+                    <a href="/page/?heyworld=moo">page</a>
+                </li>
+                <li>
+                    <a href="/other_page/">other_page</a>
+                </li>
+            </ul>
+        {% endactiveurl %}
+    '''
+
+    context = {'request': requests.get('/page/')}
+    html = render(template, context)
+
+    tree = fragment_fromstring(html)
+    li_elements = tree.xpath('//li')
+
+    active_li = li_elements[0]
+
+    assert active_li.attrib.get('class', False)
+    assert 'active' == active_li.attrib['class']
+
+    inactive_li = li_elements[1]
+
+    assert not inactive_li.attrib.get('class', False)
+
+
 def test_disabled_menu_root_path():
     template = '''
         {% activeurl menu='no' %}

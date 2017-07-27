@@ -1,12 +1,12 @@
 '''template engine independent utils'''
 from __future__ import absolute_import, unicode_literals
 
-import re
 from hashlib import md5
 
 from django.core.cache import cache
 from django.utils.http import urlquote
 from django.utils.translation import get_language
+from django.utils.six.moves.urllib import parse as urlparse
 from lxml.etree import ParserError
 from lxml.html import fragment_fromstring, tostring
 
@@ -34,6 +34,8 @@ class Configuration(object):
         self.parent_tag = kwargs['parent_tag']
         # flipper for menu support
         self.menu = kwargs['menu']
+        # whether to ignore / chomp get_params
+        self.ignore_params = kwargs['ignore_params']
 
 
 def get_cache_key(content, **kwargs):
@@ -65,38 +67,67 @@ def get_cache_key(content, **kwargs):
     return cache_key
 
 
+def yesno_to_bool(value, varname):
+    """Return True/False from "yes"/"no".
+
+    :param value: template keyword argument value
+    :type value: string
+    :param varname: name of the variable, for use on exception raising
+    :type varname: string
+    :raises: :exc:`ImproperlyConfigured`
+
+    Django > 1.5 template boolean/None variables feature.
+    """
+    if isinstance(value, bool):
+        if value:
+            value = 'yes'
+        else:
+            value = 'no'
+    elif value is None:
+        value = 'no'
+
+    # check value configuration, set boolean value
+    if value.lower() in ('yes', 'true'):
+        value = True
+    elif value.lower() in ('no', 'false'):
+        value = False
+    else:
+        raise ImproperlyConfigured(
+            'activeurl: malformed param value for %s' % varname
+        )
+    return value
+
+
 def check_active(url, element, **kwargs):
     '''check "active" url, apply css_class'''
-    # django > 1.5 template boolean\None variables feature
-    if isinstance(kwargs['menu'], bool):
-        if kwargs['menu']:
-            kwargs['menu'] = 'yes'
-        else:
-            kwargs['menu'] = 'no'
-    elif kwargs['menu'] is None:
-        kwargs['menu'] = 'no'
-    # check menu configuration, set boolean value
-    if kwargs['menu'].lower() in ('yes', 'true'):
-        kwargs['menu'] = True
-    elif kwargs['menu'].lower() in ('no', 'false'):
-        kwargs['menu'] = False
-    else:
-        raise ImproperlyConfigured('''
-            malformed menu value
-        ''')
+    menu = yesno_to_bool(kwargs['menu'], 'menu')
+    ignore_params = yesno_to_bool(kwargs['ignore_params'], 'ignore_params')
+
     # check missing href parameter
     if not url.attrib.get('href', None) is None:
         # get href attribute
         href = url.attrib['href'].strip()
+
+        # split into urlparse object
+        href = urlparse.urlsplit(href)
+
         # cut off hashtag (anchor)
-        href = re.sub(r'\#.+', '', href)
+        href = href._replace(fragment='')
+
+        # cut off get params (?key=var&etc=var2)
+        if ignore_params:
+            href = href._replace(query='')
+
+        # build urlparse object back into string
+        href = urlparse.urlunsplit(href)
+
         # check empty href
         if href == '':
             # replace href with current location
             href = kwargs['full_path']
         # compare full_path with href according to menu configuration
 
-        if kwargs['menu']:
+        if menu:
             # try mark "root" (/) url as "active", in equals way
             if href == '/' == kwargs['full_path']:
                 logic = True
