@@ -1,21 +1,29 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
-try:
-    from django.conf.urls.defaults import patterns, url
-except ImportError:
-    from django.conf.urls import patterns, url
+from django.conf.urls import url
+from django.http import HttpResponse
+from django.shortcuts import render
 
-from . import views
 
-urlpatterns = patterns(
-    '',
-    url(r'^$', views.dummy_view),
-    url(r'^page/$', views.dummy_view),
-    url(r'^menu/$', views.dummy_view),
-    url(r'^menu/submenu/$', views.dummy_view),
-    url(r'^страница/$', views.dummy_view),
-    url(r'^другая_страница/$', views.dummy_view, name='non-ascii-reverse'),
-    url(r'^template/django/$', views.djnago_template_view),
-    url(r'^template/jinja/$', views.jinja_template_view),
-)
+def view(request):
+    return HttpResponse()
+
+
+def djnago_template_view(request):
+    return render(request, 'django.html', {})
+
+
+def jinja_template_view(request):
+    return render(request, 'jinja.html', {})
+
+urlpatterns = [
+    url(r'^$', view),
+    url(r'^template/django/$', djnago_template_view),
+    url(r'^template/jinja/$', jinja_template_view),
+    url(r'^page/$', view),
+    url(r'^menu/$', view),
+    url(r'^menu/submenu/$', view),
+    url(r'^страница/$', view),
+    url(r'^другая_страница/$', view, name='non-ascii-reverse')
+]
