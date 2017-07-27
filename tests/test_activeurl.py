@@ -3,8 +3,8 @@ from hashlib import md5
 
 import django
 from django.core.cache import cache
-from django.template import Template, Context
-from django.test.client import RequestFactory, Client
+from django.template import Context, Template
+from django.test.client import Client, RequestFactory
 from django.utils.translation import get_language
 from lxml.html import fragment_fromstring, fromstring
 
