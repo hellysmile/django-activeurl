@@ -7,6 +7,7 @@ PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
 
 config = dict(
+    ALLOWED_HOSTS=['testserver'],
     DEBUG=True,
     DATABASES={
         'default': {
