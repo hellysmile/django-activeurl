@@ -40,6 +40,7 @@ Programming Language :: Python :: 3.2
 Programming Language :: Python :: 3.3
 Programming Language :: Python :: 3.4
 Programming Language :: Python :: 3.5
+Programming Language :: Python :: 3.6
 Programming Language :: Python :: Implementation :: CPython
 Programming Language :: Python :: Implementation :: PyPy
 Operating System :: MacOS :: MacOS X
@@ -49,7 +50,11 @@ Operating System :: Unix
 '''
 
 
-description = 'Easy to use active URL highlighting for django'
+def long_description():
+    f = open('README.rst', encoding='utf-8')
+    rst = f.read()
+    f.close()
+    return rst
 
 
 packages = [
@@ -57,13 +62,6 @@ packages = [
     'django_activeurl.templatetags',
     'django_activeurl.ext'
 ]
-
-
-def long_description():
-    f = open('README.rst', encoding='utf-8')
-    rst = f.read()
-    f.close()
-    return rst
 
 
 setup(
