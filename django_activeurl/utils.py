@@ -3,8 +3,8 @@ from hashlib import md5
 
 from django.core.cache import cache
 from django.utils.http import urlquote
-from django.utils.translation import get_language
 from django.utils.six.moves.urllib import parse as urlparse
+from django.utils.translation import get_language
 from lxml.etree import ParserError
 from lxml.html import fragment_fromstring, tostring
 
