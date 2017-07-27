@@ -2,6 +2,11 @@ from io import open
 
 from setuptools import setup
 
+about = {}
+with open("django_activeurl/__about__.py", encoding='utf-8') as fp:
+    exec(fp.read(), about)
+
+
 classifiers = '''\
 Framework :: Django
 Environment :: Web Environment
@@ -46,14 +51,15 @@ def long_description():
 
 
 setup(
-    name='django-activeurl',
-    version='0.1.10',
-    packages=packages,
-    description=description,
-    long_description=long_description(),
-    author='hellysmile',
-    author_email='hellysmile@gmail.com',
+    name=about['__title__'],
+    version=about['__version__'],
     url='https://github.com/hellysmile/django-activeurl/',
+    download_url='https://pypi.python.org/pypi/django-activeurl',
+    packages=packages,
+    description=about['__description__'],
+    long_description=long_description(),
+    author=about['__author__'],
+    author_email=about['__email__'],
     zip_safe=False,
     install_requires=[
         'django',
@@ -61,7 +67,7 @@ setup(
         'django-classy-tags',
         'django_appconf',
     ],
-    license='http://www.apache.org/licenses/LICENSE-2.0',
+    license=about['__license__'],
     classifiers=list(filter(None, classifiers.split('\n'))),
     keywords=[
         'django', 'url', 'link', 'active', 'css', 'templatetag', 'jinja2'
