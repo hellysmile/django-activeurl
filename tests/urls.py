@@ -17,6 +17,7 @@ def djnago_template_view(request):
 def jinja_template_view(request):
     return render(request, 'jinja.html', {})
 
+
 urlpatterns = [
     url(r'^$', view),
     url(r'^template/django/$', djnago_template_view),
