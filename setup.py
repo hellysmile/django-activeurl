@@ -1,26 +1,14 @@
-import sys
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 import io
 
 from setuptools import setup
-from setuptools.command.test import test as TestCommand
 
 
 about = {}
 with io.open('django_activeurl/__about__.py', encoding='utf-8') as fp:
     exec(fp.read(), about)
-
-
-class PyTest(TestCommand):
-    user_options = [('pytest-args=', 'a', 'Arguments to pass to py.test')]
-
-    def initialize_options(self):
-        TestCommand.initialize_options(self)
-        self.pytest_args = []
-
-    def run_tests(self):
-        import pytest
-        errno = pytest.main(self.pytest_args)
-        sys.exit(errno)
 
 
 classifiers = '''\
@@ -56,9 +44,9 @@ def long_description():
 
 
 packages = [
-    'django_activeurl',
-    'django_activeurl.templatetags',
-    'django_activeurl.ext',
+    str('django_activeurl'),
+    str('django_activeurl.templatetags'),
+    str('django_activeurl.ext'),
 ]
 
 
@@ -84,5 +72,4 @@ setup(
     keywords=[
         'django', 'url', 'link', 'active', 'css', 'templatetag', 'jinja2',
     ],
-    cmdclass={'test': PyTest},
 )

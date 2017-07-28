@@ -1,5 +1,7 @@
-'''jinja extenions for django_jinja/coffin/jingo'''
+# -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
+
+'''jinja extenions for django_jinja/coffin/jingo'''
 
 from jinja2 import lexer, nodes
 from jinja2.ext import Extension

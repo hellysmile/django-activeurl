@@ -1,5 +1,7 @@
-'''template engine independent utils'''
+# -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
+
+'''template engine independent utils'''
 
 from hashlib import md5
 

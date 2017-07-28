@@ -1,5 +1,7 @@
-'''activeurl django template library'''
+# -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
+
+'''activeurl django template library'''
 
 from classytags.arguments import MultiKeywordArgument
 from classytags.core import Options, Tag

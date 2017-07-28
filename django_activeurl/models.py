@@ -1,2 +1,4 @@
-'''hello django test runner'''
+# -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
+
+'''hello django test runner'''
