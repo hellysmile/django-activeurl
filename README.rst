@@ -10,9 +10,6 @@ Easy-to-use active URL highlighting for Django
 .. image:: https://img.shields.io/codecov/c/github/hellysmile/django-activeurl.svg
     :target: https://codecov.io/gh/hellysmile/django-activeurl
 
-.. image:: https://img.shields.io/pypi/dm/django_activeurl.svg
-    :target: https://pypi.python.org/pypi/django-activeurl
-
 .. image:: https://img.shields.io/pypi/v/django_activeurl.svg
     :target: https://pypi.python.org/pypi/django-activeurl
 
