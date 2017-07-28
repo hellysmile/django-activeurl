@@ -1,1 +1,0 @@
-[{"pk": 1, "model": "simplepage.simplepage", "fields": {"content": "page1", "slug": "page1", "title": "page1"}}, {"pk": 2, "model": "simplepage.simplepage", "fields": {"content": "page2", "slug": "page2", "title": "page2"}}]
