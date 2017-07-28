@@ -58,7 +58,7 @@ The content of ``{% activeurl %}…{% endactiveurl %}`` must have valid root tag
 Installation
 ============
 
-Python 2.6+, 3.2+ PyPy are supported.
+Python 2.7+, 3.4+ are supported.
 
 1. Install the *stable* version using ``pip``::
 
