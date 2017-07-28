@@ -7,20 +7,22 @@ from django.core.cache import cache
 from django.template import Context, Template
 from django.test.client import Client, RequestFactory
 from django.utils.translation import get_language
-from lxml.html import fragment_fromstring, fromstring
-
 from django_activeurl import __version__
 from django_activeurl.conf import settings
 from django_activeurl.utils import ImproperlyConfigured
+from lxml.html import fragment_fromstring, fromstring
 
-
-def add_to_builtins(module):
-    from django.template.engine import Engine
-    template_engine = Engine.get_default()
-    template_engine.builtins.append(module)
-    template_engine.template_builtins = \
-        template_engine.get_template_builtins(template_engine.builtins)
-
+try:
+    # django >= 1.7
+    from django.template.base import add_to_builtins
+except ImportError:
+    # django >= 1.9
+    def add_to_builtins(module):
+        from django.template.engine import Engine
+        template_engine = Engine.get_default()
+        template_engine.builtins.append(module)
+        template_engine.template_builtins = \
+            template_engine.get_template_builtins(template_engine.builtins)
 
 add_to_builtins('django_activeurl.templatetags.activeurl')
 

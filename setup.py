@@ -5,7 +5,6 @@ import io
 
 from setuptools import setup
 
-
 about = {}
 with io.open('django_activeurl/__about__.py', encoding='utf-8') as fp:
     exec(fp.read(), about)
@@ -21,11 +20,8 @@ Development Status :: 5 - Production/Stable
 Natural Language :: English
 Programming Language :: Python
 Programming Language :: Python :: 2
-Programming Language :: Python :: 2.6
 Programming Language :: Python :: 2.7
 Programming Language :: Python :: 3
-Programming Language :: Python :: 3.2
-Programming Language :: Python :: 3.3
 Programming Language :: Python :: 3.4
 Programming Language :: Python :: 3.5
 Programming Language :: Python :: 3.6
