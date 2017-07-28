@@ -255,9 +255,3 @@ tools around. More info and benchmarks can be found at `habrahabr.ru
 <http://habrahabr.ru/post/163979/>`_ (in russian). Note that there's no
 content rebuilding inside the template tag when no active URLs are found, so
 there's no impact on performance.
-
-Credits
-=======
-
-* `initializr <http://www.initializr.com/>`_ is used for the example HTML template.
-* Simon Whitaker's `»Fork me« ribbon <https://github.com/simonwhitaker/github-fork-ribbon-css>`_ is used in the example.
