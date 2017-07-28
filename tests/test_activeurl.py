@@ -3,7 +3,6 @@ from __future__ import absolute_import, unicode_literals
 
 from hashlib import md5
 
-import django
 from django.core.cache import cache
 from django.template import Context, Template
 from django.test.client import Client, RequestFactory
@@ -22,8 +21,8 @@ def add_to_builtins(module):
     template_engine.template_builtins = \
         template_engine.get_template_builtins(template_engine.builtins)
 
-add_to_builtins('django_activeurl.templatetags.activeurl')
 
+add_to_builtins('django_activeurl.templatetags.activeurl')
 
 requests = RequestFactory()
 client = Client()
@@ -237,9 +236,6 @@ def test_non_ascii_reverse():
         {% endactiveurl %}
     '''
 
-    if django.VERSION < (1, 5):
-        template = '{% load url from future %}' + template
-
     context = {'request': requests.get('/другая_страница/')}
     html = render(template, context)
 
@@ -420,31 +416,29 @@ def test_submenu_configuration():
                 </li>
             </ul>
         {% endactiveurl %}
+
+        {% activeurl menu=False %}
+            <ul>
+                <li>
+                    <a href="/menu/">menu</a>
+                </li>
+            </ul>
+        {% endactiveurl %}
+        {% activeurl menu=None %}
+            <ul>
+                <li>
+                    <a href="/menu/">menu</a>
+                </li>
+            </ul>
+        {% endactiveurl %}
+        {% activeurl menu=True %}
+            <ul>
+                <li>
+                    <a href="/menu/">menu</a>
+                </li>
+            </ul>
+        {% endactiveurl %}
     '''
-    if django.VERSION >= (1, 5):
-        template += '''
-            {% activeurl menu=False %}
-                <ul>
-                    <li>
-                        <a href="/menu/">menu</a>
-                    </li>
-                </ul>
-            {% endactiveurl %}
-            {% activeurl menu=None %}
-                <ul>
-                    <li>
-                        <a href="/menu/">menu</a>
-                    </li>
-                </ul>
-            {% endactiveurl %}
-            {% activeurl menu=True %}
-                <ul>
-                    <li>
-                        <a href="/menu/">menu</a>
-                    </li>
-                </ul>
-            {% endactiveurl %}
-        '''
 
     context = {'request': requests.get('/menu/submenu/')}
     html = render(template, context)
@@ -452,16 +446,12 @@ def test_submenu_configuration():
     tree = fromstring(html)
     li_elements = tree.xpath('//li')
 
-    if django.VERSION >= (1, 5):
-        for inctive_li in li_elements[:-1]:
-            assert not inctive_li.attrib.get('class', False)
-
-        active_li = li_elements[-1]
-
-        assert 'active' == active_li.attrib['class']
-    else:
-        inctive_li = li_elements[0]
+    for inctive_li in li_elements[:-1]:
         assert not inctive_li.attrib.get('class', False)
+
+    active_li = li_elements[-1]
+
+    assert 'active' == active_li.attrib['class']
 
 
 def test_non_active_root():
@@ -661,6 +651,16 @@ def test_malformed_menu():
 
 def test_no_parent():
     template = '''
+        {% activeurl parent_tag=None %}
+            <div>
+                <a href="/page/">page</a>
+            </div>
+        {% endactiveurl %}
+        {% activeurl parent_tag=False %}
+            <div>
+                <a href="/page/">page</a>
+            </div>
+        {% endactiveurl %}
         {% activeurl parent_tag='' %}
             <div>
                 <a href="/page/">page</a>
@@ -680,20 +680,6 @@ def test_no_parent():
         {% endactiveurl %}
     '''
 
-    if django.VERSION >= (1, 5):
-        template = '''
-            {% activeurl parent_tag=None %}
-                <div>
-                    <a href="/page/">page</a>
-                </div>
-            {% endactiveurl %}
-            {% activeurl parent_tag=False %}
-                <div>
-                    <a href="/page/">page</a>
-                </div>
-            {% endactiveurl %}
-        ''' + template
-
     context = {'request': requests.get('/page/')}
     html = render(template, context)
 
@@ -710,21 +696,20 @@ def test_no_parent():
 
 
 def test_malformed_parent_tag():
-    if django.VERSION >= (1, 5):
-        template = '''
-            {% activeurl parent_tag=True %}
-                <div>
-                    <a href="/page/">page</a>
-                </div>
-            {% endactiveurl %}
-        '''
-        context = {'request': requests.get('/page/')}
+    template = '''
+        {% activeurl parent_tag=True %}
+            <div>
+                <a href="/page/">page</a>
+            </div>
+        {% endactiveurl %}
+    '''
+    context = {'request': requests.get('/page/')}
 
-        try:
-            render(template, context)
-            assert False
-        except ImproperlyConfigured:
-            pass
+    try:
+        render(template, context)
+        assert False
+    except ImproperlyConfigured:
+        pass
 
 
 def test_no_parent_submenu():
@@ -1115,23 +1100,22 @@ try:
         for inactive_div in div_elements[:-1]:
             assert not inactive_div.attrib.get('class', False)
 
-    if django.VERSION >= (1, 8):
-        def test_native_jinja():
-            response = client.get('/template/jinja/')
+    def test_native_jinja():
+        response = client.get('/template/jinja/')
 
-            html = response.content
+        html = response.content
 
-            tree = fragment_fromstring(html)
-            li_elements = tree.xpath('//li')
+        tree = fragment_fromstring(html)
+        li_elements = tree.xpath('//li')
 
-            active_li = li_elements[1]
+        active_li = li_elements[1]
 
-            assert active_li.attrib.get('class', False)
-            assert 'active' == active_li.attrib['class']
+        assert active_li.attrib.get('class', False)
+        assert 'active' == active_li.attrib['class']
 
-            inactive_li = li_elements[0]
+        inactive_li = li_elements[0]
 
-            assert not inactive_li.attrib.get('class', False)
+        assert not inactive_li.attrib.get('class', False)
 
 
 except ImportError:
