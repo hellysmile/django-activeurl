@@ -8,7 +8,7 @@ from jinja2 import Environment
 def environment(**options):
     env = Environment(**options)
     env.globals.update({
-        'url': reverse
+        'url': reverse,
     })
     env.add_extension(ActiveUrl)
 

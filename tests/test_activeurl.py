@@ -14,22 +14,13 @@ from django_activeurl import __version__
 from django_activeurl.conf import settings
 from django_activeurl.utils import ImproperlyConfigured
 
-try:
-    # django < 1.7
-    from django.template import loader
-    add_to_builtins = loader.add_to_builtins
-except AttributeError:
-    try:
-        # django >= 1.7
-        from django.template.base import add_to_builtins
-    except ImportError:
-        # django >= 1.9
-        def add_to_builtins(module):
-            from django.template.engine import Engine
-            template_engine = Engine.get_default()
-            template_engine.builtins.append(module)
-            template_engine.template_builtins = \
-                template_engine.get_template_builtins(template_engine.builtins)
+
+def add_to_builtins(module):
+    from django.template.engine import Engine
+    template_engine = Engine.get_default()
+    template_engine.builtins.append(module)
+    template_engine.template_builtins = \
+        template_engine.get_template_builtins(template_engine.builtins)
 
 add_to_builtins('django_activeurl.templatetags.activeurl')
 
@@ -54,7 +45,7 @@ def get_cache_params(url, **kwargs):
         cache_key = '{cache_key}.{key}:{value}'.format(
             cache_key=cache_key,
             key=key,
-            value=kwargs[key]
+            value=kwargs[key],
         )
 
     return cache_key
@@ -379,7 +370,7 @@ def test_cache():
         settings.ACTIVE_URL_CACHE_PREFIX,
         __version__,
         get_language(),
-        cache_key
+        cache_key,
     )
 
     from_cache = cache.get(cache_key)
@@ -786,7 +777,7 @@ def test_no_parent_cache():
         settings.ACTIVE_URL_CACHE_PREFIX,
         __version__,
         get_language(),
-        cache_key
+        cache_key,
     )
 
     from_cache = cache.get(cache_key)
@@ -1050,9 +1041,9 @@ try:
             'test_basic_jinja': test_basic_jinja,
             'test_no_parent_jinja': test_no_parent_jinja,
             'test_kwargs_jinja': test_kwargs_jinja,
-            'test_coma_jinja': test_coma_jinja
+            'test_coma_jinja': test_coma_jinja,
         }),
-        extensions=[ActiveUrl]
+        extensions=[ActiveUrl],
     )
 
     def test_basic_jinja_django():

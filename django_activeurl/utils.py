@@ -10,7 +10,7 @@ from django.utils.translation import get_language
 from lxml.etree import ParserError
 from lxml.html import fragment_fromstring, tostring
 
-from .__init__ import __version__
+from .__about__ import __version__
 from .conf import settings
 
 
@@ -45,12 +45,12 @@ def get_cache_key(content, **kwargs):
         cache_key = '{cache_key}.{key}:{value}'.format(
             cache_key=cache_key,
             key=key,
-            value=kwargs[key]
+            value=kwargs[key],
         )
 
     cache_key = '{content}{cache_key}'.format(
         content=content,
-        cache_key=cache_key
+        cache_key=cache_key,
     )
 
     # fix for non ascii symbols, ensure encoding, python3 hashlib fix
@@ -162,7 +162,7 @@ def check_active(url, element, **kwargs):
                 if kwargs['css_class'] not in element.attrib['class']:
                     # append "active" class
                     element.attrib['class'] += ' {css_class}'.format(
-                        css_class=kwargs['css_class']
+                        css_class=kwargs['css_class'],
                     )
             else:
                 # create or set (if empty) "class" attribute
@@ -204,7 +204,7 @@ def check_content(content, **kwargs):
         else:
             # xpath query to get all parent tags
             elements = tree.xpath('.//{parent_tag}'.format(
-                parent_tag=kwargs['parent_tag']
+                parent_tag=kwargs['parent_tag'],
             ))
             # check all elements for "active" "<a>"
             for element in elements:

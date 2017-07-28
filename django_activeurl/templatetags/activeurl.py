@@ -20,7 +20,7 @@ class ActiveUrl(Tag, Configuration):
     options = Options(
         # all key based arguments mapped to one dict
         MultiKeywordArgument('kwargs', required=False),
-        blocks=[('endactiveurl', 'nodelist')]
+        blocks=[('endactiveurl', 'nodelist')],
     )
 
     def render_tag(self, context, kwargs, nodelist):

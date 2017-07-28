@@ -26,5 +26,5 @@ urlpatterns = [
     url(r'^menu/$', view),
     url(r'^menu/submenu/$', view),
     url(r'^страница/$', view),
-    url(r'^другая_страница/$', view, name='non-ascii-reverse')
+    url(r'^другая_страница/$', view, name='non-ascii-reverse'),
 ]

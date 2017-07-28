@@ -1,17 +1,17 @@
 import sys
-from io import open
+import io
 
 from setuptools import setup
 from setuptools.command.test import test as TestCommand
 
 
 about = {}
-with open("django_activeurl/__about__.py", encoding='utf-8') as fp:
+with io.open('django_activeurl/__about__.py', encoding='utf-8') as fp:
     exec(fp.read(), about)
 
 
 class PyTest(TestCommand):
-    user_options = [('pytest-args=', 'a', "Arguments to pass to py.test")]
+    user_options = [('pytest-args=', 'a', 'Arguments to pass to py.test')]
 
     def initialize_options(self):
         TestCommand.initialize_options(self)
@@ -51,16 +51,14 @@ Operating System :: Unix
 
 
 def long_description():
-    f = open('README.rst', encoding='utf-8')
-    rst = f.read()
-    f.close()
-    return rst
+    with io.open('README.rst', encoding='utf-8') as fp:
+        return fp.read()
 
 
 packages = [
     'django_activeurl',
     'django_activeurl.templatetags',
-    'django_activeurl.ext'
+    'django_activeurl.ext',
 ]
 
 
@@ -84,7 +82,7 @@ setup(
     license=about['__license__'],
     classifiers=list(filter(None, classifiers.split('\n'))),
     keywords=[
-        'django', 'url', 'link', 'active', 'css', 'templatetag', 'jinja2'
+        'django', 'url', 'link', 'active', 'css', 'templatetag', 'jinja2',
     ],
     cmdclass={'test': PyTest},
 )

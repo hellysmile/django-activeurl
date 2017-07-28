@@ -11,7 +11,7 @@ class ActiveUrl(Extension, Configuration):
     '''activeurl jinja extension for django_jinja/coffin/jingo'''
 
     # a set of names that trigger the extension.
-    tags = set(['activeurl'])
+    tags = {'activeurl'}
 
     def parse(self, parser):
         '''parse content of extension'''
@@ -28,7 +28,7 @@ class ActiveUrl(Extension, Configuration):
             key = parser.stream.expect(lexer.TOKEN_NAME)
             next(parser.stream)
             kwargs.append(
-                nodes.Keyword(key.value, parser.parse_expression())
+                nodes.Keyword(key.value, parser.parse_expression()),
             )
             parser.stream.skip_if('comma')
         # parse content of the activeurl block up to endactiveurl
@@ -39,7 +39,7 @@ class ActiveUrl(Extension, Configuration):
         call_method = self.call_method(
             'render_tag',
             args=args,
-            kwargs=kwargs
+            kwargs=kwargs,
         )
 
         return nodes.CallBlock(call_method, [], [], body).set_lineno(lineno)
