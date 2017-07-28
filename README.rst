@@ -56,7 +56,7 @@ The content of ``{% activeurl %}…{% endactiveurl %}`` must have valid root tag
 ``<ul>`` or ``<div>``, etc) -- otherwise an exception will be raised.
 
 Installation
-************
+============
 
 Python 2.6+, 3.2+ PyPy are supported.
 
@@ -110,7 +110,7 @@ Python 2.6+, 3.2+ PyPy are supported.
      There's a 99.99% chance that *lxml* will build out of the box.
 
 Options
-*******
+=======
 
 menu ="yes|no" (default: "yes")
 -------------------------------
