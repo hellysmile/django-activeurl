@@ -140,8 +140,8 @@ def test_ignore_params():
     inactive_li = li_elements[1]
 
     assert not inactive_li.attrib.get('class', False)
-    
-    
+
+
 def test_ignore_params_with_no_menu():
     template = '''
         {% activeurl menu="no" ignore_params='yes' %}
