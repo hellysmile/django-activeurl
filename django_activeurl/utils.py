@@ -120,7 +120,7 @@ def check_active(url, element, **kwargs):
             href = href._replace(query='')
             full_path = urlparse.urlsplit(
                 kwargs['full_path']
-            )._replace(query='', fragment='')
+            )._replace(query='')
             kwargs['full_path'] = urlparse.urlunsplit(full_path)
 
         # build urlparse object back into string
