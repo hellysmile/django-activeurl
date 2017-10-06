@@ -118,6 +118,11 @@ def check_active(url, element, **kwargs):
         # cut off get params (?key=var&etc=var2)
         if ignore_params:
             href = href._replace(query='')
+            kwargs['full_path'] = urlparse.urlunsplit(
+                urlparse.urlsplit(
+                    kwargs['full_path']
+                )._replace(query='')
+            )
 
         # build urlparse object back into string
         href = urlparse.urlunsplit(href)
