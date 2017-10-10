@@ -4,8 +4,8 @@ Changelog
 
 Here you can find the recent changes to django-activeurl
 
-0.1.10 (to be released)
------------------------
+0.1.10 July 28, 2017
+--------------------
 
 - Changelog started
 - Added ``ignore_params`` for matching patterns with GET parameters.
@@ -16,5 +16,3 @@ Here you can find the recent changes to django-activeurl
   tag::
 
       {% activeurl ignore_params="yes" %}
-
-.. # vim: set filetype=rst:
