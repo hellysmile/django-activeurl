@@ -115,12 +115,12 @@ menu ="yes|no" (default: "yes")
 Should hierarchical menus be supported? There are two different ways to declare an *active* status:
 
 * the *starts-with* logic toggles the active state if ``request.get_full_path()`` starts with the
-  content the ``<a href=`` attribute.
+  contents of the ``<a href=`` attribute.
 
 * the *equals* logic toggles the active state if ``request.get_full_path()`` is identical to the
   contents of the ``<a href=`` attribute.
 
-You might want to use **starts-with logic** in hierarchical menus/submenus to not only highlight the current position but also every parent positions. So, with ``request.get_full_path()`` being `/menu/submenu` the following snippet will render accordingly:
+You might want to use **starts-with logic** in hierarchical menus/submenus to not only highlight the current position but also every parent position. So, with ``request.get_full_path()`` being `/menu/submenu` the following snippet will render accordingly:
 
 .. code-block:: html+django
 
@@ -139,7 +139,7 @@ You might want to use **starts-with logic** in hierarchical menus/submenus to no
         </div>
     {% endactiveurl %}
 
-The **equals** logic works best for non-hierarchical menus where only those items should be highlighted whose ``href``-attribute perfectly matches ``request.get_full_path()``:
+The **equals** logic works best for non-hierarchical menus where only those items should be highlighted whose ``href``-attribute perfectly match ``request.get_full_path()``:
 
 .. code-block:: html+django
 
@@ -161,7 +161,7 @@ The **equals** logic works best for non-hierarchical menus where only those item
 ignore_params ="yes|no" (default: "no")
 ---------------------------------------
 
-``ignore_params`` will ignore GET parameters of URL's, e.g.
+``ignore_params`` will ignore GET parameters of URLs, e.g.
 */accounts/login/* will match */accounts/login/?next=/accounts/signup/*.
 
 parent_tag ="div|li|self|…" (default: "li")
