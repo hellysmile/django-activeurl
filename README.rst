@@ -20,6 +20,9 @@ Features
 * automatic highlighting of parent ``<a>`` tags for menus
 * removes boring / hardcoded stuff from your life!
 
+* href="#" never causes highlighting for compatibility with techniques such as
+  bootstrap nav.
+
 Usage
 =====
 

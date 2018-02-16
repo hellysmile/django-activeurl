@@ -979,6 +979,30 @@ def test_no_valid_html_root_tag():
         pass
 
 
+def test_ignore_href_only_hash():
+    template = '''
+        {% activeurl %}
+            <ul>
+                <li>
+                    <a href="#">page</a>
+                </li>
+                <li>
+                    <a href="/other_page/">other_page</a>
+                </li>
+            </ul>
+        {% endactiveurl %}
+    '''
+
+    context = {'request': requests.get('/page/?foo=bar&bar=foo')}
+    html = render(template, context)
+
+    tree = fragment_fromstring(html)
+    li_elements = tree.xpath('//li')
+
+    assert not li_elements[0].attrib.get('class', False)
+    assert not li_elements[1].attrib.get('class', False)
+
+
 try:
     from jinja2 import Environment, DictLoader
 
