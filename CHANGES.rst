@@ -4,6 +4,12 @@ Changelog
 
 Here you can find the recent changes to django-activeurl
 
+0.1.12 February 16, 2018
+------------------------
+
+- Ignore href="#" to fix incompatibilities with bootstrap.
+  This matches <= 0.1.9 behaviour.
+
 0.1.11 October 10, 2017
 -----------------------
 

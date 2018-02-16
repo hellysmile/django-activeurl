@@ -109,6 +109,13 @@ def check_active(url, element, **kwargs):
         # get href attribute
         href = url.attrib['href'].strip()
 
+        # href="#" is often used when links shouldn't be handled by browsers.
+        # For example, Bootstrap uses this for expandable menus on
+        # small screens, see
+        # https://getbootstrap.com/docs/4.0/components/navs/#using-dropdowns
+        if href == '#':
+            return False
+
         # split into urlparse object
         href = urlparse.urlsplit(href)
 

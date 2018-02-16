@@ -1,6 +1,6 @@
 __title__ = 'django-activeurl'
 __package_name__ = 'django_activeurl'
-__version__ = '0.1.11'
+__version__ = '0.1.12'
 __description__ = 'Easy-to-use active URL highlighting for Django'
 __email__ = 'hellysmile@gmail.com'
 __author__ = 'hellysmile'
