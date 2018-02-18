@@ -1,5 +1,7 @@
 language: python
 
+dist: trusty
+
 sudo: false
 
 matrix:
@@ -41,6 +43,13 @@ matrix:
     - python: 3.6
       env: TOXENV=py36-dj111
 
+    - python: 3.4
+      env: TOXENV=py34-dj200
+    - python: 3.5
+      env: TOXENV=py35-dj200
+    - python: 3.6
+      env: TOXENV=py36-dj200
+
     - python: 3.5
       env: TOXENV=py35-djmaster
     - python: 3.6
@@ -62,3 +71,26 @@ script:
 after_success:
   - pip install codecov
   - codecov
+
+notifications:
+  email:
+    on_succes
+
+jobs:
+  include:
+  - stage: Push to PYPI (runs only for tagged commits)
+    if: tag IS present
+    python: 2.7
+    addons: {}
+    install: skip
+    script: skip
+    after_success: []
+    deploy:
+      provider: pypi
+      user: hellysmile
+      password:
+        secure: "MtYn/E/iO27Vhq8UNYjM7kcLUkKSG19ZVyysZAjoQQHaD7NE6Rc0nrQm6eG6n4LTy3IFKi79o9gDDwayFPSnId7gzGIxpF3tvnzfvM8za6a2tBJOl/J+x1anXwAyX4ifVmH3kkuLfpjch+ruAvU4+xex6U4IRiKg06yr3/DoJs8="
+      distributions: sdist bdist_wheel
+      on:
+        tags: true
+        all_branches: true
