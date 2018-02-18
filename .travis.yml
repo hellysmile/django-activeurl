@@ -7,6 +7,9 @@ matrix:
   fast_finish: true
   include:
     - python: 2.7
+      env: DEPLOY=1
+
+    - python: 2.7
       env: TOXENV=py27-flake8
     - python: 3.6
       env: TOXENV=py36-flake8
@@ -60,32 +63,17 @@ matrix:
       env: TOXENV=py36-djmaster
 
 cache: pip
-
-jobs:
-  include:
-  - stage: test
-    install:
-      - pip install tox
-    script:
-      - tox
-    after_success:
-      - pip install codecov
-      - codecov
-  - stage: Push to PYPI (runs only for tagged commits)
-    if: tag IS present
-    python: 3.6
-    install: skip
-    script: skip
-    after_success: []
-    deploy:
-      provider: pypi
-      user: hellysmile
-      password:
-        secure: "MtYn/E/iO27Vhq8UNYjM7kcLUkKSG19ZVyysZAjoQQHaD7NE6Rc0nrQm6eG6n4LTy3IFKi79o9gDDwayFPSnId7gzGIxpF3tvnzfvM8za6a2tBJOl/J+x1anXwAyX4ifVmH3kkuLfpjch+ruAvU4+xex6U4IRiKg06yr3/DoJs8="
-      distributions: sdist bdist_wheel
-      on:
-        tags: true
-        all_branches: true
+deploy:
+  provider: pypi
+  user: hellysmile
+  password:
+    secure: "MtYn/E/iO27Vhq8UNYjM7kcLUkKSG19ZVyysZAjoQQHaD7NE6Rc0nrQm6eG6n4LTy3IFKi79o9gDDwayFPSnId7gzGIxpF3tvnzfvM8za6a2tBJOl/J+x1anXwAyX4ifVmH3kkuLfpjch+ruAvU4+xex6U4IRiKg06yr3/DoJs8="
+  distributions: sdist bdist_wheel
+  on:
+    tags: true
+    all_branches: true
+    python: 2.7
+    condition: $DEPLOY = 1
 
 notifications:
   email:
