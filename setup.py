@@ -45,6 +45,13 @@ packages = [
     str('django_activeurl.ext'),
 ]
 
+install_requires = [
+    str('django'),
+    str('lxml'),
+    str('django-classy-tags'),
+    str('django_appconf'),
+]
+
 
 setup(
     name=about['__title__'],
@@ -57,12 +64,7 @@ setup(
     author=about['__author__'],
     author_email=about['__email__'],
     zip_safe=False,
-    install_requires=[
-        'django',
-        'lxml',
-        'django-classy-tags',
-        'django_appconf',
-    ],
+    install_requires=install_requires,
     license=about['__license__'],
     classifiers=list(filter(None, classifiers.split('\n'))),
     keywords=[
