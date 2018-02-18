@@ -72,16 +72,11 @@ after_success:
   - pip install codecov
   - codecov
 
-notifications:
-  email:
-    on_succes
-
 jobs:
   include:
   - stage: Push to PYPI (runs only for tagged commits)
     if: tag IS present
-    python: 2.7
-    addons: {}
+    python: 3.6
     install: skip
     script: skip
     after_success: []
@@ -94,3 +89,7 @@ jobs:
       on:
         tags: true
         all_branches: true
+
+notifications:
+  email:
+    on_success: never
