@@ -3,10 +3,8 @@ from __future__ import unicode_literals
 
 import io
 import sys
+
 from setuptools import setup
-
-
-__version__ = '2.0.0'
 
 PY_27 = sys.version_info < (3, 0, 0)
 
