@@ -61,18 +61,16 @@ matrix:
 
 cache: pip
 
-install:
-  - pip install tox
-
-script:
-  - tox
-
-after_success:
-  - pip install codecov
-  - codecov
-
 jobs:
   include:
+  - stage: test
+    install:
+      - pip install tox
+    script:
+      - tox
+    after_success:
+      - pip install codecov
+      - codecov
   - stage: Push to PYPI (runs only for tagged commits)
     if: tag IS present
     python: 3.6
