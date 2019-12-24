@@ -7,10 +7,11 @@ from django.core.cache import cache
 from django.template import Context, Template
 from django.test.client import Client, RequestFactory
 from django.utils.translation import get_language
+from lxml.html import fragment_fromstring, fromstring
+
 from django_activeurl import __version__
 from django_activeurl.conf import settings
 from django_activeurl.utils import ImproperlyConfigured
-from lxml.html import fragment_fromstring, fromstring
 
 try:
     # django >= 1.7
@@ -939,7 +940,7 @@ def test_basic_again_test_default_settings():
     assert not inactive_li.attrib.get('class', False)
 
 
-def test_dajngo_template():
+def test_django_template():
     response = client.get('/template/django/')
 
     html = response.content

@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from io import open
 import os
 import sys
+from io import open
+
+import django_activeurl  # NOQA
 
 # Get the project root dir, which is the parent dir of this
 cwd = os.getcwd()
@@ -10,7 +12,6 @@ project_root = os.path.dirname(cwd)
 
 sys.path.insert(0, project_root)
 
-import django_activeurl  # NOQA
 
 # package data
 about = {}
