@@ -7,10 +7,11 @@ from django.core.cache import cache
 from django.template import Context, Template
 from django.test.client import Client, RequestFactory
 from django.utils.translation import get_language
+from lxml.html import fragment_fromstring, fromstring
+
 from django_activeurl import __version__
 from django_activeurl.conf import settings
 from django_activeurl.utils import ImproperlyConfigured
-from lxml.html import fragment_fromstring, fromstring
 
 try:
     # django >= 1.7

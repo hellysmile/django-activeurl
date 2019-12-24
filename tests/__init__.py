@@ -6,7 +6,6 @@ import os
 import django
 from django.conf import settings
 
-
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
 template_engines = [
