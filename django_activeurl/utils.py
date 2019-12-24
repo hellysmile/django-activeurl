@@ -3,7 +3,6 @@
 from __future__ import absolute_import, unicode_literals
 
 from hashlib import md5
-from urllib.parse import urlsplit, urlunsplit
 
 from django.core.cache import cache
 from django.utils.http import urlquote
@@ -13,6 +12,11 @@ from lxml.html import fragment_fromstring, tostring
 
 from .__about__ import __version__
 from .conf import settings
+
+try:
+    from django.utils.six.moves.urllib import parse as urlparse
+except ImportError:
+    from urllib import parse as urlparse
 
 
 class ImproperlyConfigured(Exception):
@@ -117,7 +121,7 @@ def check_active(url, element, **kwargs):
             return False
 
         # split into urlparse object
-        href = urlsplit(href)
+        href = urlparse.urlsplit(href)
 
         # cut off hashtag (anchor)
         href = href._replace(fragment='')
@@ -125,14 +129,14 @@ def check_active(url, element, **kwargs):
         # cut off get params (?key=var&etc=var2)
         if ignore_params:
             href = href._replace(query='')
-            kwargs['full_path'] = urlunsplit(
-                urlsplit(
+            kwargs['full_path'] = urlparse.urlunsplit(
+                urlparse.urlsplit(
                     kwargs['full_path']
                 )._replace(query='')
             )
 
         # build urlparse object back into string
-        href = urlunsplit(href)
+        href = urlparse.urlunsplit(href)
 
         # check empty href
         if href == '':
