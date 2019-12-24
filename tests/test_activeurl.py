@@ -940,7 +940,7 @@ def test_basic_again_test_default_settings():
     assert not inactive_li.attrib.get('class', False)
 
 
-def test_dajngo_template():
+def test_django_template():
     response = client.get('/template/django/')
 
     html = response.content
