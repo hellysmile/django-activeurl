@@ -45,7 +45,9 @@ matrix:
     - python: 3.6
       env: TOXENV=py36-djmaster
 
-cache: pip
+cache:
+  - apt
+  - pip
 
 install:
   - pip install tox
