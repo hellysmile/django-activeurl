@@ -1,8 +1,6 @@
 language: python
 sudo: false
-
-dist: trusty
-
+dist: bionic  # 18.04
 matrix:
   fast_finish: true
   include:
