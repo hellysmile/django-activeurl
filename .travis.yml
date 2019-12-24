@@ -35,19 +35,13 @@ matrix:
     - python: 3.6
       env: TOXENV=py36-dj20
 
-    - python: 3.5
-      env: TOXENV=py35-dj22
     - python: 3.6
       env: TOXENV=py36-dj22
 
-    - python: 3.5
-      env: TOXENV=py35-djmaster
     - python: 3.6
       env: TOXENV=py36-djmaster
 
   allow_failures:
-    - python: 3.5
-      env: TOXENV=py35-djmaster
     - python: 3.6
       env: TOXENV=py36-djmaster
 
