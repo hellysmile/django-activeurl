@@ -6,13 +6,17 @@ from hashlib import md5
 
 from django.core.cache import cache
 from django.utils.http import urlquote
-from django.utils.six.moves.urllib import parse as urlparse
 from django.utils.translation import get_language
 from lxml.etree import ParserError
 from lxml.html import fragment_fromstring, tostring
 
 from .__about__ import __version__
 from .conf import settings
+
+try:
+    from django.utils.six.moves.urllib import parse as urlparse
+except ImportError:
+    from urllib import parse as urlparse
 
 
 class ImproperlyConfigured(Exception):
