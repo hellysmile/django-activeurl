@@ -2,11 +2,8 @@
 from __future__ import unicode_literals
 
 import io
-import sys
 
 from setuptools import setup
-
-PY_27 = sys.version_info < (3, 0, 0)
 
 about = {}
 with io.open('django_activeurl/__about__.py', encoding='utf-8') as fp:
@@ -49,10 +46,11 @@ packages = [
 ]
 
 install_requires = [
-    str('django<2') if PY_27 else str('django'),
-    str('lxml'),
-    str('django-classy-tags'),
-    str('django_appconf'),
+    'django<2;python_version<"3"',
+    'django;python_version>"2"',
+    'lxml',
+    'django-classy-tags',
+    'django_appconf',
 ]
 
 
