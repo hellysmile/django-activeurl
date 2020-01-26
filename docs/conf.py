@@ -21,11 +21,6 @@ with open("../django_activeurl/__about__.py", encoding='utf-8') as fp:
 
 extensions = []
 
-releases_unstable_prehistory = True
-releases_document_name = "history"
-releases_issue_uri = "https://github.com/hellysmile/django-activeurl/issues/%s"
-releases_release_uri = "https://github.com/hellysmile/django-activeurl/tree/v%s"
-
 templates_path = ['_templates']
 
 source_suffix = '.rst'
