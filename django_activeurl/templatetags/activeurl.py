@@ -30,6 +30,8 @@ class ActiveUrl(Tag, Configuration):
         self.load_configuration(**kwargs)
 
         # get request from context
+        if 'request' not in context:
+            return ""
         request = context['request']
 
         # get full path from request
