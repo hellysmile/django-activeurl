@@ -3,9 +3,9 @@
 from __future__ import absolute_import, unicode_literals
 
 from hashlib import md5
+from urllib.parse import quote
 
 from django.core.cache import cache
-from django.utils.http import urlquote
 from django.utils.translation import get_language
 from lxml.etree import ParserError
 from lxml.html import fragment_fromstring, tostring
@@ -155,9 +155,9 @@ def check_active(url, element, **kwargs):
                     kwargs['full_path'].startswith(href)
                     or
                     # maybe an urlquoted href was supplied
-                    urlquote(kwargs['full_path']).startswith(href)
+                    quote(kwargs['full_path']).startswith(href)
                     or
-                    kwargs['full_path'].startswith(urlquote(href))
+                    kwargs['full_path'].startswith(quote(href))
                 )
             else:
                 logic = False
@@ -167,9 +167,9 @@ def check_active(url, element, **kwargs):
                 kwargs['full_path'] == href
                 or
                 # maybe an urlquoted href was supplied
-                urlquote(kwargs['full_path']) == href
+                quote(kwargs['full_path']) == href
                 or
-                kwargs['full_path'] == urlquote(href)
+                kwargs['full_path'] == quote(href)
             )
         # "active" url found
         if logic:
