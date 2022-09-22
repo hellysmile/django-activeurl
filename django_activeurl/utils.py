@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-'''template engine independent utils'''
-from __future__ import absolute_import, unicode_literals
-
+"""template engine independent utils"""
 from hashlib import md5
 from urllib.parse import quote
 
@@ -13,22 +11,19 @@ from lxml.html import fragment_fromstring, tostring
 from .__about__ import __version__
 from .conf import settings
 
-try:
-    from django.utils.six.moves.urllib import parse as urlparse
-except ImportError:
-    from urllib import parse as urlparse
+from urllib import parse as urlparse
 
 
 class ImproperlyConfigured(Exception):
-    '''django-like ImproperlyConfigured exception'''
+    """django-like ImproperlyConfigured exception"""
     pass
 
 
 class Configuration(object):
-    '''abstract configuration'''
+    """abstract configuration"""
 
     def load_configuration(self, **kwargs):
-        '''load configuration, merge with default settings'''
+        """load configuration, merge with default settings"""
         # update passed arguments with default values
         for key in settings.ACTIVE_URL_KWARGS:
             kwargs.setdefault(key, settings.ACTIVE_URL_KWARGS[key])
@@ -44,7 +39,7 @@ class Configuration(object):
 
 
 def get_cache_key(content, **kwargs):
-    '''generate cache key'''
+    """generate cache key"""
     cache_key = ''
     for key in sorted(kwargs.keys()):
         cache_key = '{cache_key}.{key}:{value}'.format(
@@ -104,7 +99,7 @@ def yesno_to_bool(value, varname):
 
 
 def check_active(url, element, **kwargs):
-    '''check "active" url, apply css_class'''
+    """check "active" url, apply css_class"""
     menu = yesno_to_bool(kwargs['menu'], 'menu')
     ignore_params = yesno_to_bool(kwargs['ignore_params'], 'ignore_params')
 
@@ -190,7 +185,7 @@ def check_active(url, element, **kwargs):
 
 
 def check_content(content, **kwargs):
-    '''check content for "active" urls'''
+    """check content for "active" urls"""
     # valid html root tag
     try:
         # render elements tree from content
@@ -202,9 +197,9 @@ def check_content(content, **kwargs):
             if not kwargs['parent_tag']:
                 kwargs['parent_tag'] = 'self'
             else:
-                raise ImproperlyConfigured('''
+                raise ImproperlyConfigured("""
                     parent_tag=True is not allowed
-                ''')
+                """)
         elif kwargs['parent_tag'] is None:
             kwargs['parent_tag'] = 'self'
         # if parent_tag is False\None\''\a\self
@@ -241,7 +236,7 @@ def check_content(content, **kwargs):
     # not valid html root tag
     except ParserError:
         # raise an exception with configuration example
-        raise ImproperlyConfigured('''
+        raise ImproperlyConfigured("""
             content of {% activeurl %} must have valid html root tag
             for example
                 {% activeurl %}
@@ -255,12 +250,12 @@ def check_content(content, **kwargs):
                     </ul>
                 {% endactiveurl %}
             in this case <ul> is valid content root tag
-        ''')
+        """)
     return content
 
 
 def render_content(content, **kwargs):
-    '''check content for "active" urls, store results to django cache'''
+    """check content for "active" urls, store results to django cache"""
     # try to take pre rendered content from django cache, if caching is enabled
     if settings.ACTIVE_URL_CACHE:
         cache_key = get_cache_key(content, **kwargs)

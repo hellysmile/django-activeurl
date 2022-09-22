@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import, unicode_literals
-
 from appconf import AppConf
 from django.conf import settings  # noqa
 
 
 class ActiveUrlConf(AppConf):
-    '''default settings for django-activeurl'''
+    """default settings for django-activeurl"""
 
     # flipper for caching feature
     CACHE = True

@@ -1,5 +1,3 @@
 [run]
-include =
-    django_activeurl/*
 omit =
 

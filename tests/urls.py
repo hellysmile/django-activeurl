@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import, unicode_literals
-
-from django.conf.urls import url
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.urls import re_path
 
 
 def view(request):
@@ -19,12 +17,12 @@ def jinja_template_view(request):
 
 
 urlpatterns = [
-    url(r'^$', view),
-    url(r'^template/django/$', djnago_template_view),
-    url(r'^template/jinja/$', jinja_template_view),
-    url(r'^page/$', view),
-    url(r'^menu/$', view),
-    url(r'^menu/submenu/$', view),
-    url(r'^страница/$', view),
-    url(r'^другая_страница/$', view, name='non-ascii-reverse'),
+    re_path(r'^$', view),
+    re_path(r'^template/django/$', djnago_template_view),
+    re_path(r'^template/jinja/$', jinja_template_view),
+    re_path(r'^page/$', view),
+    re_path(r'^menu/$', view),
+    re_path(r'^menu/submenu/$', view),
+    re_path(r'^страница/$', view),
+    re_path(r'^другая_страница/$', view, name='non-ascii-reverse'),
 ]
