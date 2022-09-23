@@ -1,31 +1,28 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import, unicode_literals
-
 from hashlib import md5
 
 from django.core.cache import cache
 from django.template import Context, Template
 from django.test.client import Client, RequestFactory
 from django.utils.translation import get_language
+from django.template.engine import Engine
 from lxml.html import fragment_fromstring, fromstring
 
 from django_activeurl import __version__
 from django_activeurl.conf import settings
 from django_activeurl.utils import ImproperlyConfigured
 
-try:
-    # django >= 1.7
-    from django.template.base import add_to_builtins
-except ImportError:
-    # django >= 1.9
-    def add_to_builtins(module):
-        from django.template.engine import Engine
-        template_engine = Engine.get_default()
-        template_engine.builtins.append(module)
-        template_engine.template_builtins = \
-            template_engine.get_template_builtins(template_engine.builtins)
+
+def add_to_builtins(module):
+    template_engine = Engine.get_default()
+    template_engine.builtins.append(module)
+    template_engine.template_builtins = template_engine.get_template_builtins(
+        template_engine.builtins
+    )
+
 
 add_to_builtins('django_activeurl.templatetags.activeurl')
+
 
 requests = RequestFactory()
 client = Client()
