@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 '''jinja extenions for django_jinja/django 1.8+'''
-from __future__ import absolute_import, unicode_literals
-
 from jinja2 import lexer, nodes
 from jinja2.ext import Extension
 
