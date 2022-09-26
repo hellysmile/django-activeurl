@@ -1,21 +1,18 @@
 # -*- coding: utf-8 -*-
-'''activeurl django template library'''
-from __future__ import absolute_import, unicode_literals
-
+"""activeurl django template library"""
 from classytags.arguments import MultiKeywordArgument
 from classytags.core import Options, Tag
 from django import template
 
-from ..utils import Configuration, render_content
+from django_activeurl.utils import Configuration, render_content
 
 # django template library
 register = template.Library()
 
 
+@register.tag(name='activeurl')
 class ActiveUrl(Tag, Configuration):
-    '''django template tag via django-classy-tags'''
-    # tag name
-    name = 'activeurl'
+    """django template tag via django-classy-tags"""
 
     # template tag arguments
     options = Options(
@@ -25,7 +22,7 @@ class ActiveUrl(Tag, Configuration):
     )
 
     def render_tag(self, context, kwargs, nodelist):
-        '''render content with "active" urls logic'''
+        """render content with "active" urls logic"""
         # load configuration from passed options
         self.load_configuration(**kwargs)
 
@@ -51,7 +48,3 @@ class ActiveUrl(Tag, Configuration):
         )
 
         return content
-
-
-# register new template tag
-register.tag(ActiveUrl)
